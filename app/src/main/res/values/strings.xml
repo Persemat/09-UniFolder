@@ -15,5 +15,14 @@
     <string name="new_password">Create Password</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="sign_up">Sign Up</string>
+    <string name="upload_title">Upload your file</string>
+    <string name="choose_title">Choose a title for your document</string>
+    <string name="choose_course">Select your study course</string>
+    <string name="title">Title:</string>
+    <string name="course">Study course:</string>
+    <string name="tag">Tag:</string>
+    <string name="select_file">Select your file:</string>
+    <string name="attach_file_description">Please make sure to select a supported type of file</string>
+    <string name="share_file">Share file</string>
 
 </resources>
