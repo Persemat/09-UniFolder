@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="upload">Carica</string>
+    <string name="profile">Profilo</string>
+    <string name="logo">Logo Applicazione</string>
+    <string name="forgot_password">Password dimenticata?</string>
+    <string name="google_login">Login con Google</string>
+    <string name="account_first_name">Nome</string>
+    <string name="account_last_name">Cognome</string>
+    <string name="new_password">Crea password</string>
+    <string name="confirm_password">Conferma password</string>
+    <string name="already_have_account">Hai già un account?</string>
+    <string name="sign_up">Registrati</string>
+</resources>
