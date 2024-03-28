@@ -1,5 +1,13 @@
 package com.example.unifolder;
 
+import android.net.Uri;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -9,6 +17,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.util.ArrayList;
@@ -19,8 +30,10 @@ import java.util.concurrent.Executors;
 public class DocumentsRemoteDataSource {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private final CollectionReference documentsCollection = db.collection("documents");
     private final ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
+    private final String TAG = DocumentsRemoteDataSource.class.getSimpleName();
 
     public ListenableFuture<List<Document>> searchDocumentsByTitle(String searchQuery) {
         return executor.submit(new Callable<List<Document>>() {
@@ -81,6 +94,44 @@ public class DocumentsRemoteDataSource {
                 document.setId(documentId);
 
                 return null;
+            }
+        });
+    }
+
+    public Task<Uri> uploadDocument(Document document, Uri fileUri) {
+        // Ottieni un riferimento al percorso nel Cloud Storage
+        String fileName = "document_" + document.getTitle() + ".pdf"; // Nome del file nel Cloud Storage
+        StorageReference fileRef = storage.getReference().child("documents").child(fileName);
+
+        // Carica il file su Firebase Cloud Storage
+        UploadTask uploadTask = fileRef.putFile(fileUri);
+
+        // Continua con il completamento dell'uploadTask per ottenere l'URL del file
+        return fileRef.putFile(fileUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot,Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Ottieni l'URL del file caricato
+                return fileRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    // Ottieni l'URL del file
+                    Uri downloadUri = task.getResult();
+
+                    // Aggiungi il documento al database Firestore con l'URL del file
+                    document.setFileUrl(downloadUri.toString());
+                    documentsCollection.add(document);
+                } else {
+                    // Gestisci l'errore durante il caricamento del file
+                    Exception e = task.getException();
+                    Log.e(TAG, "Errore durante il caricamento del file:", e);
+                }
             }
         });
     }
