@@ -23,7 +23,6 @@ public class UserRepository implements IUserRepository,UserResponseCallback{
         this.userFavoritesMutableLiveData = new MutableLiveData<>();
         this.userRemoteDataSource.setUserResponseCallback(this);
         this.userDataRemoteDataSource.setUserResponseCallback(this);
-        //qui mettere anche quelle delle prenotazioni
     }
 
     @Override

@@ -11,4 +11,14 @@
     <string name="confirm_password">Conferma password</string>
     <string name="already_have_account">Hai già un account?</string>
     <string name="sign_up">Registrati</string>
+    <string name="error_data">Dati non corretti</string>
+    <string name="error_email">Email non corretta</string>
+    <string name="authentication_failed">Autenticazione falllita</string>
+    <string name="authentication_correct">Autenticazione corretta</string>
+    <string name="database_error">Errore Database</string>
+    <string name="avatar_description">Immagine avatar</string>
+    <string name="delete_account">Cancella Account</string>
+    <string name="error">Qualcosa è andato storto</string>
+    <string name="close">Chiudi</string>
+    <string name="email_sent">Email inviata per reset password</string>
 </resources>

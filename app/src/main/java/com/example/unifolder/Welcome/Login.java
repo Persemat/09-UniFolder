@@ -1,6 +1,7 @@
 package com.example.unifolder.Welcome;
 
-import android.os.Bundle;
+import static com.example.unifolder.util.Costants.INVALID_CREDENTIALS_ERROR;
+import static com.example.unifolder.util.Costants.INVALID_USER_ERROR;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.apache.commons.validator.routines.EmailValidator;
+
+
 
 
 public class Login extends AppCompatActivity {
@@ -66,7 +69,7 @@ public class Login extends AppCompatActivity {
 
         // CLICCANDO SU IL PULSANTE DI SIGN UP SI PASSA ALLA SCHERMATA DI SIGN UP
         signUpButton.setOnClickListener(item -> {
-            Intent signUp = new Intent(getApplicationContext(), RegistrationPage.class);
+            Intent signUp = new Intent(getApplicationContext(), Registration.class);
             startActivity(signUp);
             finish();
         });
