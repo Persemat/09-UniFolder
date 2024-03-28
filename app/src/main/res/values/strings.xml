@@ -33,4 +33,20 @@
     <string name="science">Science</string>
     <string name="sociology">Sociology</string>
 
+    <string name="error_data">Data are not correct</string>
+    <string name="error_email">Email is not correct</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="authentication_correct">Authentication correct</string>
+    <string name="logout" translatable="false">Logout</string>
+    <string name="database_error">Database error</string>
+    <string name="avatar_description">Avatar Image</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="error">Something went wrong</string>
+    <string name="close">Close</string>
+    <string name="error_password" translatable="false">Password should be at least 8 characters</string>
+    <string name="error_user_collision_message" translatable="false">The email address is already in use by another account</string>
+    <string name="unexpected_error" translatable="false">Unexpected error</string>
+    <string name="error_login_user_message" translatable="false">There is no user record corresponding to this identifier</string>
+    <string name="error_login_password_message" translatable="false">The password is invalid</string>
+    <string name="email_sent">Email sent for password reset</string>
 </resources>

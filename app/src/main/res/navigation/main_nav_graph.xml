@@ -20,4 +20,9 @@
         android:name="com.example.unifolder.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.unifolder.MainActivity"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 </navigation>
