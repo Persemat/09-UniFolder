@@ -11,4 +11,21 @@
     <string name="confirm_password">Conferma password</string>
     <string name="already_have_account">Hai già un account?</string>
     <string name="sign_up">Registrati</string>
+    <string name="upload_title">Carica il tuo materiale</string>
+    <string name="choose_title">Scegli un titolo per il tuo materiale</string>
+    <string name="choose_course">Seleziona il tuo corso di studi</string>
+    <string name="title">Nome:</string>
+    <string name="course">Corso di studio:</string>
+    <string name="tag">Tag:</string>
+    <string name="select_file">Seleziona file:</string>
+    <string name="attach_file_description">Assicurati di caricare un tipo di file supportato.</string>
+    <string name="share_file">Carica materiale</string>
+    <string name="attach_file">Seleziona file</string>
+    <string name="economics">Economia e Statistica</string>
+    <string name="law">Giurisprudenza</string>
+    <string name="medicine">Medicina</string>
+    <string name="psychology">Psicologia</string>
+    <string name="education">Scienze della formazione</string>
+    <string name="science">Scienze</string>
+    <string name="sociology">Sociologia</string>
 </resources>

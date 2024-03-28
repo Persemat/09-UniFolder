@@ -87,7 +87,7 @@
         android:id="@+id/showPasswordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_visibility_24"
+        android:src="@drawable/common_full_open_on_phone"
         app:layout_constraintEnd_toEndOf="@id/text_input_layout_password"
         app:layout_constraintTop_toTopOf="@id/text_input_layout_password"
         app:layout_constraintBottom_toBottomOf="@id/text_input_layout_password" />

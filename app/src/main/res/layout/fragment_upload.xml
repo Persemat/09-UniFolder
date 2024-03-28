@@ -56,13 +56,19 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/course_textInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="showCourseSelectionDialog"
+            android:focusable="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/course_editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/choose_course" />
+                android:hint="@string/choose_course"
+                android:inputType="none"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -87,6 +93,7 @@
         <androidx.cardview.widget.CardView
             style="@style/Widget.Material3.CardView.Elevated"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="180dp" >
 
@@ -94,29 +101,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <ImageView
-                    android:id="@+id/attach_imageView"
-                    android:src="@drawable/baseline_attach_file_24"
+                <LinearLayout
+                    android:id="@+id/uploadInput_layout"
                     android:layout_margin="16dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="icon" />
-
-                <Button
-                    android:id="@+id/upload_button"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    app:layout_constraintStart_toEndOf="@id/attach_imageView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginVertical="16dp"
-                    android:layout_width="120dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/upload"
-                    app:icon="@drawable/baseline_upload_file_24" />
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/attach_imageView"
+                        android:src="@drawable/baseline_upload_file_24"
+                        android:layout_width="55dp"
+                        android:layout_height="80dp"
+                        android:contentDescription="icon" />
+
+                    <Button
+                        android:id="@+id/attach_button"
+                        style="@style/Widget.Material3.Button.IconButton.Filled"
+                        app:layout_constraintStart_toEndOf="@id/attach_imageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginVertical="16dp"
+                        android:backgroundTint="@color/darkred"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/attach_file"
+                        app:icon="@drawable/baseline_attach_file_24" />
+                </LinearLayout>
 
                 <TextView
-                    app:layout_constraintTop_toBottomOf="@id/upload_button"
+                    app:layout_constraintTop_toBottomOf="@id/uploadInput_layout"
                     android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -131,6 +147,8 @@
         android:layout_width="wrap_content"
         android:layout_height="55dp"
         android:text="@string/share_file"
+        android:textSize="18sp"
+        android:backgroundTint="@color/darkred"
         app:icon="@drawable/baseline_arrow_forward_ios_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
