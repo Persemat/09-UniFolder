@@ -23,6 +23,18 @@
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.unifolder.MainActivity"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.unifolder.Welcome.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login"/>
+
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.unifolder.Welcome.RegistrationFragment"
+        android:label="RegistrationFragment"
+        tools:layout="@layout/fragment_registration"/>
 </navigation>

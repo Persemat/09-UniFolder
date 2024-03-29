@@ -41,4 +41,6 @@
     <string name="error_login_user_message" translatable="false">There is no user record corresponding to this identifier</string>
     <string name="error_login_password_message" translatable="false">The password is invalid</string>
     <string name="email_sent">Email sent for password reset</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
