@@ -37,6 +37,7 @@
     <TextView
         android:id="@+id/course"
         android:text="Corso"
+        android:textColor="@color/black"
         android:textSize="14dp"
         android:textAlignment="center"
         android:layout_width="match_parent"

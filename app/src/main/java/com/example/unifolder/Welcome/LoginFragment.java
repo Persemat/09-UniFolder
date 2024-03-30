@@ -3,6 +3,7 @@ package com.example.unifolder.Welcome;
 import static com.example.unifolder.util.Costants.INVALID_CREDENTIALS_ERROR;
 import static com.example.unifolder.util.Costants.INVALID_USER_ERROR;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.unifolder.MainActivity;
 import com.example.unifolder.R;
 import com.example.unifolder.data.user.IUserRepository;
 import com.example.unifolder.model.Result;
@@ -87,7 +89,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        navController = Navigation.findNavController(requireActivity(), R.id.fragment_container_view);
+        navController = Navigation.findNavController(requireActivity(), R.id.container_login_activity);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         // Trova il bottone arrow_back
@@ -97,8 +99,10 @@ public class LoginFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Torna al fragment precedente
-                navController.popBackStack();
+                // Naviga alla main activity quando si preme la freccia indietro
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                startActivity(intent);
+                requireActivity().finish(); // Chiude l'activity corrente (login activity)
             }
         });
 
@@ -212,4 +216,10 @@ public class LoginFragment extends Fragment {
 
 
     }
+
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
+            Navigation.findNavController(requireView()).navigate(destination);
+        requireActivity().finish();
+    }
+
 }
