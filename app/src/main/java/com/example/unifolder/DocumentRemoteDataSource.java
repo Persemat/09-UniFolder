@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -27,13 +29,13 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
-public class DocumentsRemoteDataSource {
+public class DocumentRemoteDataSource {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private final CollectionReference documentsCollection = db.collection("documents");
     private final ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
-    private final String TAG = DocumentsRemoteDataSource.class.getSimpleName();
+    private final String TAG = DocumentRemoteDataSource.class.getSimpleName();
 
     public ListenableFuture<List<Document>> searchDocumentsByTitle(String searchQuery) {
         return executor.submit(new Callable<List<Document>>() {
@@ -82,7 +84,7 @@ public class DocumentsRemoteDataSource {
             }
         });
     }
-    public ListenableFuture<Void> uploadDocument(Document document) {
+    /*public ListenableFuture<Void> uploadDocument(Document document) {
         return executor.submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -96,21 +98,23 @@ public class DocumentsRemoteDataSource {
                 return null;
             }
         });
-    }
+    }*/
 
-    public Task<Uri> uploadDocument(Document document, Uri fileUri) {
+    public Task<Uri> uploadDocument(Document document, UploadDocumentCallback uploadDocumentCallback) {
         // Ottieni un riferimento al percorso nel Cloud Storage
         String fileName = "document_" + document.getTitle() + ".pdf"; // Nome del file nel Cloud Storage
         StorageReference fileRef = storage.getReference().child("documents").child(fileName);
 
         // Carica il file su Firebase Cloud Storage
+        Uri fileUri = Uri.parse(document.getFileUrl());
         UploadTask uploadTask = fileRef.putFile(fileUri);
 
         // Continua con il completamento dell'uploadTask per ottenere l'URL del file
-        return fileRef.putFile(fileUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot,Task<Uri>>() {
+        return fileRef.putFile(fileUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (!task.isSuccessful()) {
+                    Log.d(TAG, "!task.isSuccessful()");
                     throw task.getException();
                 }
 
@@ -121,19 +125,48 @@ public class DocumentsRemoteDataSource {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
+                    Log.d(TAG, "onComplete -> task.isSuccessful()");
+
                     // Ottieni l'URL del file
                     Uri downloadUri = task.getResult();
 
-                    // Aggiungi il documento al database Firestore con l'URL del file
-                    document.setFileUrl(downloadUri.toString());
-                    documentsCollection.add(document);
+                    // Esegui l'operazione di accesso al database Room su un thread diverso
+                    Executors.newSingleThreadExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Aggiungi il documento al database Firestore con l'URL del file
+                            Document remoteDocument = new Document(document.getTitle(), document.getAuthor(), document.getCourse(), document.getTag(), "");
+                            remoteDocument.setFileUrl(downloadUri.toString());
+
+                            // Aggiungi il documento al database Firestore
+                            try {
+                                documentsCollection.add(remoteDocument).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        DocumentReference docRef = task.getResult();
+                                        String documentId = docRef.getId();
+
+                                        // Aggiorna il documento locale con l'ID generato da Firebase
+                                        document.setId(documentId);
+                                        uploadDocumentCallback.onDocumentUploaded(document);
+                                    }
+                                });
+
+                            } catch (Exception e) {
+                                Log.e(TAG, "Errore durante l'aggiunta del documento:", e);
+                                uploadDocumentCallback.onUploadFailed(e.getMessage());
+                            }
+                        }
+                    });
                 } else {
+                    Log.d(TAG, "onComplete -> !task.isSuccessful()");
+
                     // Gestisci l'errore durante il caricamento del file
                     Exception e = task.getException();
                     Log.e(TAG, "Errore durante il caricamento del file:", e);
+                    uploadDocumentCallback.onUploadFailed(e.getMessage());
                 }
             }
         });
     }
-
 }

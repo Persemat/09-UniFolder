@@ -1,17 +1,13 @@
 package com.example.unifolder;
 
-import static com.example.unifolder.util.Costants.DOCUMENTS_DATABASE_NAME;
-
 import android.content.Context;
 import android.util.Log;
 
-import androidx.room.Room;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -22,11 +18,16 @@ public class DocumentLocalDataSource {
     private static final String TAG = DocumentLocalDataSource.class.getSimpleName();
 
     public DocumentLocalDataSource(Context context) {
-        DocumentDatabase database = Room.databaseBuilder(context.getApplicationContext(),
-                        DocumentDatabase.class, DOCUMENTS_DATABASE_NAME)
-                .build();
+        DocumentDatabase database = DocumentDatabase.getDatabase(context);
         documentDao = database.documentDao();
         executorService = Executors.newSingleThreadExecutor();
+    }
+
+    public Future<Void> saveDocument(Document document) {
+        Log.d(TAG,"savaDocument()");
+        return executorService.submit(() -> {documentDao.insertDocument(document);
+            return null;
+        });
     }
 
     public Future<Void> saveDocument(Document document, Context context) {
@@ -66,5 +67,9 @@ public class DocumentLocalDataSource {
 
     public Future<Document> getDocumentById(String documentId) {
         return executorService.submit(() -> documentDao.getDocumentById(documentId));
+    }
+
+    public Future<List<Document>> getUploadedDocuments(String author) {
+        return executorService.submit(() -> documentDao.getUploadedDocuments(author));
     }
 }

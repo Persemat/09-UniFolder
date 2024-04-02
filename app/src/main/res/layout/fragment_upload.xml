@@ -58,7 +58,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:onClick="showCourseSelectionDialog"
             android:focusable="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -67,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/choose_course"
                 android:inputType="none"
+                android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -81,7 +81,8 @@
         <Spinner
             android:id="@+id/tag_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:entries="@array/options_upload_spinner" />
 
         <TextView
             android:layout_marginTop="8dp"
@@ -95,7 +96,7 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/grey"
             android:layout_width="match_parent"
-            android:layout_height="180dp" >
+            android:layout_height="wrap_content" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -103,7 +104,7 @@
 
                 <LinearLayout
                     android:id="@+id/uploadInput_layout"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:gravity="center_vertical"
@@ -125,18 +126,31 @@
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginVertical="16dp"
                         android:backgroundTint="@color/darkred"
-                        android:layout_width="120dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/attach_file"
                         app:icon="@drawable/baseline_attach_file_24" />
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/uploadDisclaimer_textView"
                     app:layout_constraintTop_toBottomOf="@id/uploadInput_layout"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/attach_file_description" />
+
+                <include
+                    android:id="@+id/uploadedDocDetails"
+                    layout="@layout/layout_document_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/uploadDisclaimer_textView" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

@@ -1,9 +1,12 @@
 package com.example.unifolder;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 @Entity(tableName = "documents")
 public class Document {
+    @PrimaryKey @NonNull
     private String id;
     private String title;
     private String author;
