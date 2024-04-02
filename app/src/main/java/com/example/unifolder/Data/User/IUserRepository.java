@@ -1,9 +1,9 @@
-package com.example.unifolder.data.user;
+package com.example.unifolder.Data.User;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.unifolder.model.Result;
-import com.example.unifolder.model.User;
+import com.example.unifolder.Model.Result;
+import com.example.unifolder.Model.User;
 
 public interface IUserRepository {
     MutableLiveData<Result> getUser(String email, String password, boolean isUserRegistered);

@@ -1,7 +1,7 @@
 package com.example.unifolder.Welcome;
 
-import static com.example.unifolder.util.Costants.USER_COLLISION_ERROR;
-import static com.example.unifolder.util.Costants.WEAK_PASSWORD_ERROR;
+import static com.example.unifolder.Util.Costants.USER_COLLISION_ERROR;
+import static com.example.unifolder.Util.Costants.WEAK_PASSWORD_ERROR;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -16,10 +16,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.unifolder.R;
-import com.example.unifolder.data.user.IUserRepository;
-import com.example.unifolder.model.Result;
-import com.example.unifolder.model.User;
-import com.example.unifolder.util.ServiceLocator;
+import com.example.unifolder.Data.User.IUserRepository;
+import com.example.unifolder.Model.Result;
+import com.example.unifolder.Model.User;
+import com.example.unifolder.Util.ServiceLocator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 

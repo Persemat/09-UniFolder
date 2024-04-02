@@ -1,4 +1,4 @@
-package com.example.unifolder.util;
+package com.example.unifolder.Util;
 
 public class Costants {
     public static final String WEAK_PASSWORD_ERROR = "passwordIsWeak";

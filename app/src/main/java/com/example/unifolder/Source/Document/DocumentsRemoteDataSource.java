@@ -1,10 +1,11 @@
-package com.example.unifolder;
+package com.example.unifolder.Source.Document;
 
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.unifolder.Document;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

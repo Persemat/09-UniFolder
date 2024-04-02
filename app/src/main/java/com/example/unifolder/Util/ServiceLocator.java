@@ -1,13 +1,13 @@
-package com.example.unifolder.util;
+package com.example.unifolder.Util;
 
 import android.app.Application;
 
-import com.example.unifolder.data.user.IUserRepository;
-import com.example.unifolder.data.user.UserRepository;
-import com.example.unifolder.source.BaseUserAuthenticationRemoteDataSource;
-import com.example.unifolder.source.BaseUserDataRemoteDataSource;
-import com.example.unifolder.source.UserAuthenticationRemoteDataSource;
-import com.example.unifolder.source.UserDataRemoteDataSource;
+import com.example.unifolder.Data.User.IUserRepository;
+import com.example.unifolder.Data.User.UserRepository;
+import com.example.unifolder.Source.User.BaseUserAuthenticationRemoteDataSource;
+import com.example.unifolder.Source.User.BaseUserDataRemoteDataSource;
+import com.example.unifolder.Source.User.UserAuthenticationRemoteDataSource;
+import com.example.unifolder.Source.User.UserDataRemoteDataSource;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;

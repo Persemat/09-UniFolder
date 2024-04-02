@@ -1,7 +1,7 @@
 package com.example.unifolder.Welcome;
 
-import static com.example.unifolder.util.Costants.INVALID_CREDENTIALS_ERROR;
-import static com.example.unifolder.util.Costants.INVALID_USER_ERROR;
+import static com.example.unifolder.Util.Costants.INVALID_CREDENTIALS_ERROR;
+import static com.example.unifolder.Util.Costants.INVALID_USER_ERROR;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +18,9 @@ import androidx.navigation.Navigation;
 
 import com.example.unifolder.MainActivity;
 import com.example.unifolder.R;
-import com.example.unifolder.data.user.IUserRepository;
-import com.example.unifolder.model.Result;
-import com.example.unifolder.util.ServiceLocator;
+import com.example.unifolder.Data.User.IUserRepository;
+import com.example.unifolder.Model.Result;
+import com.example.unifolder.Util.ServiceLocator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -151,7 +151,9 @@ public class LoginFragment extends Fragment {
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccess()) {
                                     userViewModel.setAuthenticationError(false);
-                                    navController.navigate(R.id.homeFragment);
+                                    Intent intent = new Intent(requireContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    requireActivity().finish();
                                 } else {
                                     userViewModel.setAuthenticationError(true);
                                     Snackbar.make(view.findViewById(android.R.id.content),

@@ -57,7 +57,13 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+      /*  // Dentro il tuo fragment o activity
+        RecyclerView recyclerView = findViewById(R.id.documents_recyclerview);
+       List<Document> documents = // Recupera la lista di documenti dal tuo database o da altre fonti
+                DocumentAdapter adapter = new DocumentAdapter(documents);
+       recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+*/
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         return view;

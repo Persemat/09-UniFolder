@@ -1,13 +1,13 @@
-package com.example.unifolder.source;
+package com.example.unifolder.Source.User;
 
-import static com.example.unifolder.util.Costants.FIREBASE_REALTIME_DATABASE;
-import static com.example.unifolder.util.Costants.FIREBASE_USERS_COLLECTION;
+import static com.example.unifolder.Util.Costants.FIREBASE_REALTIME_DATABASE;
+import static com.example.unifolder.Util.Costants.FIREBASE_USERS_COLLECTION;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.unifolder.model.User;
+import com.example.unifolder.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,9 +17,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
 
