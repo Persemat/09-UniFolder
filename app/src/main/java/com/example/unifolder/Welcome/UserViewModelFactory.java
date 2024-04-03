@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.unifolder.data.user.IUserRepository;
+import com.example.unifolder.Data.User.IUserRepository;
 
 public class UserViewModelFactory implements ViewModelProvider.Factory{
     private final IUserRepository userRepository;

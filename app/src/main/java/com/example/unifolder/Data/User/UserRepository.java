@@ -1,13 +1,12 @@
-package com.example.unifolder.data.user;
+package com.example.unifolder.Data.User;
+
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.unifolder.model.Result;
-import com.example.unifolder.model.User;
-import com.example.unifolder.source.BaseUserAuthenticationRemoteDataSource;
-import com.example.unifolder.source.BaseUserDataRemoteDataSource;
-
-import java.util.List;
+import com.example.unifolder.Model.Result;
+import com.example.unifolder.Model.User;
+import com.example.unifolder.Source.User.BaseUserAuthenticationRemoteDataSource;
+import com.example.unifolder.Source.User.BaseUserDataRemoteDataSource;
 
 public class UserRepository implements IUserRepository,UserResponseCallback{
 

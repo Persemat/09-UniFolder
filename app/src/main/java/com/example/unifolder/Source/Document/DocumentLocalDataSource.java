@@ -1,7 +1,12 @@
-package com.example.unifolder;
+package com.example.unifolder.Source.Document;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.example.unifolder.Document;
+import com.example.unifolder.DocumentDao;
+import com.example.unifolder.DocumentDatabase;
+import com.example.unifolder.LocalStorageManager;
 
 import java.io.IOException;
 import java.io.InputStream;

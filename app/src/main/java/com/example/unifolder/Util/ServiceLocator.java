@@ -1,22 +1,22 @@
-package com.example.unifolder.util;
+package com.example.unifolder.Util;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.example.unifolder.DocumentLocalDataSource;
-import com.example.unifolder.DocumentRemoteDataSource;
-import com.example.unifolder.data.user.IUserRepository;
-import com.example.unifolder.data.user.UserRepository;
-import com.example.unifolder.source.BaseUserAuthenticationRemoteDataSource;
-import com.example.unifolder.source.BaseUserDataRemoteDataSource;
-import com.example.unifolder.source.UserAuthenticationRemoteDataSource;
-import com.example.unifolder.source.UserDataRemoteDataSource;
+import com.example.unifolder.Source.Document.DocumentLocalDataSource;
+import com.example.unifolder.Source.Document.DocumentsRemoteDataSource;
+import com.example.unifolder.Data.User.IUserRepository;
+import com.example.unifolder.Data.User.UserRepository;
+import com.example.unifolder.Source.User.BaseUserAuthenticationRemoteDataSource;
+import com.example.unifolder.Source.User.BaseUserDataRemoteDataSource;
+import com.example.unifolder.Source.User.UserAuthenticationRemoteDataSource;
+import com.example.unifolder.Source.User.UserDataRemoteDataSource;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;
 
     private static DocumentLocalDataSource localDataSource;
-    private static DocumentRemoteDataSource remoteDataSource;
+    private static DocumentsRemoteDataSource remoteDataSource;
 
     private ServiceLocator() {
     }
@@ -41,9 +41,9 @@ public class ServiceLocator {
     }
 
     // Metodo per ottenere un'istanza di RemoteDataSource
-    public DocumentRemoteDataSource getRemoteDataSource() {
+    public DocumentsRemoteDataSource getRemoteDataSource() {
         if (remoteDataSource == null) {
-            remoteDataSource = new DocumentRemoteDataSource();
+            remoteDataSource = new DocumentsRemoteDataSource();
         }
         return remoteDataSource;
     }

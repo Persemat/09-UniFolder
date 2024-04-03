@@ -2,18 +2,20 @@ package com.example.unifolder;
 
 import android.content.Context;
 
-import com.example.unifolder.util.ServiceLocator;
+import com.example.unifolder.Source.Document.DocumentLocalDataSource;
+import com.example.unifolder.Source.Document.DocumentsRemoteDataSource;
+import com.example.unifolder.Util.ServiceLocator;
 
 public class DocumentRepository {
     private DocumentLocalDataSource localDataSource;
-    private DocumentRemoteDataSource remoteDataSource;
+    private DocumentsRemoteDataSource remoteDataSource;
 
     public DocumentRepository(Context context) {
         this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(context);
         this.remoteDataSource = ServiceLocator.getInstance().getRemoteDataSource();
     }
 
-    public DocumentRepository(DocumentLocalDataSource localDataSource, DocumentRemoteDataSource remoteDataSource) {
+    public DocumentRepository(DocumentLocalDataSource localDataSource, DocumentsRemoteDataSource remoteDataSource) {
         this.localDataSource = localDataSource;
         this.remoteDataSource = remoteDataSource;
     }

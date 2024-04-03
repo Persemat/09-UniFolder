@@ -1,8 +1,7 @@
-package com.example.unifolder.data.user;
+package com.example.unifolder.Data.User;
 
-import com.example.unifolder.model.User;
+import com.example.unifolder.Model.User;
 
-import java.util.List;
 public interface UserResponseCallback {
 
     void onSuccessFromAuthentication(User user);

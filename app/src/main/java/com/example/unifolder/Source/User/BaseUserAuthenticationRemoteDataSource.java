@@ -1,7 +1,8 @@
-package com.example.unifolder.source;
+package com.example.unifolder.Source.User;
 
-import com.example.unifolder.data.user.UserResponseCallback;
-import com.example.unifolder.model.User;
+
+import com.example.unifolder.Data.User.UserResponseCallback;
+import com.example.unifolder.Model.User;
 
 public abstract class BaseUserAuthenticationRemoteDataSource {
 

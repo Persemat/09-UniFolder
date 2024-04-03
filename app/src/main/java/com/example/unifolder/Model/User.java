@@ -1,4 +1,4 @@
-package com.example.unifolder.model;
+package com.example.unifolder.Model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

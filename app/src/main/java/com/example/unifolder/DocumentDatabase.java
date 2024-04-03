@@ -1,15 +1,12 @@
 package com.example.unifolder;
 
-import static com.example.unifolder.util.Costants.DOCUMENTS_DATABASE_NAME;
+import static com.example.unifolder.Util.Costants.DOCUMENTS_DATABASE_NAME;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-
-import com.example.unifolder.Document;
-import com.example.unifolder.DocumentDao;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -3,9 +3,9 @@ package com.example.unifolder.Welcome;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.unifolder.data.user.IUserRepository;
-import com.example.unifolder.model.Result;
-import com.example.unifolder.model.User;
+import com.example.unifolder.Data.User.IUserRepository;
+import com.example.unifolder.Model.Result;
+import com.example.unifolder.Model.User;
 
 public class UserViewModel extends ViewModel {
     private final IUserRepository userRepository;

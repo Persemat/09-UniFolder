@@ -1,6 +1,4 @@
-package com.example.unifolder.model;
-
-import java.util.List;
+package com.example.unifolder.Model;
 
 public abstract class Result {
     private Result() {

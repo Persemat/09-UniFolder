@@ -1,16 +1,16 @@
-package com.example.unifolder.source;
+package com.example.unifolder.Source.User;
 
-import static com.example.unifolder.util.Costants.INVALID_CREDENTIALS_ERROR;
-import static com.example.unifolder.util.Costants.INVALID_USER_ERROR;
-import static com.example.unifolder.util.Costants.UNEXPECTED_ERROR;
-import static com.example.unifolder.util.Costants.USER_COLLISION_ERROR;
-import static com.example.unifolder.util.Costants.WEAK_PASSWORD_ERROR;
+import static com.example.unifolder.Util.Costants.INVALID_CREDENTIALS_ERROR;
+import static com.example.unifolder.Util.Costants.INVALID_USER_ERROR;
+import static com.example.unifolder.Util.Costants.UNEXPECTED_ERROR;
+import static com.example.unifolder.Util.Costants.USER_COLLISION_ERROR;
+import static com.example.unifolder.Util.Costants.WEAK_PASSWORD_ERROR;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.unifolder.model.User;
+import com.example.unifolder.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

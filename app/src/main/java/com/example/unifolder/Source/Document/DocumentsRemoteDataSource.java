@@ -1,14 +1,14 @@
-package com.example.unifolder;
+package com.example.unifolder.Source.Document;
 
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.unifolder.Document;
+import com.example.unifolder.UploadDocumentCallback;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -29,13 +29,13 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
-public class DocumentRemoteDataSource {
+public class DocumentsRemoteDataSource {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private final CollectionReference documentsCollection = db.collection("documents");
     private final ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
-    private final String TAG = DocumentRemoteDataSource.class.getSimpleName();
+    private final String TAG = DocumentsRemoteDataSource.class.getSimpleName();
 
     public ListenableFuture<List<Document>> searchDocumentsByTitle(String searchQuery) {
         return executor.submit(new Callable<List<Document>>() {
