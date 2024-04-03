@@ -127,7 +127,7 @@ public class LoginFragment extends Fragment {
             if (isEmailCorrect(email)) {
                 userViewModel.resetPassword(email);
                 Snackbar.make(
-                        view.findViewById(android.R.id.content),
+                        requireActivity().findViewById(android.R.id.content),
                         getString(R.string.email_sent),
                         Snackbar.LENGTH_SHORT).show();
             }
@@ -156,7 +156,7 @@ public class LoginFragment extends Fragment {
                                     requireActivity().finish();
                                 } else {
                                     userViewModel.setAuthenticationError(true);
-                                    Snackbar.make(view.findViewById(android.R.id.content),
+                                    Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                             getErrorMessage(((Result.Error) result).getMessage()),
                                             Snackbar.LENGTH_SHORT).show();
                                 }
@@ -167,7 +167,7 @@ public class LoginFragment extends Fragment {
                 }
             } else {
                 Snackbar.make(
-                        view.findViewById(android.R.id.content),
+                        requireActivity().findViewById(android.R.id.content),
                         getString(R.string.error_data),
                         Snackbar.LENGTH_SHORT).show();
             }
@@ -192,7 +192,7 @@ public class LoginFragment extends Fragment {
         super.onStart();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            navController.navigate(R.id.homeFragment);
+            navController.navigate(R.id.mainActivity);
         }
     }
 
@@ -208,15 +208,13 @@ public class LoginFragment extends Fragment {
     }
 
     private boolean isPasswordCorrect (String password){
-        boolean result = password != null && password.length() >= 8;
+       boolean result = password != null && password.length() >= 6;
         if (!result) {
             passwordTextInputLayout.setError("Password is not correct");
         } else {
             passwordTextInputLayout.setError(null);
         }
         return result;
-
-
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
