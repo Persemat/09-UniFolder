@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.unifolder.Source.Document.DocumentLocalDataSource;
-import com.example.unifolder.Source.Document.DocumentsRemoteDataSource;
+import com.example.unifolder.Source.Document.DocumentRemoteDataSource;
 import com.example.unifolder.Data.User.IUserRepository;
 import com.example.unifolder.Data.User.UserRepository;
 import com.example.unifolder.Source.User.BaseUserAuthenticationRemoteDataSource;
@@ -16,7 +16,7 @@ public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;
 
     private static DocumentLocalDataSource localDataSource;
-    private static DocumentsRemoteDataSource remoteDataSource;
+    private static DocumentRemoteDataSource remoteDataSource;
 
     private ServiceLocator() {
     }
@@ -41,9 +41,9 @@ public class ServiceLocator {
     }
 
     // Metodo per ottenere un'istanza di RemoteDataSource
-    public DocumentsRemoteDataSource getRemoteDataSource() {
+    public DocumentRemoteDataSource getRemoteDataSource() {
         if (remoteDataSource == null) {
-            remoteDataSource = new DocumentsRemoteDataSource();
+            remoteDataSource = new DocumentRemoteDataSource();
         }
         return remoteDataSource;
     }

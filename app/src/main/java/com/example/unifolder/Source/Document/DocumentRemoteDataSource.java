@@ -29,13 +29,13 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
-public class DocumentsRemoteDataSource {
+public class DocumentRemoteDataSource {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private final CollectionReference documentsCollection = db.collection("documents");
     private final ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
-    private final String TAG = DocumentsRemoteDataSource.class.getSimpleName();
+    private final String TAG = DocumentRemoteDataSource.class.getSimpleName();
 
     public ListenableFuture<List<Document>> searchDocumentsByTitle(String searchQuery) {
         return executor.submit(new Callable<List<Document>>() {
