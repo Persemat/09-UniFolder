@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/account_first_name"
                     android:inputType="text"
-                    android:textColor="@color/darkred" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/account_last_name"
                     android:inputType="text"
-                    android:textColor="@color/darkred" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:textColor="@color/darkred" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/new_password"
                     android:inputType="textPassword"
-                    android:textColor="@color/darkred" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/confirm_password"
                     android:inputType="textPassword"
-                    android:textColor="@color/darkred" />
+                    android:textColor="@color/black" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
