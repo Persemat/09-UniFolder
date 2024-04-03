@@ -156,7 +156,7 @@ public class LoginFragment extends Fragment {
                                     requireActivity().finish();
                                 } else {
                                     userViewModel.setAuthenticationError(true);
-                                    Snackbar.make(view.findViewById(android.R.id.content),
+                                    Snackbar.make(requireView(),
                                             getErrorMessage(((Result.Error) result).getMessage()),
                                             Snackbar.LENGTH_SHORT).show();
                                 }
@@ -191,9 +191,9 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            navController.navigate(R.id.homeFragment);
-        }
+        //if (currentUser != null) {
+         //   navController.navigate(R.id.homeFragment);
+        //}
     }
 
     // FUNZIONI PER VERIFICA DELLA CORREZIONE MAIL E PASSWORD
