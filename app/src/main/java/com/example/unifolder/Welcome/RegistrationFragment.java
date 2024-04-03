@@ -86,7 +86,7 @@ public class RegistrationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        navController = Navigation.findNavController(requireActivity(), R.id.fragment_container_view);
+        navController = Navigation.findNavController(requireActivity(), R.id.container_login_activity);
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
 
         // Inizializzazione di userViewModel
@@ -134,9 +134,10 @@ public class RegistrationFragment extends Fragment {
                                     navController.navigate(R.id.homeFragment);
                                 } else {
                                     userViewModel.setAuthenticationError(true);
-                                    Snackbar.make(view.findViewById(android.R.id.content),
+                                    Snackbar.make(requireView(),
                                             getErrorMessage(((Result.Error) result).getMessage()),
                                             Snackbar.LENGTH_SHORT).show();
+
                                 }
                             });
                 } else {
