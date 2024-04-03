@@ -29,12 +29,12 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.unifolder.Welcome.LoginFragment"
-        android:label="LoginFragment"
+        android:label="loginFragment"
         tools:layout="@layout/fragment_login"/>
 
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.example.unifolder.Welcome.RegistrationFragment"
-        android:label="RegistrationFragment"
+        android:label="registrationFragment"
         tools:layout="@layout/fragment_registration"/>
 </navigation>

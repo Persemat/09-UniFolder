@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.example.unifolder.Welcome.RegistrationFragment"
-        android:label="fragment_registration"
+        android:label="registrationFragment"
         tools:layout="@layout/fragment_registration"
         >
         <action
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.unifolder.Welcome.LoginFragment"
-        android:label="fragment_login"
+        android:label="loginFragment"
         tools:layout="@layout/fragment_login"
         >
         <action
