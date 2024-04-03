@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.SettableFuture;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,24 +39,29 @@ public class DocumentRemoteDataSource {
     private final String TAG = DocumentRemoteDataSource.class.getSimpleName();
 
     public ListenableFuture<List<Document>> searchDocumentsByTitle(String searchQuery) {
-        return executor.submit(new Callable<List<Document>>() {
+        SettableFuture<List<Document>> future = SettableFuture.create(); // Utilizziamo SettableFuture per creare un futuro modificabile
+
+        Query query = documentsCollection.whereGreaterThanOrEqualTo("title", searchQuery)
+                .whereLessThanOrEqualTo("title", searchQuery + "\uf8ff");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public List<Document> call() throws Exception {
-                List<Document> matchingDocuments = new ArrayList<>();
-
-                // Esegui la query per cercare i documenti con titoli che contengono la stringa di ricerca
-                Query query = documentsCollection.whereGreaterThanOrEqualTo("title", searchQuery)
-                        .whereLessThanOrEqualTo("title", searchQuery + "\uf8ff");
-                QuerySnapshot querySnapshot = query.get().getResult();
-
-                for (QueryDocumentSnapshot document : querySnapshot) {
-                    Document doc = document.toObject(Document.class);
-                    matchingDocuments.add(doc);
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Document> matchingDocuments = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG,"found doc");
+                        Document doc = document.toObject(Document.class);
+                        matchingDocuments.add(doc);
+                    }
+                    future.set(matchingDocuments); // Imposta il risultato del futuro con i documenti corrispondenti
+                } else {
+                    future.setException(task.getException()); // Imposta un'eccezione nel futuro in caso di errore
                 }
-
-                return matchingDocuments;
             }
         });
+
+        Log.d(TAG,"returning from searchDocumentsByTitle()");
+        return future;
     }
 
     public ListenableFuture<List<Document>> searchDocumentsByCourseAndTag(String course, String tag) {

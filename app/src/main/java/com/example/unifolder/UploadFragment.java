@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -141,9 +142,18 @@ public class UploadFragment extends Fragment {
 
                     Document document = new Document(title,author,course,tag,selectedFileUri.toString());
 
-                    //pass to viewmodel
+                    //todo: pass to viewmodel
                     DocumentRepository repository = new DocumentRepository(requireContext());
-                    repository.uploadDocument(document);
+                    Document result = repository.uploadDocument(document);
+
+                    if(result != null) {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                "inserted doc with id: "+result.getId(),Snackbar.LENGTH_SHORT).show();
+                        // todo: navigate to document details fragment
+                    } else {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                "doc not saved",Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -328,11 +338,6 @@ public class UploadFragment extends Fragment {
             return new String[]{"Corso 1A", "Corso 1B", "Corso 1C"};
         else if (macroArea.equals(c.getString(R.string.science)))
             return new String[]{"ARTIFICIAL INTELLIGENCE [E311PV]",
-                    "BIOTECNOLOGIE [E0201Q]","FISICA [E3001Q]","INFORMATICA [E3101Q]",
-                    "MATEMATICA [E3501Q]", "OTTICA E OPTOMETRIA [E3002Q]", "SCIENZA DEI MATERIALI [E2701Q]",
-                    "SCIENZA E NANOTECNOLOGIA DEI MATERIALI [ESM01Q]", "SCIENZE BIOLOGICHE [E1301Q]",
-                    "SCIENZE E TECNOLOGIE CHIMICHE [E2702Q]", "SCIENZE E TECNOLOGIE GEOLOGICHE [E3401Q]",
-                    "SCIENZE E TECNOLOGIE PER L'AMBIENTE [E3201Q]", "ARTIFICIAL INTELLIGENCE [E311PV]",
                     "BIOTECNOLOGIE [E0201Q]","FISICA [E3001Q]","INFORMATICA [E3101Q]",
                     "MATEMATICA [E3501Q]", "OTTICA E OPTOMETRIA [E3002Q]", "SCIENZA DEI MATERIALI [E2701Q]",
                     "SCIENZA E NANOTECNOLOGIA DEI MATERIALI [ESM01Q]", "SCIENZE BIOLOGICHE [E1301Q]",

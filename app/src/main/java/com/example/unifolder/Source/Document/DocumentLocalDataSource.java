@@ -7,6 +7,7 @@ import com.example.unifolder.Document;
 import com.example.unifolder.DocumentDao;
 import com.example.unifolder.DocumentDatabase;
 import com.example.unifolder.LocalStorageManager;
+import com.example.unifolder.SavedDocumentCallback;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,9 +29,10 @@ public class DocumentLocalDataSource {
         executorService = Executors.newSingleThreadExecutor();
     }
 
-    public Future<Void> saveDocument(Document document) {
-        Log.d(TAG,"savaDocument()");
+    public Future<Void> saveDocument(Document document, SavedDocumentCallback callback) {
+        Log.d(TAG,"saveDocument()");
         return executorService.submit(() -> {documentDao.insertDocument(document);
+            callback.onDocumentSaved(document);
             return null;
         });
     }

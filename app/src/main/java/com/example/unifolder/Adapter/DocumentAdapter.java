@@ -10,13 +10,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.unifolder.Document;
 import com.example.unifolder.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocumentViewHolder> {
     private List<Document> documents;
 
+    public DocumentAdapter() {
+        documents = new ArrayList<>();
+    }
+
     public DocumentAdapter(List<Document> documents) {
         this.documents = documents;
+    }
+
+    public void addDocuments(List<Document> documents) {
+        this.documents.addAll(documents);
     }
 
     @NonNull

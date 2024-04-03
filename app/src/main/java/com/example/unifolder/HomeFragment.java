@@ -1,11 +1,20 @@
 package com.example.unifolder;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.unifolder.Adapter.DocumentAdapter;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +31,8 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static final String TAG = HomeFragment.class.getSimpleName();
+    private androidx.appcompat.widget.SearchView searchView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,14 +68,39 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-      /*  // Dentro il tuo fragment o activity
-        RecyclerView recyclerView = findViewById(R.id.documents_recyclerview);
-       List<Document> documents = // Recupera la lista di documenti dal tuo database o da altre fonti
-                DocumentAdapter adapter = new DocumentAdapter(documents);
-       recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-*/
+
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        searchView = view.findViewById(R.id.search_view);
+
+        // Dentro il tuo fragment o activity
+                RecyclerView recyclerView = view.findViewById(R.id.first_recyclerview);
+                 // Recupera la lista di documenti dal tuo database o da altre fonti
+                DocumentAdapter adapter = new DocumentAdapter();
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Azione da eseguire quando viene inviata la query di ricerca
+                // Esempio: avviare la ricerca con i dati immessi dall'utente
+
+                // todo: pass to viewmodel
+                DocumentRepository repository = new DocumentRepository(requireContext());
+                repository.searchDocumentByTitle(searchView.getQuery().toString(),adapter);
+                adapter.notifyDataSetChanged();
+
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
 
         return view;
         // Inflate the layout for this fragment

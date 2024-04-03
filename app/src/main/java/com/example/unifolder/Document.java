@@ -14,6 +14,8 @@ public class Document {
     private String tag;
     private String fileUrl;
 
+    public Document() {}
+
     public Document(String title, String author, String course, String tag, String fileUrl) {
         this.title = title;
         this.author = author;
