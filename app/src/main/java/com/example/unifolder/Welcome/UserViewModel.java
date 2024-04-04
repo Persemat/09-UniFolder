@@ -19,15 +19,30 @@ public class UserViewModel extends ViewModel {
         authenticationError = false;
     }
 
+    public UserViewModel() {
+        this.userRepository = null;
+    }
+
     public MutableLiveData<Result> getUserMutableLiveData(String email, String password, boolean isUserRegistered) {
         if (userMutableLiveData == null) {
             getUserData(email, password, isUserRegistered);
         }
         return userMutableLiveData;
     }
-    public MutableLiveData<Result> getUserMutableLiveData(String firstName, String lastName, String email, String password, int id_avatar, boolean isUserRegistered) {
+
+    public MutableLiveData<Result> getUserMutableLiveData() {
         if (userMutableLiveData == null) {
-            getUserData(firstName, lastName, email, password, id_avatar, isUserRegistered);
+            // Inizializza userMutableLiveData se non è stato ancora inizializzato
+            userMutableLiveData = new MutableLiveData<>();
+        }
+        return userMutableLiveData;
+    }
+
+
+
+    public MutableLiveData<Result> getUserMutableLiveData(String firstName, String lastName, String username, String email, String password, int id_avatar, boolean isUserRegistered) {
+        if (userMutableLiveData == null) {
+            getUserData(firstName, lastName, email, username, password, id_avatar, isUserRegistered);
         }
         return userMutableLiveData;
     }
@@ -37,11 +52,12 @@ public class UserViewModel extends ViewModel {
         }
         return userMutableLiveData;
     }
+
     private void getUserData(String email, String password, boolean isUserRegistered) {
         userMutableLiveData = userRepository.getUser(email, password, isUserRegistered);
     }
-    private void getUserData(String firstName, String lastName, String email, String password, int id_avatar, boolean isUserRegistered) {
-        userMutableLiveData = userRepository.getUser(firstName, lastName, email, password, id_avatar, isUserRegistered);
+    private void getUserData(String firstName, String lastName, String username, String email, String password, int id_avatar, boolean isUserRegistered) {
+        userMutableLiveData = userRepository.getUser(firstName, lastName, username, email, password, id_avatar, isUserRegistered);
     }
     private void getUserData(User user) {
         userMutableLiveData = userRepository.getUserData(user);

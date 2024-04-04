@@ -29,8 +29,8 @@ public class UserRepository implements IUserRepository,UserResponseCallback{
         signIn(email, password);
         return userMutableLiveData;
     }
-    public MutableLiveData<Result> getUser(String firstName, String lastName, String email, String password, int id_avatar, boolean isUserRegistered) {
-        signUp(firstName, lastName, email, id_avatar, password);
+    public MutableLiveData<Result> getUser(String firstName, String lastName,String username, String email, String password, int id_avatar, boolean isUserRegistered) {
+        signUp(firstName, lastName, username, email, id_avatar, password);
         return userMutableLiveData;
     }
     public MutableLiveData<Result> getUserData(User user){
@@ -65,8 +65,8 @@ public class UserRepository implements IUserRepository,UserResponseCallback{
     }
 
     @Override
-    public void signUp(String firstName, String lastName, String email, int id_avatar, String password) {
-        userRemoteDataSource.signUp(firstName, lastName, email, id_avatar, password);
+    public void signUp(String firstName, String lastName, String username, String email, int id_avatar, String password) {
+        userRemoteDataSource.signUp(firstName, lastName, username, email, id_avatar, password);
     }
 
     @Override

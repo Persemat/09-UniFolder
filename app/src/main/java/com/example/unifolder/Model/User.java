@@ -11,15 +11,17 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
+    private String username;
     private String id_token;
     private int id_avatar;
 
     public User() {
     }
 
-    public User(String firstName,String lastName, @NonNull String email, int id_avatar, String id_token) {
+    public User(String firstName,String lastName, String username ,@NonNull String email, int id_avatar, String id_token) {
         this.firstName=firstName;
         this.lastName=lastName;
+        this.username=username;
         this.email=email;
         this.id_avatar = id_avatar;
         this.id_token=id_token;
@@ -55,6 +57,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getId_token() {
