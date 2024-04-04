@@ -44,6 +44,7 @@ public class RegistrationFragment extends Fragment {
     private static final String TAG = RegistrationFragment.class.getSimpleName();
     private TextInputLayout firstNameTextInputLayout;
     private TextInputLayout lastNameTextInputLayout;
+    private TextInputLayout usernameTextInputLayout;
     private TextInputLayout emailTextInputLayout;
     private TextInputLayout newPasswordTextInputLayout;
     private TextInputLayout confirmPasswordTextInputLayout;
@@ -99,6 +100,7 @@ public class RegistrationFragment extends Fragment {
 
         firstNameTextInputLayout = view.findViewById(R.id.text_input_layout_first_name);
         lastNameTextInputLayout = view.findViewById(R.id.text_input_layout_last_name);
+        usernameTextInputLayout = view.findViewById(R.id.text_input_layout_username);
         emailTextInputLayout = view.findViewById(R.id.text_input_layout_email);
         newPasswordTextInputLayout = view.findViewById(R.id.text_input_layout_new_password);
         confirmPasswordTextInputLayout = view.findViewById(R.id.text_input_layout_confirm_password);
@@ -115,6 +117,7 @@ public class RegistrationFragment extends Fragment {
             // Log.d(TAG, "Button Clicked");
             String first_name = firstNameTextInputLayout.getEditText().getText().toString();
             String last_name = lastNameTextInputLayout.getEditText().getText().toString();
+            String username = usernameTextInputLayout.getEditText().getText().toString();
             String email = emailTextInputLayout.getEditText().getText().toString();
             String new_password = newPasswordTextInputLayout.getEditText().getText().toString();
             String confirm_password = confirmPasswordTextInputLayout.getEditText().getText().toString();
@@ -124,14 +127,14 @@ public class RegistrationFragment extends Fragment {
             if (isNameCorrect(first_name) && isLastNameCorrect(last_name)
                     && isEmailCorrect(email) && isPasswordCorrect(new_password, confirm_password)) {
                 if (!userViewModel.isAuthenticationError()) {
-                    userViewModel.getUserMutableLiveData(first_name, last_name, email, new_password, idImageAvatar, false).observe(
+                    userViewModel.getUserMutableLiveData(first_name, last_name, email, username, new_password, idImageAvatar, false).observe(
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccess()) {
                                     User user = ((Result.UserResponseSuccess) result).getData();
                                     Log.d(TAG, user.toString());
 
                                     userViewModel.setAuthenticationError(false);
-                                    navController.navigate(R.id.homeFragment);
+                                    navController.navigate(R.id.loginFragment);
                                 } else {
                                     userViewModel.setAuthenticationError(true);
                                     Snackbar.make(requireView(),

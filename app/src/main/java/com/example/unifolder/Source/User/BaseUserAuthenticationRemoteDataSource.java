@@ -15,7 +15,7 @@ public abstract class BaseUserAuthenticationRemoteDataSource {
     public abstract void logout();
     public abstract void deleteAccount();
     public abstract void sendEmailPasswordReset(String email);
-    public abstract void signUp(String firstName, String lastName, String email, int id_avatar, String password);
+    public abstract void signUp(String firstName, String lastName, String Username, String email, int id_avatar, String password);
     public abstract void signIn(String email, String password);
 }
 
