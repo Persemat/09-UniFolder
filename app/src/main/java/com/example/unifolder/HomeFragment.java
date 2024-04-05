@@ -15,9 +15,17 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.unifolder.Model.Result;
+import com.example.unifolder.Model.User;
+import com.example.unifolder.Welcome.UserViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +41,9 @@ import java.util.concurrent.ExecutionException;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+    private TextView welcomeTextView;
+    private UserViewModel userViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -107,8 +118,10 @@ public class HomeFragment extends Fragment {
                 repository.searchDocumentByTitle(searchView.getQuery().toString(),adapter);
                 adapter.notifyDataSetChanged();
 
+
                 return true;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
@@ -304,5 +317,22 @@ public class HomeFragment extends Fragment {
 
     }
 
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Ottieni una istanza del tuo UserViewModel
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        // Osserva i dati dell'utente
+        userViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result != null && result.isSuccess()) {
+                User user = ((Result.UserResponseSuccess) result).getData();
+                if (user != null) {
+                    // Imposta l'username dell'utente nella TextView
+                    welcomeTextView.setText("Buongiorno, " + user.getUsername());
+                }
+            }
+        });
+    }
 
 }
