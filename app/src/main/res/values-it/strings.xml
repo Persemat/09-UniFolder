@@ -43,4 +43,10 @@
         <item>Domande esame</item>
         <item>Altro</item>
     </string-array>
+    <string-array name="options_filter_spinner">
+        <item>Tutti</item>
+        <item>Appunti lezione</item>
+        <item>Domande esame</item>
+        <item>Altro</item>
+    </string-array>
 </resources>

@@ -61,6 +61,32 @@ public class DocumentRepository {
         }, Executors.newSingleThreadExecutor());
     }
 
+    public void searchDocumentByFilter(String course, String tag, DocumentAdapter adapter) {
+        // Utilizziamo CallbackToFutureAdapter per convertire il ListenableFuture in un CompletableFuture
+        ListenableFuture<List<Document>> future = remoteDataSource.searchDocumentsByCourseAndTag(course,tag);
+        Futures.addCallback(future, new FutureCallback<List<Document>>() {
+            @Override
+            public void onSuccess(@Nullable List<Document> documents) {
+                Log.d(TAG,"onSuccess()");
+                // Azioni da eseguire quando il futuro ha successo
+                if (documents != null) {
+                    Log.d(TAG,"adding docs");
+                    // Utilizza i documenti restituiti
+                    adapter.addDocuments(documents);
+                } else {
+                    Log.d(TAG,"no docs to add");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d(TAG,"onFailure(): "+t.getMessage());
+                // Azioni da eseguire in caso di fallimento del futuro
+                // Gestisci l'eccezione o avvia un'azione alternativa
+            }
+        }, Executors.newSingleThreadExecutor());
+    }
+
     public Document uploadDocument(Document document) {
         // Valore di ritorno
         final Document[] d = {null};
@@ -91,6 +117,7 @@ public class DocumentRepository {
             }
         });
 
+        // todo: not returning any doc
         return d[0];
     }
 }

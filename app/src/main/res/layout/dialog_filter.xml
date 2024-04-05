@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="16dp"
+    android:layout_margin="48dp"
+    android:orientation="vertical">
+    <TextView
+        android:layout_marginTop="8dp"
+        android:text="@string/tag"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Spinner
+        android:id="@+id/filter_tag_spinner"
+        android:layout_marginTop="8dp"
+        android:layout_width="180dp"
+        android:layout_height="48dp"
+        android:entries="@array/options_filter_spinner" />
+
+    <Button
+        android:id="@+id/select_course"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/choose_course"
+        android:textSize="20sp"
+        app:icon="@drawable/school_course" />
+
+    <Button
+        android:id="@+id/submit_button"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:layout_marginTop="300dp"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/filter_alt"
+        android:text="Filtra" />
+
+</LinearLayout>
