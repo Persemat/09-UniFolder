@@ -23,14 +23,20 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.unifolder.Data.User.IUserRepository;
+import com.example.unifolder.Data.User.UserRepository;
 import com.example.unifolder.Model.Result;
 import com.example.unifolder.Model.User;
+import com.example.unifolder.Util.ServiceLocator;
 import com.example.unifolder.Welcome.UserViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.unifolder.Adapter.DocumentAdapter;
+import com.example.unifolder.Welcome.UserViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -44,6 +50,7 @@ public class HomeFragment extends Fragment {
 
     private TextView welcomeTextView;
     private UserViewModel userViewModel;
+    private IUserRepository userRepository;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -100,6 +107,7 @@ public class HomeFragment extends Fragment {
 
         searchView = view.findViewById(R.id.search_view);
         filterButton = view.findViewById(R.id.filter_button);
+        welcomeTextView = view.findViewById(R.id.welcome_textview);
 
         // Dentro il tuo fragment o activity
                 RecyclerView recyclerView = view.findViewById(R.id.first_recyclerview);
@@ -320,14 +328,20 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d(TAG,"onViewCreated()");
+        userRepository = ServiceLocator.getInstance().
+                getUserRepository(requireActivity().getApplication());
         // Ottieni una istanza del tuo UserViewModel
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        userViewModel = new ViewModelProvider(this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         // Osserva i dati dell'utente
         userViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result != null && result.isSuccess()) {
+                Log.d(TAG,"result ok");
                 User user = ((Result.UserResponseSuccess) result).getData();
                 if (user != null) {
+                    Log.d(TAG,"user not null");
                     // Imposta l'username dell'utente nella TextView
                     welcomeTextView.setText("Buongiorno, " + user.getUsername());
                 }
