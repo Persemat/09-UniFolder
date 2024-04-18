@@ -2,22 +2,18 @@ package com.example.unifolder;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.concurrent.futures.CallbackToFutureAdapter;
 
 import com.example.unifolder.Adapter.DocumentAdapter;
 import com.example.unifolder.Source.Document.DocumentLocalDataSource;
 import com.example.unifolder.Source.Document.DocumentRemoteDataSource;
 import com.example.unifolder.Util.ServiceLocator;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 public class DocumentRepository {
@@ -87,28 +83,14 @@ public class DocumentRepository {
         }, Executors.newSingleThreadExecutor());
     }
 
-    public Document uploadDocument(Document document) {
-        // Valore di ritorno
-        final Document[] d = {null};
-
-
+    public void uploadDocument(Document document, SavedDocumentCallback callback) {
         // Invia il documento al DataSource remoto per il caricamento
         remoteDataSource.uploadDocument(document, new UploadDocumentCallback() {
             @Override
             public void onDocumentUploaded(Document uploadedDocument) {
                 // Una volta che il documento è stato caricato con successo, ottieni l'id generato e salva il documento nel DataSource locale
-                localDataSource.saveDocument(uploadedDocument, new SavedDocumentCallback() {
-
-                    @Override
-                    public void onDocumentSaved(Document savedDocument) {
-                        d[0] = savedDocument;
-                    }
-
-                    @Override
-                    public void onSaveFailed(String errorMessage) {
-
-                    }
-                });
+                localDataSource.saveDocument(uploadedDocument, callback);
+                // ad operazione terminata, alla callback (passata da ViewModel) viene ritornato il Document
             }
 
             @Override
@@ -116,8 +98,5 @@ public class DocumentRepository {
                 // Gestisci il fallimento dell'upload, ad esempio mostrando un messaggio di errore all'utente
             }
         });
-
-        // todo: not returning any doc
-        return d[0];
     }
 }

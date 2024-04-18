@@ -64,4 +64,9 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_login" translatable="false">LoginActivity</string>
     <string name="username" translatable="false">Username</string>
+    <string name="title_error">Please insert a valid title for your upload</string>
+    <string name="course_error">Please select the study course for your upload</string>
+    <string name="file_error">Please select a valid file to upload</string>
+    <string name="select_macroarea">Select macroarea</string>
+    <string name="select_course">Select course</string>
 </resources>

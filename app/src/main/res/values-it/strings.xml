@@ -38,7 +38,6 @@
     <string name="error">Qualcosa è andato storto</string>
     <string name="close">Chiudi</string>
     <string name="email_sent">Email inviata per reset password</string>
-    <string name="username">Username</string>
     <string-array name="options_upload_spinner">
         <item>Appunti lezione</item>
         <item>Domande esame</item>
@@ -50,4 +49,9 @@
         <item>Domande esame</item>
         <item>Altro</item>
     </string-array>
+    <string name="title_error">Inserisci un titolo valido per il tuo caricamento</string>
+    <string name="course_error">Seleziona il corso di studio corrispondente al tuo caricamento</string>
+    <string name="file_error">Seleziona un file valido da caricare</string>
+    <string name="select_macroarea">Seleziona la macroarea</string>
+    <string name="select_course">Seleziona il corso</string>
 </resources>

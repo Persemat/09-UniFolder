@@ -329,8 +329,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Log.d(TAG,"onViewCreated()");
-        userRepository = ServiceLocator.getInstance().
-                getUserRepository(requireActivity().getApplication());
+        userRepository = ServiceLocator.getInstance().getUserRepository();
         // Ottieni una istanza del tuo UserViewModel
         userViewModel = new ViewModelProvider(this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
