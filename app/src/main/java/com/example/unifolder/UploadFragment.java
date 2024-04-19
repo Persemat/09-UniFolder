@@ -6,11 +6,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.fragment.app.Fragment;
-
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -24,6 +19,10 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -143,7 +142,7 @@ public class UploadFragment extends Fragment {
                     Document document = new Document(title,author,course,tag,selectedFileUri.toString());
 
                     //todo: pass to viewmodel
-                    DocumentRepository repository = new DocumentRepository(requireContext());
+                    DocumentRepository repository = new DocumentRepository(requireActivity());
                     Document result = repository.uploadDocument(document);
 
                     if(result != null) {

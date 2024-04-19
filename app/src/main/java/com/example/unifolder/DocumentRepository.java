@@ -1,23 +1,21 @@
 package com.example.unifolder;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.concurrent.futures.CallbackToFutureAdapter;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
-import com.example.unifolder.Adapter.DocumentAdapter;
 import com.example.unifolder.Source.Document.DocumentLocalDataSource;
 import com.example.unifolder.Source.Document.DocumentRemoteDataSource;
+import com.example.unifolder.Ui.ResultViewModel;
 import com.example.unifolder.Util.ServiceLocator;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 public class DocumentRepository {
@@ -25,9 +23,13 @@ public class DocumentRepository {
     private DocumentLocalDataSource localDataSource;
     private DocumentRemoteDataSource remoteDataSource;
 
-    public DocumentRepository(Context context) {
-        this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(context);
+    private ResultViewModel resultViewModel;
+
+    public DocumentRepository(Activity activity) {
+        this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(activity);
         this.remoteDataSource = ServiceLocator.getInstance().getRemoteDataSource();
+        this.resultViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(ResultViewModel.class);
+
     }
 
     public DocumentRepository(DocumentLocalDataSource localDataSource, DocumentRemoteDataSource remoteDataSource) {
@@ -35,7 +37,7 @@ public class DocumentRepository {
         this.remoteDataSource = remoteDataSource;
     }
 
-    public void searchDocumentByTitle(String searchQuery, DocumentAdapter adapter) {
+    public void searchDocumentByTitle(String searchQuery) {
         // Utilizziamo CallbackToFutureAdapter per convertire il ListenableFuture in un CompletableFuture
         ListenableFuture<List<Document>> future = remoteDataSource.searchDocumentsByTitle(searchQuery);
         Futures.addCallback(future, new FutureCallback<List<Document>>() {
@@ -45,8 +47,7 @@ public class DocumentRepository {
                 // Azioni da eseguire quando il futuro ha successo
                 if (documents != null) {
                     Log.d(TAG,"adding docs");
-                    // Utilizza i documenti restituiti
-                    adapter.addDocuments(documents);
+                    resultViewModel.setSearchResultsLiveData(documents);
                 } else {
                     Log.d(TAG,"no docs to add");
                 }

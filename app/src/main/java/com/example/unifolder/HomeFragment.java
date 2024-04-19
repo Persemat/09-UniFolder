@@ -1,7 +1,6 @@
 package com.example.unifolder;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.unifolder.Model.Result;
 import com.example.unifolder.Model.User;
+import com.example.unifolder.Ui.ResultViewModel;
 import com.example.unifolder.Welcome.UserViewModel;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.unifolder.Adapter.DocumentAdapter;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +28,8 @@ public class HomeFragment extends Fragment {
 
     private TextView welcomeTextView;
     private UserViewModel userViewModel;
+    private NavController navController;
+    private ResultViewModel resultViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,17 +77,22 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         searchView = view.findViewById(R.id.search_view);
 
-        // Dentro il tuo fragment o activity
+        //Inizializza il NavController ottenendolo dal NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container_view);
+        navController = navHostFragment.getNavController();
+
+        /* Dentro il tuo fragment o activity
                 RecyclerView recyclerView = view.findViewById(R.id.first_recyclerview);
                  // Recupera la lista di documenti dal tuo database o da altre fonti
                 DocumentAdapter adapter = new DocumentAdapter();
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+       */
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -98,10 +100,8 @@ public class HomeFragment extends Fragment {
                 // Esempio: avviare la ricerca con i dati immessi dall'utente
 
                 // todo: pass to viewmodel
-                DocumentRepository repository = new DocumentRepository(requireContext());
-                repository.searchDocumentByTitle(searchView.getQuery().toString(),adapter);
-                adapter.notifyDataSetChanged();
-
+                resultViewModel.searchDocuments(query);
+                navController.navigate(R.id.searchResultFragment);
 
                 return true;
             }
