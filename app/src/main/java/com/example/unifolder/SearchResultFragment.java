@@ -89,7 +89,7 @@ public class SearchResultFragment extends Fragment {
             public void onChanged(List<Document> documents) {
                 Log.d(TAG, "documents added to adapter");
                 documentAdapter.addDocuments(documents);
-                documentAdapter.notifyDataSetChanged();
+                documentAdapter.notify();
             }
         });
         return view;

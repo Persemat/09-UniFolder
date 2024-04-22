@@ -18,8 +18,8 @@ import java.util.concurrent.Executors;
 
 public class DocumentRepository {
     private static final String TAG = DocumentRepository.class.getSimpleName();
-    private DocumentLocalDataSource localDataSource;
-    private DocumentRemoteDataSource remoteDataSource;
+    private final DocumentLocalDataSource localDataSource;
+    private final DocumentRemoteDataSource remoteDataSource;
 
     private ResultViewModel resultViewModel;
 

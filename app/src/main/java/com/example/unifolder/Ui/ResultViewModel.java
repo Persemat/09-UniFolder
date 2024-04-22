@@ -17,8 +17,8 @@ import java.util.List;
 public class ResultViewModel extends ViewModel {
     private static final String TAG = ResultViewModel.class.getSimpleName();
     private DocumentRepository documentRepository;
-    private MutableLiveData<List<Document>> searchResultsLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<List<Document>> searchResultsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     public ResultViewModel() {
         // Costruttore vuoto
