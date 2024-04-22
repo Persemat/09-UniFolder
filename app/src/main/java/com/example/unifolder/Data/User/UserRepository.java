@@ -37,6 +37,7 @@ public class UserRepository implements IUserRepository,UserResponseCallback{
         userDataRemoteDataSource.getUserRealtime(user);
         return userMutableLiveData;
     }
+
     @Override
     public MutableLiveData<Result> logout() {
         userRemoteDataSource.logout();

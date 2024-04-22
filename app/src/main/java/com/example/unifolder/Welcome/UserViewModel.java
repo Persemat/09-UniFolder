@@ -1,6 +1,9 @@
 package com.example.unifolder.Welcome;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.unifolder.Data.User.IUserRepository;
@@ -35,6 +38,8 @@ public class UserViewModel extends ViewModel {
             // Inizializza userMutableLiveData se non è stato ancora inizializzato
             userMutableLiveData = new MutableLiveData<>();
         }
+        User loggedUser = userRepository.getLoggedUser();
+        userMutableLiveData = (userRepository.getUserData(loggedUser));
         return userMutableLiveData;
     }
 

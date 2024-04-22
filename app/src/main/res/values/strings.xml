@@ -54,9 +54,19 @@
         <item>Exam questions</item>
         <item>Other</item>
     </string-array>
+    <string-array name="options_filter_spinner">
+        <item>All</item>
+        <item>Lesson notes</item>
+        <item>Exam questions</item>
+        <item>Other</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="username">Username</string>
-    <string name="search_results">Search results...</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
+    <string name="username" translatable="false">Username</string>
+    <string name="title_error">Please insert a valid title for your upload</string>
+    <string name="course_error">Please select the study course for your upload</string>
+    <string name="file_error">Please select a valid file to upload</string>
+    <string name="select_macroarea">Select macroarea</string>
+    <string name="select_course">Select course</string>
 </resources>

@@ -31,14 +31,60 @@
         app:layout_constraintTop_toBottomOf="@id/welcome_textview"
         android:orientation="vertical" >
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:iconifiedByDefault="false"
-            android:queryHint="Cerca per titolo..."
-            app:iconifiedByDefault="false" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/filter_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:iconifiedByDefault="false"
+                android:queryHint="Cerca per titolo..."
+                app:iconifiedByDefault="false" />
+
+            <ImageButton
+                android:id="@+id/filter_button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/filter_alt"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="TODO"
+                app:tint="@color/darkred" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/filter_layout"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include
+                android:id="@+id/tag_layout"
+                android:visibility="gone"
+                layout="@layout/layout_selected_tag"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+            <include
+                android:id="@+id/course_layout"
+                android:visibility="gone"
+                layout="@layout/layout_selected_course"
+                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+        </LinearLayout>
+
 
 
 

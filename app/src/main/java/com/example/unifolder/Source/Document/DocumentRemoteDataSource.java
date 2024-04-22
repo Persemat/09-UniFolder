@@ -65,46 +65,41 @@ public class DocumentRemoteDataSource {
     }
 
     public ListenableFuture<List<Document>> searchDocumentsByCourseAndTag(String course, String tag) {
-        return executor.submit(new Callable<List<Document>>() {
+        SettableFuture<List<Document>> future = SettableFuture.create(); // Utilizziamo SettableFuture per creare un futuro modificabile
+
+        Query query = documentsCollection.whereEqualTo("course", course);
+        /*  TODO: case-insensitive version?
+        Query query = documentsCollection
+                .orderBy("title", Query.Direction.ASCENDING)  // Ordina i risultati per titolo in modo case-insensitive
+                .startAt(course.toLowerCase())           // Fai partire la ricerca dal termine in minuscolo
+                .endAt(course.toLowerCase() + "\uf8ff"); // Termina la ricerca al termine in minuscolo seguito da un carattere speciale*/
+
+
+        // Se specificato, aggiungi la clausola per il tag
+        if (tag != null && !tag.isEmpty()) {
+            query = query.whereEqualTo("tag", tag);
+        }
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public List<Document> call() throws Exception {
-                List<Document> matchingDocuments = new ArrayList<>();
-
-                // Costruisci la query per cercare i documenti con corso specificato
-                Query query = documentsCollection.whereEqualTo("course", course);
-
-                // Se specificato, aggiungi la clausola per il tag
-                if (tag != null) {
-                    query = query.whereEqualTo("tag", tag);
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Document> matchingDocuments = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG,"found doc");
+                        Document doc = document.toObject(Document.class);
+                        matchingDocuments.add(doc);
+                    }
+                    future.set(matchingDocuments); // Imposta il risultato del futuro con i documenti corrispondenti
+                } else {
+                    future.setException(task.getException()); // Imposta un'eccezione nel futuro in caso di errore
                 }
-
-                // Esegui la query
-                QuerySnapshot querySnapshot = query.get().getResult();
-
-                for (QueryDocumentSnapshot document : querySnapshot) {
-                    Document doc = document.toObject(Document.class);
-                    matchingDocuments.add(doc);
-                }
-
-                return matchingDocuments;
             }
         });
+
+        Log.d(TAG,"returning from searchDocumentsByCourseAndTag()");
+        return future;
     }
-    /*public ListenableFuture<Void> uploadDocument(Document document) {
-        return executor.submit(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                // Carica il documento nel database remoto e ottieni l'ID generato da Firebase
-                DocumentReference docRef = documentsCollection.add(document).getResult();
-                String documentId = docRef.getId();
-
-                // Aggiorna il documento locale con l'ID generato da Firebase
-                document.setId(documentId);
-
-                return null;
-            }
-        });
-    }*/
 
     public Task<Uri> uploadDocument(Document document, UploadDocumentCallback uploadDocumentCallback) {
         // Ottieni un riferimento al percorso nel Cloud Storage

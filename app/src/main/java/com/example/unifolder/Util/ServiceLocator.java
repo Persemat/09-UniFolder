@@ -14,7 +14,7 @@ import com.example.unifolder.Source.User.UserDataRemoteDataSource;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;
-
+    private static Application application;
     private static DocumentLocalDataSource localDataSource;
     private static DocumentRemoteDataSource remoteDataSource;
 
@@ -49,9 +49,7 @@ public class ServiceLocator {
     }
 
 
-    public IUserRepository getUserRepository(Application application) {
-
-
+    public IUserRepository getUserRepository() {
         BaseUserAuthenticationRemoteDataSource userRemoteAuthenticationDataSource = new UserAuthenticationRemoteDataSource();
         BaseUserDataRemoteDataSource userDataRemoteDataSource = new UserDataRemoteDataSource();
 

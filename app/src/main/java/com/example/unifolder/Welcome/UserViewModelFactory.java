@@ -9,8 +9,6 @@ import com.example.unifolder.Data.User.IUserRepository;
 public class UserViewModelFactory implements ViewModelProvider.Factory{
     private final IUserRepository userRepository;
 
-
-
     public UserViewModelFactory(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }

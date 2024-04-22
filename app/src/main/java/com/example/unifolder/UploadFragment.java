@@ -1,11 +1,19 @@
 package com.example.unifolder;
 
+
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -24,6 +32,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import com.example.unifolder.Data.User.IUserRepository;
+import com.example.unifolder.Model.Result;
+import com.example.unifolder.Model.User;
+import com.example.unifolder.Util.ServiceLocator;
+import com.example.unifolder.Welcome.UserViewModel;
+import com.example.unifolder.Welcome.UserViewModelFactory;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -48,6 +63,7 @@ public class UploadFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private UploadViewModel uploadViewModel;
     private String TAG = UploadFragment.class.getSimpleName();
     private ActivityResultLauncher<String> pickPdfFileLauncher;
     private String[] macroAreas;
@@ -57,6 +73,7 @@ public class UploadFragment extends Fragment {
     private View documentDetailsLayout;
     private Uri selectedFileUri;
     private Button submitButton;
+    private String username;
 
 
     public UploadFragment() {
@@ -115,6 +132,10 @@ public class UploadFragment extends Fragment {
             documentDetailsLayout.setVisibility(View.GONE);
         submitButton = view.findViewById(R.id.submit_button);
 
+        uploadViewModel = new ViewModelProvider(this,
+                new UploadViewModelFactory(requireContext())).get(UploadViewModel.class);
+        getUsername();
+
         courseEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,44 +153,39 @@ public class UploadFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkInputValues()) {
-                    String title = titleEditText.getText().toString(),
-                    author = "foo" //todo
-                    , course = courseEditText.getText().toString(),
+                String title = titleEditText.getText().toString(),
+                    course = courseEditText.getText().toString(),
                     tag = tagSpinner.getSelectedItem().toString();
-
-                    Document document = new Document(title,author,course,tag,selectedFileUri.toString());
-
-                    //todo: pass to viewmodel
-                    //DocumentRepository repository = new DocumentRepository(requireActivity());
-                    //Document result = repository.uploadDocument(document);
-/*
-                    if(result != null) {
-                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                "inserted doc with id: "+result.getId(),Snackbar.LENGTH_SHORT).show();
-                        // todo: navigate to document details fragment
-                    } else {
-                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                "doc not saved",Snackbar.LENGTH_SHORT).show();
-                    }
-                    }*/
-
-                }
+                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView());
             }
         });
 
         return view;
     }
 
-    private boolean checkInputValues() {
-        //TODO
+    private void getUsername() {
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
+        // Ottieni una istanza del tuo UserViewModel
+        UserViewModel userViewModel = new ViewModelProvider(this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
-        return true;
+        userViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result != null && result.isSuccess()) {
+                Log.d(TAG,"result ok");
+                User user = ((Result.UserResponseSuccess) result).getData();
+                if (user != null) {
+                    Log.d(TAG,"user not null");
+                    username = user.getUsername();
+                }
+            }
+        });
     }
 
+    // updates document' view by delegating specific actions to UploadViewModel
     private void updateDocumentDetails(View view,Uri result) {
+        ContentResolver contentResolver = requireActivity().getContentResolver();
         // Ottieni il nome del documento
-        String documentName = getDocumentNameFromUri(result);
+        String documentName = uploadViewModel.getDocumentNameFromUri(contentResolver,result);
         // Aggiorna la TextView del titolo del documento
         documentDetailsLayout.setVisibility(View.VISIBLE);
         TextView textViewTitle = view.findViewById(R.id.textview_document_title);
@@ -179,14 +195,14 @@ public class UploadFragment extends Fragment {
         File file = new File(filePath);
 
         // Ottieni la dimensione del file in bytes e converti in KB o MB a seconda delle dimensioni
-        long fileSizeBytes = getDocumentSize(result);
-        String fileSizeString = getFileSizeString(fileSizeBytes);
+        long fileSizeBytes = uploadViewModel.getDocumentSize(contentResolver,result);
+        String fileSizeString = uploadViewModel.getFileSizeString(fileSizeBytes);
 
         TextView size = view.findViewById(R.id.docuSize_textView);
         size.setText(fileSizeString);
 
         // Ottieni la data di creazione del file
-        String fileCreationTime = getDocumentCreationDate(result);
+        String fileCreationTime = uploadViewModel.getDocumentCreationDate(contentResolver,result);
        // String fileCreationTimeString = getFileCreationTimeString(fileCreationTime);
 
         TextView date = view.findViewById(R.id.docuDate_textView);
@@ -202,90 +218,16 @@ public class UploadFragment extends Fragment {
         });
     }
 
-    private String getDocumentNameFromUri(Uri documentUri) {
-        String documentName = "Nome sconosciuto";
-        Cursor cursor = requireActivity().getContentResolver().query(documentUri, null, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            if (displayNameIndex != -1) {
-                documentName = cursor.getString(displayNameIndex);
-            }
-            cursor.close();
-        }
-        return documentName;
-        // return uri.getLastPathSegment();
-    }
-    private long getDocumentSize(Uri documentUri) {
-        try {
-            ParcelFileDescriptor parcelFileDescriptor = requireActivity().getContentResolver().openFileDescriptor(documentUri, "r");
-            if (parcelFileDescriptor != null) {
-                return parcelFileDescriptor.getStatSize();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return 0; // Ritorna 0 se non è possibile ottenere la dimensione del file
-    }
-
-    private String getFilePathFromUri(Uri uri) {
-        String filePath = null;
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = requireActivity().getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            filePath = cursor.getString(columnIndex);
-            cursor.close();
-        }
-        return filePath;
-    }
-
-    private String getDocumentCreationDate(Uri documentUri) {
-        String creationDate = "unknown date";
-        try {
-            ParcelFileDescriptor parcelFileDescriptor = requireActivity().getContentResolver().openFileDescriptor(documentUri, "r");
-            if (parcelFileDescriptor != null) {
-                FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-                String filePath = getFilePathFromUri(documentUri);
-                if (filePath != null) {
-                    File file = new File(filePath);
-                    long creationTime = file.lastModified();
-                    Date creationDateObj = new Date(creationTime);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-                    creationDate = dateFormat.format(creationDateObj);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return creationDate;
-    }
-
-    private String getFileSizeString(long fileSizeBytes) {
-        // Converte la dimensione del file in KB o MB a seconda delle dimensioni
-        if (fileSizeBytes < 1024) {
-            return fileSizeBytes + " B";
-        } else if (fileSizeBytes < 1024 * 1024) {
-            return String.format("%.2f", fileSizeBytes / 1024.0) + " KB";
-        } else {
-            return String.format("%.2f", fileSizeBytes / (1024.0 * 1024.0)) + " MB";
-        }
-    }
-
-    private String getFileCreationTimeString(long fileCreationTime) {
-        // Formatta la data di creazione del file in un formato leggibile
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return sdf.format(new Date(fileCreationTime));
-    }
-
+    // chooser and dialogs
     private void openFileChooser() {
         pickPdfFileLauncher.launch("application/pdf");
     }
 
     public void showCourseSelectionDialog(View view) {
         Log.d(TAG,"showcourse started");
-        initMacroAreas(requireActivity().getApplicationContext());
+        macroAreas = uploadViewModel.initMacroAreas(requireActivity().getApplicationContext());
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Seleziona la macroarea");
+        builder.setTitle(R.string.select_macroarea);
 
         builder.setItems(macroAreas, new DialogInterface.OnClickListener() {
             @Override
@@ -302,10 +244,10 @@ public class UploadFragment extends Fragment {
 
     private void showCoursesDialog(String selectedMacroArea) {
         // Mostra la lista dei corsi disponibili nella macroarea selezionata
-        String[] courses = getAvailableCourses(requireContext(),selectedMacroArea);
+        String[] courses = uploadViewModel.getAvailableCourses(requireContext(),selectedMacroArea);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Seleziona il corso");
+        builder.setTitle(R.string.select_course);
 
         builder.setItems(courses, new DialogInterface.OnClickListener() {
             @Override
@@ -314,7 +256,7 @@ public class UploadFragment extends Fragment {
                 // Visualizza il corso selezionato nel TextInputLayout
                 TextInputLayout textInputLayout = requireView().findViewById(R.id.course_textInput);
                 textInputLayout.getEditText().setText(selectedCourse);
-                Toast.makeText(requireContext(), "Hai selezionato: " + selectedCourse, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(requireContext(), "Hai selezionato: " + selectedCourse, Toast.LENGTH_SHORT).show();
             }
         });
 
