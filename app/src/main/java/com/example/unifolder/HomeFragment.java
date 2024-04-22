@@ -4,17 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,17 +22,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.unifolder.Data.User.IUserRepository;
-import com.example.unifolder.Data.User.UserRepository;
 import com.example.unifolder.Model.Result;
 import com.example.unifolder.Model.User;
+import com.example.unifolder.Ui.ResultViewModel;
 import com.example.unifolder.Welcome.UserViewModel;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.unifolder.Adapter.DocumentAdapter;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+import com.example.unifolder.Welcome.UserViewModelFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +39,7 @@ public class HomeFragment extends Fragment {
     private UserViewModel userViewModel;
     private NavController navController;
     private ResultViewModel resultViewModel;
+    private IUserRepository userRepository;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -25,7 +25,7 @@ public class ResultViewModel extends ViewModel {
     }
 
     public ResultViewModel(Context context) {
-        documentRepository = new DocumentRepository(context,this);
+        documentRepository = new DocumentRepository(context);
     }
 
     public LiveData<List<Document>> getSearchResultsLiveData() {

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.unifolder.Adapter.DocumentAdapter;
 import com.example.unifolder.Source.Document.DocumentLocalDataSource;
 import com.example.unifolder.Source.Document.DocumentRemoteDataSource;
 import com.example.unifolder.Ui.ResultViewModel;
@@ -24,7 +25,7 @@ public class DocumentRepository {
     private ResultViewModel resultViewModel;
 
 
-    public DocumentRepository(Context context,ResultViewModel viewModel) {
+    public DocumentRepository(Context context) {
         this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(context);
         this.remoteDataSource = ServiceLocator.getInstance().getRemoteDataSource();
         this.resultViewModel = viewModel;
