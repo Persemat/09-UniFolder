@@ -15,15 +15,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="130dp">
+
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
             android:id="@+id/view_image"
-            android:scaleType="centerCrop"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/document_title"

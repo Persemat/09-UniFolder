@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/search_results"
         android:textColor="@color/darkred"
+        android:layout_margin="10dp"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

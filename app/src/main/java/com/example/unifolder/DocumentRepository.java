@@ -1,11 +1,9 @@
 package com.example.unifolder;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.unifolder.Source.Document.DocumentLocalDataSource;
 import com.example.unifolder.Source.Document.DocumentRemoteDataSource;
@@ -25,10 +23,11 @@ public class DocumentRepository {
 
     private ResultViewModel resultViewModel;
 
-    public DocumentRepository(Activity activity) {
-        this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(activity);
+
+    public DocumentRepository(Context context,ResultViewModel viewModel) {
+        this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(context);
         this.remoteDataSource = ServiceLocator.getInstance().getRemoteDataSource();
-        this.resultViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(ResultViewModel.class);
+        this.resultViewModel = viewModel;
 
     }
 
@@ -37,7 +36,7 @@ public class DocumentRepository {
         this.remoteDataSource = remoteDataSource;
     }
 
-    public void searchDocumentByTitle(String searchQuery) {
+    public void searchDocumentByTitle(String searchQuery, SearchResultCallback searchResultCallback) {
         // Utilizziamo CallbackToFutureAdapter per convertire il ListenableFuture in un CompletableFuture
         ListenableFuture<List<Document>> future = remoteDataSource.searchDocumentsByTitle(searchQuery);
         Futures.addCallback(future, new FutureCallback<List<Document>>() {
@@ -47,9 +46,9 @@ public class DocumentRepository {
                 // Azioni da eseguire quando il futuro ha successo
                 if (documents != null) {
                     Log.d(TAG,"adding docs");
-                    resultViewModel.setSearchResultsLiveData(documents);
+                    searchResultCallback.OnSearchCompleted(documents);
                 } else {
-                    Log.d(TAG,"no docs to add");
+                    searchResultCallback.OnSearchFailed("Error");
                 }
             }
 

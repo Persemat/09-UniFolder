@@ -1,12 +1,14 @@
 package com.example.unifolder;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +23,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class SearchResultFragment extends Fragment {
-
+    private static final String TAG = SearchResultFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private DocumentAdapter documentAdapter;
     private ResultViewModel resultViewModel;
@@ -77,11 +79,17 @@ public class SearchResultFragment extends Fragment {
         documentAdapter = new DocumentAdapter(); // Assicurati di passare i dati necessari all'adapter
         recyclerView.setAdapter(documentAdapter);
 
+        // Inizializza il ResultViewModel utilizzando il ViewModelProvider
+        resultViewModel = new ViewModelProvider(this).get(ResultViewModel.class);
+
+        
+        //osserva i risultati della ricerca dal ResultViewModel
         resultViewModel.getSearchResultsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Document>>() {
             @Override
             public void onChanged(List<Document> documents) {
+                Log.d(TAG, "documents added to adapter");
                 documentAdapter.addDocuments(documents);
-                documentAdapter.notify();
+                documentAdapter.notifyDataSetChanged();
             }
         });
         return view;

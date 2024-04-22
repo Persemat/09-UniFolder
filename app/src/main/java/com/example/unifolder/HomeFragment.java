@@ -77,7 +77,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
+        resultViewModel = new ViewModelProvider(this,
+                new ResultViewModelFactory(requireContext())).get(ResultViewModel.class);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         searchView = view.findViewById(R.id.search_view);

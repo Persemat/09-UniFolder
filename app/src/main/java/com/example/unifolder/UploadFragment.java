@@ -24,7 +24,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -142,9 +141,9 @@ public class UploadFragment extends Fragment {
                     Document document = new Document(title,author,course,tag,selectedFileUri.toString());
 
                     //todo: pass to viewmodel
-                    DocumentRepository repository = new DocumentRepository(requireActivity());
-                    Document result = repository.uploadDocument(document);
-
+                    //DocumentRepository repository = new DocumentRepository(requireActivity());
+                    //Document result = repository.uploadDocument(document);
+/*
                     if(result != null) {
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                 "inserted doc with id: "+result.getId(),Snackbar.LENGTH_SHORT).show();
@@ -153,6 +152,8 @@ public class UploadFragment extends Fragment {
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                 "doc not saved",Snackbar.LENGTH_SHORT).show();
                     }
+                    }*/
+
                 }
             }
         });
