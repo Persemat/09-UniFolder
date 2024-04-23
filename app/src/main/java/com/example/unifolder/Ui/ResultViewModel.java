@@ -34,6 +34,7 @@ public class ResultViewModel extends ViewModel {
 
     public void setSearchResultsLiveData(List<Document> documentList){
         searchResultsLiveData.postValue(documentList);
+        Log.d(TAG,"posted value");
     }
 
     public LiveData<Boolean> isLoading() {

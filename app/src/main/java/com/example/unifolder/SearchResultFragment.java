@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -73,25 +75,35 @@ public class SearchResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
+
         recyclerView = view.findViewById(R.id.recycler_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         documentAdapter = new DocumentAdapter(); // Assicurati di passare i dati necessari all'adapter
-        recyclerView.setAdapter(documentAdapter);
+
 
         // Inizializza il ResultViewModel utilizzando il ViewModelProvider
-        resultViewModel = new ViewModelProvider(this).get(ResultViewModel.class);
+        resultViewModel = new ViewModelProvider(this,
+                new ResultViewModelFactory(requireContext())).get(ResultViewModel.class);
 
-        
+        Log.d(TAG,"Observing live data");
         //osserva i risultati della ricerca dal ResultViewModel
         resultViewModel.getSearchResultsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Document>>() {
             @Override
             public void onChanged(List<Document> documents) {
                 Log.d(TAG, "documents added to adapter");
                 documentAdapter.addDocuments(documents);
-                documentAdapter.notify();
+                recyclerView.setAdapter(documentAdapter);
             }
         });
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
     }
 }

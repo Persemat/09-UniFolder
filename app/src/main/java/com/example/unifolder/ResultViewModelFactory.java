@@ -10,6 +10,7 @@ import com.example.unifolder.Ui.ResultViewModel;
 
 public class ResultViewModelFactory implements ViewModelProvider.Factory{
     private final Context context;
+    private static ResultViewModel resultViewModelInstance;
 
     public ResultViewModelFactory(Context context){ this.context = context;}
 
@@ -17,7 +18,11 @@ public class ResultViewModelFactory implements ViewModelProvider.Factory{
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if(modelClass.isAssignableFrom(ResultViewModel.class)){
-            return (T) new ResultViewModel(context);
+            if (resultViewModelInstance == null) {
+                resultViewModelInstance = new ResultViewModel(context);
+            }
+            // Ritorna sempre la stessa istanza memorizzata
+            return (T) resultViewModelInstance;
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
