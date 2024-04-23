@@ -131,6 +131,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/attach_file"
                         android:textColor="@color/white"
+                        app:tint="@color/white"
                         app:icon="@drawable/baseline_attach_file_24" />
                 </LinearLayout>
 
@@ -169,6 +170,7 @@
         android:textSize="18sp"
         android:backgroundTint="@color/darkred"
         android:textColor="@color/white"
+        app:color="@color/white"
         app:icon="@drawable/baseline_arrow_forward_ios_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

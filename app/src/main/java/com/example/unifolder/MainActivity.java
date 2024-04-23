@@ -2,6 +2,8 @@ package com.example.unifolder;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -46,6 +48,24 @@ public class MainActivity extends AppCompatActivity {
                 finish(); // Chiudi l'activity corrente (MainActivity)
                 return false; // Ritorna false per indicare che l'evento non è stato consumato
             });
+        }
+    }
+
+    // Metodo statico per disabilitare le animazioni dell'activity
+    public void disableAnimations() {
+        setWindowAnimationsEnabled(false);
+    }
+
+    private void setWindowAnimationsEnabled(boolean enabled) {
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            if (enabled) {
+                layoutParams.windowAnimations = android.R.style.Animation_Activity;
+            } else {
+                layoutParams.windowAnimations = 0; // Disabilita le animazioni
+            }
+            window.setAttributes(layoutParams);
         }
     }
 
