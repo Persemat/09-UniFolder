@@ -25,6 +25,7 @@ import com.example.unifolder.Data.User.IUserRepository;
 import com.example.unifolder.Model.Result;
 import com.example.unifolder.Model.User;
 import com.example.unifolder.Ui.ResultViewModel;
+import com.example.unifolder.Util.ServiceLocator;
 import com.example.unifolder.Welcome.UserViewModel;
 import com.example.unifolder.Welcome.UserViewModelFactory;
 
@@ -321,6 +322,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        userRepository = ServiceLocator.getInstance().getUserRepository();
         // Ottieni una istanza del tuo UserViewModel
         userViewModel = new ViewModelProvider(this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);

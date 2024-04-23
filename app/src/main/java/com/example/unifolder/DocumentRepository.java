@@ -22,14 +22,10 @@ public class DocumentRepository {
     private final DocumentLocalDataSource localDataSource;
     private final DocumentRemoteDataSource remoteDataSource;
 
-    private ResultViewModel resultViewModel;
-
 
     public DocumentRepository(Context context) {
         this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(context);
         this.remoteDataSource = ServiceLocator.getInstance().getRemoteDataSource();
-        this.resultViewModel = viewModel;
-
     }
 
     public DocumentRepository(DocumentLocalDataSource localDataSource, DocumentRemoteDataSource remoteDataSource) {
