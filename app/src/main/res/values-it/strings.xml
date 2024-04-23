@@ -38,7 +38,6 @@
     <string name="error">Qualcosa è andato storto</string>
     <string name="close">Chiudi</string>
     <string name="email_sent">Email inviata per reset password</string>
-    <string name="username">Username</string>
     <string name="search_results">Risultati della ricerca...</string>
     <string-array name="options_upload_spinner">
         <item>Appunti lezione</item>
@@ -56,4 +55,7 @@
     <string name="file_error">Seleziona un file valido da caricare</string>
     <string name="select_macroarea">Seleziona la macroarea</string>
     <string name="select_course">Seleziona il corso</string>
+    <string name="delete_account_question">Sicuro di voler eliminare il tuo account?</string>
+    <string name="delete_account_message">Clicca \"Conferma\" per eliminare il tuo account</string>
+    <string name="confirm">Conferma</string>
 </resources>
