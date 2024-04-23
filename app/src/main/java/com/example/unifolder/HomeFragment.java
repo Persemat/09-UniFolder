@@ -4,17 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,24 +18,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.unifolder.Data.User.IUserRepository;
-import com.example.unifolder.Data.User.UserRepository;
 import com.example.unifolder.Model.Result;
 import com.example.unifolder.Model.User;
+import com.example.unifolder.Ui.ResultViewModel;
 import com.example.unifolder.Util.ServiceLocator;
 import com.example.unifolder.Welcome.UserViewModel;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.unifolder.Adapter.DocumentAdapter;
 import com.example.unifolder.Welcome.UserViewModelFactory;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +38,8 @@ public class HomeFragment extends Fragment {
 
     private TextView welcomeTextView;
     private UserViewModel userViewModel;
+    private NavController navController;
+    private ResultViewModel resultViewModel;
     private IUserRepository userRepository;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -102,19 +92,25 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        resultViewModel = new ViewModelProvider(this,
+                new ResultViewModelFactory(requireContext())).get(ResultViewModel.class);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         searchView = view.findViewById(R.id.search_view);
         filterButton = view.findViewById(R.id.filter_button);
         welcomeTextView = view.findViewById(R.id.welcome_textview);
 
-        // Dentro il tuo fragment o activity
+        //Inizializza il NavController ottenendolo dal NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container_view);
+        navController = navHostFragment.getNavController();
+
+        /* Dentro il tuo fragment o activity
                 RecyclerView recyclerView = view.findViewById(R.id.first_recyclerview);
                  // Recupera la lista di documenti dal tuo database o da altre fonti
                 DocumentAdapter adapter = new DocumentAdapter();
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+       */
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -122,10 +118,8 @@ public class HomeFragment extends Fragment {
                 // Esempio: avviare la ricerca con i dati immessi dall'utente
 
                 // todo: pass to viewmodel
-                DocumentRepository repository = new DocumentRepository(requireContext());
-                repository.searchDocumentByTitle(searchView.getQuery().toString(),adapter);
-                adapter.notifyDataSetChanged();
-
+                resultViewModel.searchDocuments(query);
+                navController.navigate(R.id.searchResultFragment);
 
                 return true;
             }
@@ -328,7 +322,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.d(TAG,"onViewCreated()");
         userRepository = ServiceLocator.getInstance().getUserRepository();
         // Ottieni una istanza del tuo UserViewModel
         userViewModel = new ViewModelProvider(this,
@@ -337,10 +330,8 @@ public class HomeFragment extends Fragment {
         // Osserva i dati dell'utente
         userViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result != null && result.isSuccess()) {
-                Log.d(TAG,"result ok");
                 User user = ((Result.UserResponseSuccess) result).getData();
                 if (user != null) {
-                    Log.d(TAG,"user not null");
                     // Imposta l'username dell'utente nella TextView
                     welcomeTextView.setText("Buongiorno, " + user.getUsername());
                 }

@@ -37,4 +37,9 @@
         android:name="com.example.unifolder.Welcome.RegistrationFragment"
         android:label="RegistrationFragment"
         tools:layout="@layout/fragment_registration"/>
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.example.unifolder.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" />
 </navigation>

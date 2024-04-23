@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.example.unifolder.Adapter.DocumentAdapter;
 import com.example.unifolder.Source.Document.DocumentLocalDataSource;
 import com.example.unifolder.Source.Document.DocumentRemoteDataSource;
+import com.example.unifolder.Ui.ResultViewModel;
 import com.example.unifolder.Util.ServiceLocator;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -18,8 +19,9 @@ import java.util.concurrent.Executors;
 
 public class DocumentRepository {
     private static final String TAG = DocumentRepository.class.getSimpleName();
-    private DocumentLocalDataSource localDataSource;
-    private DocumentRemoteDataSource remoteDataSource;
+    private final DocumentLocalDataSource localDataSource;
+    private final DocumentRemoteDataSource remoteDataSource;
+
 
     public DocumentRepository(Context context) {
         this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(context);
@@ -31,7 +33,7 @@ public class DocumentRepository {
         this.remoteDataSource = remoteDataSource;
     }
 
-    public void searchDocumentByTitle(String searchQuery, DocumentAdapter adapter) {
+    public void searchDocumentByTitle(String searchQuery, SearchResultCallback searchResultCallback) {
         // Utilizziamo CallbackToFutureAdapter per convertire il ListenableFuture in un CompletableFuture
         ListenableFuture<List<Document>> future = remoteDataSource.searchDocumentsByTitle(searchQuery);
         Futures.addCallback(future, new FutureCallback<List<Document>>() {
@@ -41,10 +43,9 @@ public class DocumentRepository {
                 // Azioni da eseguire quando il futuro ha successo
                 if (documents != null) {
                     Log.d(TAG,"adding docs");
-                    // Utilizza i documenti restituiti
-                    adapter.addDocuments(documents);
+                    searchResultCallback.OnSearchCompleted(documents);
                 } else {
-                    Log.d(TAG,"no docs to add");
+                    searchResultCallback.OnSearchFailed("Error");
                 }
             }
 

@@ -3,6 +3,7 @@ package com.example.unifolder.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,14 +32,16 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
     @NonNull
     @Override
     public DocumentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_document, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_results, parent, false);
         return new DocumentViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DocumentViewHolder holder, int position) {
         Document document = documents.get(position);
-        // Bind data to ViewHolder here
+        holder.titleTextView.setText(document.getTitle());
+        holder.courseTextView.setText(document.getCourse());
+        holder.tagTextView.setText(document.getTag());
     }
 
     @Override
@@ -47,11 +50,13 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
     }
 
     public static class DocumentViewHolder extends RecyclerView.ViewHolder {
-        // Declare UI elements here
+        TextView titleTextView, courseTextView, tagTextView;
 
         public DocumentViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Initialize UI elements here
+            titleTextView = itemView.findViewById(R.id.document_title);
+            courseTextView = itemView.findViewById(R.id.document_course);
+            tagTextView = itemView.findViewById(R.id.document_tag);
         }
     }
 }
