@@ -91,7 +91,7 @@ public class RegistrationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
 
         // Inizializzazione di userViewModel
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         userViewModel = new ViewModelProvider(
                 this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);

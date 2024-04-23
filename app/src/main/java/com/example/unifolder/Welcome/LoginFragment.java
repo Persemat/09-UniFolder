@@ -107,7 +107,7 @@ public class LoginFragment extends Fragment {
         });
 
         // Inizializzazione di userViewModel
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         userViewModel = new ViewModelProvider(
                 this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
