@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,11 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.fragment.app.Fragment;
 
 import com.example.unifolder.Data.User.IUserRepository;
 import com.example.unifolder.Model.Result;
@@ -39,15 +29,9 @@ import com.example.unifolder.Model.User;
 import com.example.unifolder.Util.ServiceLocator;
 import com.example.unifolder.Welcome.UserViewModel;
 import com.example.unifolder.Welcome.UserViewModelFactory;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -165,7 +149,7 @@ public class UploadFragment extends Fragment {
     }
 
     private void getUsername() {
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         // Ottieni una istanza del tuo UserViewModel
         UserViewModel userViewModel = new ViewModelProvider(this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);

@@ -2,4 +2,5 @@
 <resources>
     <string name="username">Username</string>
     <string name="search_results">Risultati della ricerca...</string>
+    <string name="back_button">button for return to the previous page</string>
 </resources>

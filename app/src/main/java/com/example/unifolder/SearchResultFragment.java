@@ -5,12 +5,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +32,7 @@ public class SearchResultFragment extends Fragment {
     private RecyclerView recyclerView;
     private DocumentAdapter documentAdapter;
     private ResultViewModel resultViewModel;
+    private NavController navController;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -78,10 +82,6 @@ public class SearchResultFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        documentAdapter = new DocumentAdapter(); // Assicurati di passare i dati necessari all'adapter
-
-
         // Inizializza il ResultViewModel utilizzando il ViewModelProvider
         resultViewModel = new ViewModelProvider(this,
                 new ResultViewModelFactory(requireContext())).get(ResultViewModel.class);
@@ -92,15 +92,27 @@ public class SearchResultFragment extends Fragment {
             @Override
             public void onChanged(List<Document> documents) {
                 Log.d(TAG, "documents added to adapter");
-                documentAdapter.addDocuments(documents);
-                recyclerView.setAdapter(documentAdapter);
+                documentAdapter = new DocumentAdapter(documents); // Assicurati di passare i dati necessari all'adapter
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerView.setAdapter(documentAdapter);
+            }
+        });
+
+        // Configura il pulsante di ritorno
+        ImageButton backButton = view.findViewById(R.id.back_arrow);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Naviga al fragment precedente quando si clicca la freccia all'indietro
+                navController = Navigation.findNavController(requireActivity(), R.id.fragment_container_view);
+                navController.navigateUp();
             }
         });
 
         return view;
     }
 
-    @Override
+            @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

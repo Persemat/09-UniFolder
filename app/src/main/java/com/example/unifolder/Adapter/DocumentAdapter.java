@@ -17,12 +17,8 @@ import java.util.List;
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocumentViewHolder> {
     private List<Document> documents;
 
-    public DocumentAdapter() {
-        documents = new ArrayList<>();
-    }
-
     public DocumentAdapter(List<Document> documents) {
-        this.documents = documents;
+        this.documents = new ArrayList<>();
     }
 
     public void addDocuments(List<Document> documents) {

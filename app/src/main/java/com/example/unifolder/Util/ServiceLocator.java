@@ -49,7 +49,7 @@ public class ServiceLocator {
     }
 
 
-    public IUserRepository getUserRepository() {
+    public IUserRepository getUserRepository(Application application) {
         BaseUserAuthenticationRemoteDataSource userRemoteAuthenticationDataSource = new UserAuthenticationRemoteDataSource();
         BaseUserDataRemoteDataSource userDataRemoteDataSource = new UserDataRemoteDataSource();
 
