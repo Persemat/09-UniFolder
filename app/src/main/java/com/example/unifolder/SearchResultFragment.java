@@ -89,7 +89,7 @@ public class SearchResultFragment extends Fragment {
             Log.d(TAG,"queryTerm set");
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        documentAdapter = new DocumentAdapter(); // Assicurati di passare i dati necessari all'adapter
+        documentAdapter = new DocumentAdapter(DocumentAdapter.VIEW_TYPE_RESULTS); // Assicurati di passare i dati necessari all'adapter
 
         // Inizializza il ResultViewModel utilizzando il ViewModelProvider
         resultViewModel = new ViewModelProvider(this,

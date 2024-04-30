@@ -8,6 +8,7 @@ import com.example.unifolder.DocumentDao;
 import com.example.unifolder.DocumentDatabase;
 import com.example.unifolder.LocalStorageManager;
 import com.example.unifolder.SavedDocumentCallback;
+import com.example.unifolder.SearchResultCallback;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,5 +79,9 @@ public class DocumentLocalDataSource {
 
     public Future<List<Document>> getUploadedDocuments(String author) {
         return executorService.submit(() -> documentDao.getUploadedDocuments(author));
+    }
+
+    public Future<List<Document>> getLastOpenedDocuments(String author) {
+        return executorService.submit(() -> documentDao.getLastOpenedDocuments(author));
     }
 }

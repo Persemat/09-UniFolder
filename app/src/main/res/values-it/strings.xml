@@ -61,4 +61,7 @@
     <string name="confirm">Conferma</string>
     <string name="back_button">button for return to the previous page</string>
     <string name="document_filter">Filtra i documenti</string>
+    <string name="welcome">Buongiorno, </string>
+    <string name="last_opened">Ultimi documenti aperti</string>
+    <string name="my_uploads">I miei caricamenti</string>
 </resources>

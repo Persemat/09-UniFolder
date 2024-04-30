@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.unifolder.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_loginActivity"
+            app:destination="@id/loginActivity" />
+    </fragment>
     <fragment
         android:id="@+id/uploadFragment"
         android:name="com.example.unifolder.UploadFragment"
@@ -42,4 +46,8 @@
         android:name="com.example.unifolder.SearchResultFragment"
         android:label="fragment_search_result"
         tools:layout="@layout/fragment_search_result" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.unifolder.Welcome.LoginActivity"
+        android:label="LoginActivity" />
 </navigation>

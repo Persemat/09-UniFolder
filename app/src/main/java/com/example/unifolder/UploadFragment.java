@@ -248,47 +248,4 @@ public class UploadFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-    private String[] getAvailableCourses(Context c,String macroArea) {
-        // Simula il recupero dei corsi disponibili per la macroarea selezionata
-        // Questo può essere un'implementazione reale che interroga un backend o un'altra fonte di dati
-        // Qui, per semplicità, viene restituito un array fisso di esempio
-        if (macroArea.equals(c.getString(R.string.economics)))
-            return new String[]{};
-        else if (macroArea.equals(c.getString(R.string.law)))
-            return new String[]{"Corso 1A", "Corso 1B", "Corso 1C"};
-        else if (macroArea.equals(c.getString(R.string.medicine)))
-            return new String[]{"Corso 1A", "Corso 1B", "Corso 1C"};
-        else if (macroArea.equals(c.getString(R.string.psychology)))
-            return new String[]{"Corso 1A", "Corso 1B", "Corso 1C"};
-        else if (macroArea.equals(c.getString(R.string.education)))
-            return new String[]{"Corso 1A", "Corso 1B", "Corso 1C"};
-        else if (macroArea.equals(c.getString(R.string.science)))
-            return new String[]{"ARTIFICIAL INTELLIGENCE [E311PV]",
-                    "BIOTECNOLOGIE [E0201Q]","FISICA [E3001Q]","INFORMATICA [E3101Q]",
-                    "MATEMATICA [E3501Q]", "OTTICA E OPTOMETRIA [E3002Q]", "SCIENZA DEI MATERIALI [E2701Q]",
-                    "SCIENZA E NANOTECNOLOGIA DEI MATERIALI [ESM01Q]", "SCIENZE BIOLOGICHE [E1301Q]",
-                    "SCIENZE E TECNOLOGIE CHIMICHE [E2702Q]", "SCIENZE E TECNOLOGIE GEOLOGICHE [E3401Q]",
-                    "SCIENZE E TECNOLOGIE PER L'AMBIENTE [E3201Q]",
-                    "ARTIFICIAL INTELLIGENCE FOR SCIENCE AND TECHNOLOGY [F9102Q]",
-                    "ASTROFISICA E FISICA DELLO SPAZIO [F5801Q]", "ASTROPHYSICS AND SPACE PHYSICS [F5802Q]",
-                    "BIOLOGIA [F0601Q]", "BIOTECNOLOGIE INDUSTRIALI [F0802Q]", "DATA SCIENCE [F9101Q]",
-                    "DATA SCIENCE [FDS01Q]", "FISICA [F1701Q]", "INFORMATICA [F1801Q]",
-                    "MARINE SCIENCES [F7502Q]", "MATEMATICA [F4001Q]", "MATERIALS SCIENCE [F5302Q]",
-                    "MATERIALS SCIENCE AND NANOTECHNOLOGY [FSM01Q]", "SCIENZA DEI MATERIALI [F5301Q]",
-                    "SCIENZE E TECNOLOGIE CHIMICHE [F5401Q]", "SCIENZE E TECNOLOGIE GEOLOGICHE [F7401Q]",
-                    "SCIENZE E TECNOLOGIE PER L'AMBIENTE E IL TERRITORIO [F7501Q]",
-                    "TEORIA E TECNOLOGIA DELLA COMUNICAZIONE [F9201P]"};
-        else if (macroArea.equals(c.getString(R.string.sociology)))
-            return new String[]{"Corso 1A", "Corso 1B", "Corso 1C"};
-
-        else return new String[]{};
-    }
-
-    private void initMacroAreas(Context context) {
-         macroAreas = new String[]{context.getString(R.string.economics), context.getString(R.string.law),
-                 context.getString(R.string.medicine), context.getString(R.string.psychology),
-                 context.getString(R.string.education), context.getString(R.string.science),
-                 context.getString(R.string.sociology)};
-    }
 }

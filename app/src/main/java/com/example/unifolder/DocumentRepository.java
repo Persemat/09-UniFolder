@@ -13,7 +13,10 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class DocumentRepository {
     private static final String TAG = DocumentRepository.class.getSimpleName();
@@ -123,5 +126,34 @@ public class DocumentRepository {
                 // Gestisci l'eccezione o avvia un'azione alternativa
             }
         }, Executors.newSingleThreadExecutor());
+    }
+
+    private CompletableFuture<List<Document>> getLastOpenedDocumentsAsync(String author) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return localDataSource.getLastOpenedDocuments(author).get();
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void getLastOpenedDocuments(String author, SearchResultCallback callback) {
+        CompletableFuture<List<Document>> future = getLastOpenedDocumentsAsync(author);
+        future.thenAccept(documents -> callback.OnSearchCompleted(documents));
+    }
+
+    private CompletableFuture<List<Document>> getYourUploadedDocumentsAsync(String author) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return localDataSource.getUploadedDocuments(author).get();
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    public void getYourUploadedDocuments(String author, SearchResultCallback callback) {
+        CompletableFuture<List<Document>> future = getYourUploadedDocumentsAsync(author);
+        future.thenAccept(documents -> callback.OnSearchCompleted(documents));
     }
 }

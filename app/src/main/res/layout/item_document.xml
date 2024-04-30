@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
-    android:layout_height="300dp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:id="@+id/cardView"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:layout_marginEnd="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="?android:selectableItemBackground"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp" >
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/doc"
+            android:src="@drawable/baseline_attach_file_24"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            />
-
-    </androidx.cardview.widget.CardView>
+            android:layout_height="130dp"
+            android:scaleType="center" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/title_textView"
         android:text="Titolo"
         android:textColor="@color/darkred"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textAlignment="center"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginVertical="6dp"/>
     <!-- Includi qui i tuoi elementi UI, come titolo, autore, corso, ecc. -->
 
     <TextView
         android:id="@+id/course"
         android:text="Corso"
-        android:textColor="@color/black"
-        android:textSize="14dp"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="14sp"
         android:textAlignment="center"
         android:layout_width="match_parent"
-        android:layout_height="30dp"/>
-</LinearLayout>
+        android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

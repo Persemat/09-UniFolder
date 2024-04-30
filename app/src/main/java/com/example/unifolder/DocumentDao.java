@@ -17,4 +17,7 @@ public interface DocumentDao {
 
     @Query("SELECT * FROM documents WHERE author = :authorId")
     List<Document> getUploadedDocuments(String authorId);
+
+    @Query("SELECT * FROM documents WHERE author != :author")
+    List<Document> getLastOpenedDocuments(String author);
 }

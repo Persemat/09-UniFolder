@@ -1,140 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".HomeFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment" >
+    android:layout_marginBottom="80dp" >
 
-    <TextView
-        android:id="@+id/welcome_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Buongiorno"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:id="@+id/linear_layout"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginHorizontal="16dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcome_textview"
-        android:orientation="vertical" >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_view"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/filter_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:iconifiedByDefault="false"
-                android:queryHint="Cerca per titolo..."
-                app:iconifiedByDefault="false" />
-
-            <ImageButton
-                android:id="@+id/filter_button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/filter_alt"
-                style="@style/Widget.Material3.Button.Icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="TODO"
-                app:tint="@color/darkred" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
         <LinearLayout
-            android:id="@+id/filter_layout"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
+            android:id="@+id/welcome_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <include
-                android:id="@+id/tag_layout"
-                android:visibility="gone"
-                layout="@layout/layout_selected_tag"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/welcome_textview"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
-            <include
-                android:id="@+id/course_layout"
+                android:text="@string/welcome"
+                android:layout_gravity="center_vertical"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/login_button"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:visibility="gone"
-                layout="@layout/layout_selected_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textColor="@color/darkred"
+                android:text="@string/need_login"
+                android:layout_gravity="center_vertical" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:id="@+id/linear_layout"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcome_layout"
+            android:orientation="vertical" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_view"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/filter_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Cerca per titolo..."
+                    android:inputType="textCapWords"
+                    app:iconifiedByDefault="false" />
+
+                <ImageButton
+                    android:id="@+id/filter_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:src="@drawable/filter_alt"
+                    style="@style/Widget.Material3.Button.Icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="TODO"
+                    app:tint="@color/darkred" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/filter_layout"
                 android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+                android:orientation="vertical">
+                <include
+                    android:id="@+id/tag_layout"
+                    android:visibility="gone"
+                    layout="@layout/layout_selected_tag"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+                <include
+                    android:id="@+id/course_layout"
+                    android:visibility="gone"
+                    layout="@layout/layout_selected_course"
+                    android:layout_marginTop="8dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/last_opened"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/last_opened"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                android:textColor="@color/darkred"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lastOpened_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginVertical="4dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                tools:listitem="@layout/item_document"/>
+
+
+            <TextView
+                android:id="@+id/last_uploaded"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/my_uploads"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                android:textColor="@color/darkred"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/uploads_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginVertical="4dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                tools:listitem="@layout/item_document"/>
+
         </LinearLayout>
 
 
+        <!-- Other elements of your home screen layout can be added here -->
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/last_opened"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:text="Ultimi documenti aperti"
-            android:textSize="20dp"
-            android:textStyle="italic"
-            android:textColor="@color/darkred"/>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/first_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
-
-
-        <TextView
-            android:id="@+id/last_uploaded"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:text="I miei caricamenti"
-            android:textSize="20dp"
-            android:textStyle="italic"
-            android:textColor="@color/darkred"/>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/second_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
-
-
-    </LinearLayout>
-
-
-    <!-- Other elements of your home screen layout can be added here -->
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
