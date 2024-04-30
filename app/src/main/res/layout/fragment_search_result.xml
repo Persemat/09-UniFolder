@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SearchResultFragment"
-    android:background="@color/white">
+    tools:context=".SearchResultFragment" >
 
     <TextView
         android:id="@+id/search_results"
@@ -25,11 +24,12 @@
         android:contentDescription="@string/back_button"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?android:colorBackground"
         android:src="@drawable/baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/search_results"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?android:textColorPrimary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

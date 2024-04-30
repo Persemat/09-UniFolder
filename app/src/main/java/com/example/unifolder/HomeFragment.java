@@ -127,8 +127,10 @@ public class HomeFragment extends Fragment {
                     resultViewModel.searchDocuments(selectedCourse,selectedTag,query);
                     navController.navigate(R.id.searchResultFragment);
                 } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("queryTerm",query);
                     resultViewModel.searchDocuments(query);
-                    navController.navigate(R.id.searchResultFragment);
+                    navController.navigate(R.id.searchResultFragment, bundle);
                 }
 
 

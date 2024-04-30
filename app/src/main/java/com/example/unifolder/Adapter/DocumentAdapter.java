@@ -17,13 +17,16 @@ import java.util.List;
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.DocumentViewHolder> {
     private List<Document> documents;
 
+    public DocumentAdapter() {
+        documents = new ArrayList<>();
+    }
+
     public DocumentAdapter(List<Document> documents) {
         this.documents = new ArrayList<>();
     }
 
-    public void addDocuments(List<Document> documents) {
-        documents.clear();
-        this.documents.addAll(documents);
+    public void replaceAllDocuments(List<Document> documents) {
+        this.documents = documents;
     }
 
     @NonNull

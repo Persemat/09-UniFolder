@@ -39,7 +39,7 @@
     <string name="close">Chiudi</string>
     <string name="email_sent">Email inviata per reset password</string>
     <string name="username">Username</string>
-    <string name="search_results">Risultati della ricerca...</string>
+    <string name="search_results">Risultati della ricerca per </string>
     <string-array name="options_upload_spinner">
         <item name="Lesson notes">Appunti lezione</item>
         <item name="Exam questions">Domande esame</item>

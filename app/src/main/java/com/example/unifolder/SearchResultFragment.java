@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ import java.util.List;
  */
 public class SearchResultFragment extends Fragment {
     private static final String TAG = SearchResultFragment.class.getSimpleName();
+    private TextView titleTextView;
     private RecyclerView recyclerView;
     private DocumentAdapter documentAdapter;
     private ResultViewModel resultViewModel;
@@ -41,8 +43,7 @@ public class SearchResultFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String queryTerm;
 
     public SearchResultFragment() {
         // Required empty public constructor
@@ -70,8 +71,8 @@ public class SearchResultFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            queryTerm = getArguments().getString("queryTerm");
+            Log.d(TAG,"param retrieved");
         }
     }
 
@@ -80,7 +81,15 @@ public class SearchResultFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
 
+        titleTextView = view.findViewById(R.id.search_results);
         recyclerView = view.findViewById(R.id.recycler_view);
+
+        if(queryTerm != null && !queryTerm.isEmpty()) {
+            titleTextView.append(" \"" + queryTerm + "\"");
+            Log.d(TAG,"queryTerm set");
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        documentAdapter = new DocumentAdapter(); // Assicurati di passare i dati necessari all'adapter
 
         // Inizializza il ResultViewModel utilizzando il ViewModelProvider
         resultViewModel = new ViewModelProvider(this,
@@ -92,9 +101,8 @@ public class SearchResultFragment extends Fragment {
             @Override
             public void onChanged(List<Document> documents) {
                 Log.d(TAG, "documents added to adapter");
-                documentAdapter = new DocumentAdapter(documents); // Assicurati di passare i dati necessari all'adapter
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    recyclerView.setAdapter(documentAdapter);
+                documentAdapter.replaceAllDocuments(documents);
+                recyclerView.setAdapter(documentAdapter);
             }
         });
 

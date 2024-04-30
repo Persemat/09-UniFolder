@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".UploadFragment"
-    android:background="@color/white">
+    tools:context=".UploadFragment" >
 
     <TextView
         android:id="@+id/upload_textView"
@@ -132,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/attach_file"
                         android:textColor="@color/white"
-                        app:tint="@color/white"
+                        app:tint="?android:textAppearanceButton"
                         app:icon="@drawable/baseline_attach_file_24" />
                 </LinearLayout>
 
@@ -171,7 +170,7 @@
         android:textSize="18sp"
         android:backgroundTint="@color/darkred"
         android:textColor="@color/white"
-        app:color="@color/white"
+        app:color="?android:textAppearanceButton"
         app:icon="@drawable/baseline_arrow_forward_ios_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
