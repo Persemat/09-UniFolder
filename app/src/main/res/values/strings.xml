@@ -73,6 +73,7 @@
     <string name="delete_account_question">Are you sure about deleting your account?</string>
     <string name="delete_account_message">Click \"Confirm\" to delete your account</string>
     <string name="confirm">Confirm</string>
+    <string name="back_button">button for return to the previous page</string>
 
 
 </resources>
