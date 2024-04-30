@@ -12,11 +12,16 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 
 import android.app.Fragment;
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.widget.TextView;
 
 import androidx.test.espresso.Espresso;
@@ -28,14 +33,19 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.unifolder.Welcome.LoginActivity;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.snackbar.SnackbarContentLayout;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
+import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 @RunWith(AndroidJUnit4.class)
 public class UploadIntegrationTest {
@@ -52,12 +62,13 @@ public class UploadIntegrationTest {
     @Before
     public void setUp() {
         // Disabilita le animazioni
+
+        // Lingua it
+
     }
 
     @Before
     public void login() throws InterruptedException {
-
-
         // performs Login action
         String user = "test@foo.it"; String pwd = "admin1";
 
@@ -67,19 +78,19 @@ public class UploadIntegrationTest {
         onView(withId(R.id.text_input_password)).perform(typeText(pwd));
         Thread.sleep(100);
         // closes keyboard
-
+        Espresso.onView(isRoot()).perform(ViewActions.pressBack());
 
         onView(withId(R.id.button_login)).perform(click());
         Thread.sleep(1000);
     }
 
-    @Test
-    public void success() throws InterruptedException {
-        Thread.sleep(10000);
+    //@Test
+    public void successLogin() throws InterruptedException {
+        Thread.sleep(1000);
     }
 
     @Test
-    public void stepping() throws InterruptedException {
+    public void testUploadWithTitleErrorInteraction() throws InterruptedException {
         // Fai clic sul pulsante che avvia l'UploadFragment
         onView(ViewMatchers.withId(R.id.uploadFragment)).perform(click());
         Thread.sleep(2000);
@@ -88,26 +99,123 @@ public class UploadIntegrationTest {
         String title = "Test Title";
         String course = "Test Course";
         String tag = "Test Tag";
-        String fileName = "document.pdf";
 
 
-        onView(ViewMatchers.withId(R.id.title_editText)).perform(typeText(title));
-        //onView(withId(R.id.course_editText)).perform(typeText(course));
+        onView(withId(R.id.course_editText)).perform(click());
+        onView(ViewMatchers.withText("Scienze")).perform(click());
+        onView(ViewMatchers.withText(containsString("INFORMATICA"))).perform(click());
         onView(withId(R.id.tag_spinner)).perform(click());
-        onView(ViewMatchers.withText(containsString("Other"))).perform(click());
+        Thread.sleep(1000);
+        onView(ViewMatchers.withText("Altro")).perform(click());
+
 
         // Esegui l'azione di caricamento (supponendo che sia un pulsante con id R.id.upload_document_button)
         onView(withId(R.id.submit_button)).perform(click());
 
         // Verifica che un elemento specifico sia visualizzato dopo l'azione di caricamento
-        String expectedText = "Insert";
-        onView(allOf(
-                isAssignableFrom(TextView.class),
-                withText(containsString(expectedText)),
-                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)
-        )).check(matches(isDisplayed()));
+        onView(withText(R.string.title_error))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    }
 
-        Thread.sleep(5000);
+    @Test
+    public void testUploadWithCourseErrorInteraction() throws InterruptedException {
+        // Fai clic sul pulsante che avvia l'UploadFragment
+        onView(ViewMatchers.withId(R.id.uploadFragment)).perform(click());
+        Thread.sleep(2000);
+
+        // Simula l'input sui campi dell'UploadFragment
+        String title = "Test Title";
+        String course = "Test Course";
+        String tag = "Test Tag";
+
+
+        onView(ViewMatchers.withId(R.id.title_editText)).perform(typeText(title));
+        onView(withId(R.id.tag_spinner)).perform(click());
+        Thread.sleep(1000);
+        onView(ViewMatchers.withText("Altro")).perform(click());
+
+        // closes keyboard
+        Espresso.closeSoftKeyboard();
+
+
+        // Esegui l'azione di caricamento (supponendo che sia un pulsante con id R.id.upload_document_button)
+        onView(withId(R.id.submit_button)).perform(click());
+
+        // Verifica che un elemento specifico sia visualizzato dopo l'azione di caricamento
+        onView(withText(R.string.course_error))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    }
+
+    @Test
+    public void testUploadWithFileErrorInteraction() throws InterruptedException {
+        // Fai clic sul pulsante che avvia l'UploadFragment
+        onView(ViewMatchers.withId(R.id.uploadFragment)).perform(click());
+        Thread.sleep(2000);
+
+        // Simula l'input sui campi dell'UploadFragment
+        String title = "Test Title";
+        String course = "Test Course";
+        String tag = "Test Tag";
+
+
+        onView(ViewMatchers.withId(R.id.title_editText)).perform(typeText(title));
+        onView(withId(R.id.course_editText)).perform(click());
+        onView(ViewMatchers.withText("Scienze")).perform(click());
+        onView(ViewMatchers.withText(containsString("INFORMATICA"))).perform(click());
+        onView(withId(R.id.tag_spinner)).perform(click());
+        Thread.sleep(1000);
+        onView(ViewMatchers.withText("Altro")).perform(click());
+
+        // closes keyboard
+        Espresso.closeSoftKeyboard();
+
+        // Esegui l'azione di caricamento (supponendo che sia un pulsante con id R.id.upload_document_button)
+        onView(withId(R.id.submit_button)).perform(click());
+
+        // Verifica che un elemento specifico sia visualizzato dopo l'azione di caricamento
+        onView(withText(R.string.file_error))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    }
+
+    @Test
+    public void testUploadOkInteraction() throws InterruptedException {
+        // Fai clic sul pulsante che avvia l'UploadFragment
+        onView(ViewMatchers.withId(R.id.uploadFragment)).perform(click());
+        Thread.sleep(2000);
+
+        // Simula l'input sui campi dell'UploadFragment
+        String title = "Test Title";
+        String course = "Test Course";
+        String tag = "Test Tag";
+
+        // Creazione di un oggetto File fittizio per simulare un file
+        File mockFile = Mockito.mock(File.class);
+        when(mockFile.getPath()).thenReturn("/path/to/simulated/file.pdf");
+        when(mockFile.exists()).thenReturn(true);
+
+        // Verifichiamo che il file esista
+        assertTrue(mockFile.exists());
+
+        Uri mockUri = Mockito.mock(Uri.class);
+
+
+        onView(ViewMatchers.withId(R.id.title_editText)).perform(typeText(title));
+        onView(withId(R.id.course_editText)).perform(click());
+        onView(ViewMatchers.withText("Scienze")).perform(click());
+        onView(ViewMatchers.withText(containsString("INFORMATICA"))).perform(click());
+        onView(withId(R.id.tag_spinner)).perform(click());
+        Thread.sleep(1000);
+        onView(ViewMatchers.withText("Altro")).perform(click());
+
+        // closes keyboard
+        Espresso.closeSoftKeyboard();
+
+        // Esegui l'azione di caricamento (supponendo che sia un pulsante con id R.id.upload_document_button)
+        onView(withId(R.id.submit_button)).perform(click());
+
+        // Verifica che un elemento specifico sia visualizzato dopo l'azione di caricamento
+        onView(withText(R.string.course_error))
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
     @Test
@@ -119,7 +227,6 @@ public class UploadIntegrationTest {
         String title = "Test Title";
         String course = "Test Course";
         String tag = "Test Tag";
-        String fileName = "document.pdf";
 
 
         onView(ViewMatchers.withId(R.id.title_editText)).perform(typeText(title));

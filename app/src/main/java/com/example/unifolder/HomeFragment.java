@@ -3,6 +3,8 @@ package com.example.unifolder;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,8 @@ import com.example.unifolder.Ui.ResultViewModel;
 import com.example.unifolder.Util.ServiceLocator;
 import com.example.unifolder.Welcome.UserViewModel;
 import com.example.unifolder.Welcome.UserViewModelFactory;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -117,9 +121,16 @@ public class HomeFragment extends Fragment {
                 // Azione da eseguire quando viene inviata la query di ricerca
                 // Esempio: avviare la ricerca con i dati immessi dall'utente
 
-                // todo: pass to viewmodel
-                resultViewModel.searchDocuments(query);
-                navController.navigate(R.id.searchResultFragment);
+                Log.d(TAG,"query: "+query + "; tag: "+selectedTag + "; course: "+selectedCourse);
+                //TODO: pass to viewmodel
+                if(selectedTag!=null || selectedCourse!=null) {
+                    resultViewModel.searchDocuments(selectedCourse,selectedTag,query);
+                    navController.navigate(R.id.searchResultFragment);
+                } else {
+                    resultViewModel.searchDocuments(query);
+                    navController.navigate(R.id.searchResultFragment);
+                }
+
 
                 return true;
             }
@@ -147,7 +158,7 @@ public class HomeFragment extends Fragment {
 
         // Crea un AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Filtra i documenti");
+        builder.setTitle(R.string.document_filter);
         // Infla il layout XML per la dialog
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_filter, null);
         builder.setView(dialogView);
@@ -160,7 +171,6 @@ public class HomeFragment extends Fragment {
         selectCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedTag = tagSpinner.getSelectedItem().toString();
                 showCourseSelectionDialog(v);
             }
         });
@@ -185,14 +195,43 @@ public class HomeFragment extends Fragment {
                 });
 
                 selectedTag = tagSpinner.getSelectedItem().toString();
+
                 TextView tag = requireView().findViewById(R.id.tag_textView);
                 tag.setText(selectedTag);
+
+
+                String[] opts = getResources().getStringArray(R.array.options_filter_spinner);
+                int index = findIndex(opts,selectedTag);
+                Log.d(TAG,"found index: " + index);
+
+                if(!getResources().getConfiguration().getLocales().get(0).getLanguage().equals("it")) {
+                    Resources resources = getResources();
+                    Configuration configuration = resources.getConfiguration();
+                    configuration.setLocale(new Locale("it"));
+                    resources.updateConfiguration(configuration,requireContext().getResources().getDisplayMetrics());
+                    String[] searchOpts = resources.getStringArray(R.array.options_filter_spinner);
+
+                    selectedTag = searchOpts[index];
+                    Log.d(TAG,"new tag value: " + selectedTag);
+                }
+
+                if(index == 0)     // checks if "All" is selected
+                    selectedTag = null;
+
+
                 dialog.dismiss();
             }
         });
 
 
 
+    }
+
+    private int findIndex(String[] opts, String selectedTag) {
+        for (int i=0;i<opts.length;i++)
+            if (opts[i].equals(selectedTag))
+                return i;
+        return -1;
     }
 
     private void showCourseSelectionDialog(View view) {

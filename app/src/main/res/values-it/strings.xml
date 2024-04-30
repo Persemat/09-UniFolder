@@ -41,9 +41,9 @@
     <string name="username">Username</string>
     <string name="search_results">Risultati della ricerca...</string>
     <string-array name="options_upload_spinner">
-        <item>Appunti lezione</item>
-        <item>Domande esame</item>
-        <item>Altro</item>
+        <item name="Lesson notes">Appunti lezione</item>
+        <item name="Exam questions">Domande esame</item>
+        <item name="Other">Altro</item>
     </string-array>
     <string-array name="options_filter_spinner">
         <item>Tutti</item>
@@ -56,4 +56,5 @@
     <string name="file_error">Seleziona un file valido da caricare</string>
     <string name="select_macroarea">Seleziona la macroarea</string>
     <string name="select_course">Seleziona il corso</string>
+    <string name="document_filter">Filtra i documenti</string>
 </resources>

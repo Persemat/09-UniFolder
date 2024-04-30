@@ -5,10 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.unifolder.Adapter.DocumentAdapter;
 import com.example.unifolder.Source.Document.DocumentLocalDataSource;
 import com.example.unifolder.Source.Document.DocumentRemoteDataSource;
-import com.example.unifolder.Ui.ResultViewModel;
 import com.example.unifolder.Util.ServiceLocator;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -58,7 +56,7 @@ public class DocumentRepository {
         }, Executors.newSingleThreadExecutor());
     }
 
-    public void searchDocumentByFilter(String course, String tag, DocumentAdapter adapter) {
+    public void searchDocumentByFilter(String course, String tag, SearchResultCallback callback) {
         // Utilizziamo CallbackToFutureAdapter per convertire il ListenableFuture in un CompletableFuture
         ListenableFuture<List<Document>> future = remoteDataSource.searchDocumentsByCourseAndTag(course,tag);
         Futures.addCallback(future, new FutureCallback<List<Document>>() {
@@ -69,9 +67,9 @@ public class DocumentRepository {
                 if (documents != null) {
                     Log.d(TAG,"adding docs");
                     // Utilizza i documenti restituiti
-                    adapter.addDocuments(documents);
+                    callback.OnSearchCompleted(documents);
                 } else {
-                    Log.d(TAG,"no docs to add");
+                    callback.OnSearchFailed("no docs to add");
                 }
             }
 
@@ -99,5 +97,31 @@ public class DocumentRepository {
                 // Gestisci il fallimento dell'upload, ad esempio mostrando un messaggio di errore all'utente
             }
         });
+    }
+
+    public void searchDocumentByTitleAndFilter(String query, String course, String tag, SearchResultCallback callback) {
+        // Utilizziamo CallbackToFutureAdapter per convertire il ListenableFuture in un CompletableFuture
+        ListenableFuture<List<Document>> future = remoteDataSource.searchDocumentsByTitleAndFilter(query,course,tag);
+        Futures.addCallback(future, new FutureCallback<List<Document>>() {
+            @Override
+            public void onSuccess(@Nullable List<Document> documents) {
+                Log.d(TAG,"onSuccess()");
+                // Azioni da eseguire quando il futuro ha successo
+                if (documents != null) {
+                    Log.d(TAG,"adding docs");
+                    // Utilizza i documenti restituiti
+                    callback.OnSearchCompleted(documents);
+                } else {
+                    callback.OnSearchFailed("no docs to add");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d(TAG,"onFailure(): "+t.getMessage());
+                // Azioni da eseguire in caso di fallimento del futuro
+                // Gestisci l'eccezione o avvia un'azione alternativa
+            }
+        }, Executors.newSingleThreadExecutor());
     }
 }

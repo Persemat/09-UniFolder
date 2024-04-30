@@ -26,6 +26,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.Docume
     }
 
     public void addDocuments(List<Document> documents) {
+        documents.clear();
         this.documents.addAll(documents);
     }
 

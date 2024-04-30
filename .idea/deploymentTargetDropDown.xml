@@ -15,7 +15,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-19T12:35:43.763084800Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-04-23T09:14:01.817697Z" />
         </State>
       </entry>
       <entry key="stepping()">
@@ -31,7 +31,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-19T15:10:30.403407600Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-04-23T09:32:04.795523500Z" />
         </State>
       </entry>
       <entry key="success()">
@@ -50,10 +50,13 @@
           <timeTargetWasSelectedWithDropDown value="2024-04-19T12:16:40.190095400Z" />
         </State>
       </entry>
-      <entry key="testUploadButtonClicked()">
+      <entry key="testUploadOkInteraction()">
         <State />
       </entry>
-      <entry key="testUploadFragmentInteraction()">
+      <entry key="testUploadWithFileErrorInteraction()">
+        <State />
+      </entry>
+      <entry key="testUploadWithTitleErrorInteraction()">
         <State />
       </entry>
     </value>

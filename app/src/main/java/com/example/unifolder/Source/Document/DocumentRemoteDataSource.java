@@ -101,6 +101,49 @@ public class DocumentRemoteDataSource {
         return future;
     }
 
+    public ListenableFuture<List<Document>> searchDocumentsByTitleAndFilter(String searchQuery, String course, String tag) {
+        SettableFuture<List<Document>> future = SettableFuture.create(); // Utilizziamo SettableFuture per creare un futuro modificabile
+
+        Query query = documentsCollection.whereGreaterThanOrEqualTo("title", searchQuery)
+                .whereLessThanOrEqualTo("title", searchQuery + "\uf8ff");
+
+        if(course != null && !course.isEmpty())
+            query = query.whereEqualTo("course", course);
+
+
+        /*  TODO: case-insensitive version?
+        Query query = documentsCollection
+                .orderBy("title", Query.Direction.ASCENDING)  // Ordina i risultati per titolo in modo case-insensitive
+                .startAt(course.toLowerCase())           // Fai partire la ricerca dal termine in minuscolo
+                .endAt(course.toLowerCase() + "\uf8ff"); // Termina la ricerca al termine in minuscolo seguito da un carattere speciale*/
+
+
+        // Se specificato, aggiungi la clausola per il tag
+        if (tag != null && !tag.isEmpty()) {
+            query = query.whereEqualTo("tag", tag);
+        }
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Document> matchingDocuments = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG,"found doc");
+                        Document doc = document.toObject(Document.class);
+                        matchingDocuments.add(doc);
+                    }
+                    future.set(matchingDocuments); // Imposta il risultato del futuro con i documenti corrispondenti
+                } else {
+                    future.setException(task.getException()); // Imposta un'eccezione nel futuro in caso di errore
+                }
+            }
+        });
+
+        Log.d(TAG,"returning from searchDocumentsByTitleAndFilter()");
+        return future;
+    }
+
     public Task<Uri> uploadDocument(Document document, UploadDocumentCallback uploadDocumentCallback) {
         // Ottieni un riferimento al percorso nel Cloud Storage
         String fileName = "document_" + document.getTitle() + ".pdf"; // Nome del file nel Cloud Storage

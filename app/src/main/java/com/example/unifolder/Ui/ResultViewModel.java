@@ -61,6 +61,54 @@ public class ResultViewModel extends ViewModel {
         }else{
             Log.e("ResultViewModel", "DocumentRepository is null");
         }
+    }
+
+    public void searchDocuments(String course, String tag) {
+        isLoading.setValue(true); // Imposta lo stato di caricamento su true
+        // Ottieni i risultati della ricerca dalla repository
+        if(documentRepository != null){
+            documentRepository.searchDocumentByFilter(course, tag, new SearchResultCallback(){
+
+                @Override
+                public void OnSearchCompleted(List<Document> documents) {
+                    setSearchResultsLiveData(documents);
+                    Log.d(TAG, "data set");
+                }
+
+                @Override
+                public void OnSearchFailed(String error) {
+
+                }
+            });
+        }else{
+            Log.e("ResultViewModel", "DocumentRepository is null");
+        }
+    }
+
+    public void searchDocuments(String course, String tag,String query) {
+        if(query.length()<2) {
+            searchDocuments(course,tag);
+        } else {
+            isLoading.setValue(true); // Imposta lo stato di caricamento su true
+            // Ottieni i risultati della ricerca dalla repository
+            if(documentRepository != null){
+                documentRepository.searchDocumentByTitleAndFilter(query, course, tag, new SearchResultCallback(){
+
+                    @Override
+                    public void OnSearchCompleted(List<Document> documents) {
+                        setSearchResultsLiveData(documents);
+                        Log.d(TAG, "data set");
+                    }
+
+                    @Override
+                    public void OnSearchFailed(String error) {
+
+                    }
+                });
+            }else{
+                Log.e("ResultViewModel", "DocumentRepository is null");
+            }
+        }
 
     }
 }
