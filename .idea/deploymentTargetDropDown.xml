@@ -18,45 +18,19 @@
           <timeTargetWasSelectedWithDropDown value="2024-04-23T09:14:01.817697Z" />
         </State>
       </entry>
-      <entry key="stepping()">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\manue\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-23T09:32:04.795523500Z" />
-        </State>
-      </entry>
-      <entry key="success()">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\manue\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-19T12:16:40.190095400Z" />
-        </State>
-      </entry>
-      <entry key="testUploadOkInteraction()">
+      <entry key="testFilterSearchOkInteraction()">
         <State />
       </entry>
-      <entry key="testUploadWithFileErrorInteraction()">
+      <entry key="testTitleSearchOkInteraction()">
         <State />
       </entry>
       <entry key="testUploadWithTitleErrorInteraction()">
+        <State />
+      </entry>
+      <entry key="titleSearchOk()">
+        <State />
+      </entry>
+      <entry key="typeSearchViewText()">
         <State />
       </entry>
     </value>

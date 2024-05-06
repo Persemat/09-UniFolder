@@ -73,6 +73,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_lastname" />
 
+        <TextView
+            android:id="@+id/user_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/username"
+            android:textColor="@color/darkred"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_email" />
+
         <Button
             android:id="@+id/logout_button"
             android:layout_width="wrap_content"
@@ -81,6 +94,7 @@
             android:drawableTint="@color/white"
             android:text="@string/logout"
             android:textSize="20sp"
+            android:textColor="@color/white"
             android:elevation="3dp"
             android:backgroundTint="@color/darkred"
             android:layout_marginTop="200dp"

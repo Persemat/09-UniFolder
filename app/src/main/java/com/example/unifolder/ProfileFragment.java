@@ -35,8 +35,7 @@ public class ProfileFragment extends Fragment {
     private NavController navController;
     private TextView email;
     private ImageView avatar;
-    private TextView first_name;
-    private TextView last_name;
+    private TextView first_name, last_name, username;
     private UserViewModel userViewModel;
 
 
@@ -104,6 +103,7 @@ public class ProfileFragment extends Fragment {
 
         first_name = view.findViewById(R.id.user_firstname);
         last_name = view.findViewById(R.id.user_lastname);
+        username = view.findViewById(R.id.user_username);
         avatar = view.findViewById(R.id.avatar_image);
         email = view.findViewById(R.id.user_email);
 
@@ -115,6 +115,7 @@ public class ProfileFragment extends Fragment {
                             first_name.setText(user.getFirstName());
                             last_name.setText(user.getLastName());
                             email.setText(user.getEmail());
+                            username.setText("@" + user.getUsername());
                             /*int resourceId = user.getId_avatar();
                             Context context = view.getContext();
                             Drawable drawable = ContextCompat.getDrawable(context, resourceId);

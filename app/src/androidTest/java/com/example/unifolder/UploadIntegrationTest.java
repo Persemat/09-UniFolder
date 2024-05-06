@@ -52,7 +52,7 @@ public class UploadIntegrationTest {
     private static final String ANIMATION_IDLING_RESOURCE_NAME = "AnimationIdlingResource";
     private CountingIdlingResource animationIdlingResource;
 
-    // Regola per avviare MainActivity nel test
+    // Regola per avviare Activity nel test
     @Rule
     public ActivityTestRule<LoginActivity> activityRule = new ActivityTestRule<>(LoginActivity.class);
     //public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
