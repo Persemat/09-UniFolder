@@ -108,13 +108,6 @@ public class HomeFragment extends Fragment {
         NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container_view);
         navController = navHostFragment.getNavController();
 
-        /* Dentro il tuo fragment o activity
-                RecyclerView recyclerView = view.findViewById(R.id.first_recyclerview);
-                 // Recupera la lista di documenti dal tuo database o da altre fonti
-                DocumentAdapter adapter = new DocumentAdapter();
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-       */
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

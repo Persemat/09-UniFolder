@@ -37,7 +37,7 @@ public class DocumentLocalDataSource {
         });
     }
 
-    public Future<Void> saveDocument(Document document, Context context) {
+    public Future<Document> saveDocument(Document document, Context context) {
         return executorService.submit(() -> {
             // Ottieni il riferimento al file remoto dall'URL fornito nel campo fileUrl
             String fileUrl = document.getFileUrl();
@@ -57,6 +57,7 @@ public class DocumentLocalDataSource {
 
                 // Salva il documento nel database Room
                 documentDao.insertDocument(document);
+                return document;
             } catch (Exception e) {
                 Log.e(TAG, "Errore durante il salvataggio del documento locale:", e);
             } finally {

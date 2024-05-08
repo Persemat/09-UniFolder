@@ -42,4 +42,9 @@
         android:name="com.example.unifolder.SearchResultFragment"
         android:label="fragment_search_result"
         tools:layout="@layout/fragment_search_result" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.unifolder.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" />
 </navigation>
