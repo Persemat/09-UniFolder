@@ -1,11 +1,15 @@
 package com.example.unifolder;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+
 @Entity(tableName = "documents")
-public class Document {
+public class Document implements Parcelable {
     @PrimaryKey @NonNull
     private String id;
     private String title;
@@ -23,6 +27,7 @@ public class Document {
         this.tag = tag;
         this.fileUrl = fileUrl;
     }
+
 
     public String getId() {
         return id;
@@ -71,4 +76,41 @@ public class Document {
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(author);
+        dest.writeString(course);
+        dest.writeString(tag);
+        dest.writeString(fileUrl);
+    }
+
+    protected Document(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        author = in.readString();
+        course = in.readString();
+        tag = in.readString();
+        fileUrl = in.readString();
+    }
+
+    public static final Parcelable.Creator<Document> CREATOR = new Parcelable.Creator<Document>() {
+        @Override
+        public Document createFromParcel(Parcel in) {
+            return new Document(in);
+        }
+
+        @Override
+        public Document[] newArray(int size) {
+            return new Document[size];
+        }
+    };
+
 }

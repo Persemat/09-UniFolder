@@ -18,7 +18,7 @@
         android:layout_height="130dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/view_image"
+            android:id="@+id/first_page_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginStart="10dp"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:layout_toEndOf="@id/view_image"
+            android:layout_toEndOf="@id/first_page_image"
             android:gravity="top"
             android:layout_marginTop="8dp"
             android:text="Title"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:layout_toEndOf="@id/view_image"
+            android:layout_toEndOf="@id/first_page_image"
             android:gravity="center|bottom"
             android:layout_marginTop="32dp"
             android:text="course"
@@ -54,10 +54,11 @@
             android:id="@+id/document_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="50dp"
-            android:layout_toEndOf="@id/view_image"
+            android:layout_marginBottom="35dp"
+            android:layout_toEndOf="@id/first_page_image"
             android:gravity="center|bottom"
-            android:layout_marginTop="50dp"
             android:text="tag"
             android:textColor="@color/darkgrey"
             android:textSize="16sp" />

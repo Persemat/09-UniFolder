@@ -1,6 +1,7 @@
 package com.example.unifolder;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -155,5 +157,43 @@ public class DocumentRepository {
     public void getYourUploadedDocuments(String author, SearchResultCallback callback) {
         CompletableFuture<List<Document>> future = getYourUploadedDocumentsAsync(author);
         future.thenAccept(documents -> callback.OnSearchCompleted(documents));
+    }
+    public void renderDocument(Document document, Context context, OnDocumentRenderedCallback onDocumentRenderedCallback){
+        PdfProcessor pdfProcessor;
+
+        pdfProcessor = new PdfProcessor();
+
+        //TODO controllo se abbiamo gia documento in room o è da scaricare
+        CompletableFuture<Document> Future = saveDocumentAsync(document, context);
+        Future.thenAccept(document1 ->  {
+            // Per ogni documento, avvia il processo di estrazione dell'anteprima
+            java.util.concurrent.Future<List<Bitmap>> pagesFuture = pdfProcessor.extractAllPagesImagesFromPdf(document1.getFileUrl());
+
+            // Attendi il completamento di tutti i processi di estrazione delle anteprime
+            List<Bitmap> pagesDocument = new ArrayList<>();
+                try {
+                    pagesDocument = pagesFuture.get();
+                    onDocumentRenderedCallback.OnDocumentRendered(document, pagesDocument );
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(TAG, "Error extracting page", e);
+                    // Aggiungi una bitmap vuota in caso di errore
+                    pagesDocument.add(null);
+                }
+        });
+
+
+
+
+    }
+    private CompletableFuture<Document> saveDocumentAsync(Document document, Context context){
+        return CompletableFuture.supplyAsync(()->{
+            try{
+                return localDataSource.saveDocument(document, context).get();
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
