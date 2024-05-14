@@ -24,10 +24,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
 public class DocumentRemoteDataSource {
@@ -48,9 +46,12 @@ public class DocumentRemoteDataSource {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<Document> matchingDocuments = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (int i = 0; i < task.getResult().size(); i++) {
+                        QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(i);
                         Log.d(TAG,"found doc");
                         Document doc = document.toObject(Document.class);
+                        String id = task.getResult().getDocuments().get(i).getId();
+                        doc.setId(id);
                         matchingDocuments.add(doc);
                     }
                     future.set(matchingDocuments); // Imposta il risultato del futuro con i documenti corrispondenti
@@ -85,9 +86,12 @@ public class DocumentRemoteDataSource {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<Document> matchingDocuments = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (int i = 0; i < task.getResult().size(); i++) {
+                        QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(i);
                         Log.d(TAG,"found doc");
                         Document doc = document.toObject(Document.class);
+                        String id = task.getResult().getDocuments().get(i).getId();
+                        doc.setId(id);
                         matchingDocuments.add(doc);
                     }
                     future.set(matchingDocuments); // Imposta il risultato del futuro con i documenti corrispondenti
@@ -128,9 +132,12 @@ public class DocumentRemoteDataSource {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<Document> matchingDocuments = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (int i = 0; i < task.getResult().size(); i++) {
+                        QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(i);
                         Log.d(TAG,"found doc");
                         Document doc = document.toObject(Document.class);
+                        String id = task.getResult().getDocuments().get(i).getId();
+                        doc.setId(id);
                         matchingDocuments.add(doc);
                     }
                     future.set(matchingDocuments); // Imposta il risultato del futuro con i documenti corrispondenti

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.unifolder.Adapter.DocumentAdapter;
+import com.example.unifolder.Ui.RenderDocumentViewModel;
 import com.example.unifolder.Ui.ResultViewModel;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  * Use the {@link SearchResultFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchResultFragment extends Fragment implements OnDocumentClickListener{
+public class SearchResultFragment extends Fragment{
     private static final String TAG = SearchResultFragment.class.getSimpleName();
     private TextView titleTextView;
     private RecyclerView recyclerView;
@@ -36,6 +37,7 @@ public class SearchResultFragment extends Fragment implements OnDocumentClickLis
     private NavController navController;
     private List<Document> documents;
     private List<Bitmap> bitmaps;
+    private RenderDocumentViewModel renderDocumentViewModel;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -84,7 +86,7 @@ public class SearchResultFragment extends Fragment implements OnDocumentClickLis
 
         titleTextView = view.findViewById(R.id.search_results);
         recyclerView = view.findViewById(R.id.recycler_view);
-
+        renderDocumentViewModel = new ViewModelProvider(this, new RenderDocumentViewModelFactory(requireContext())).get(RenderDocumentViewModel.class);
 
         if(queryTerm != null && !queryTerm.isEmpty()) {
             titleTextView.append(" \"" + queryTerm + "\"");
@@ -110,15 +112,14 @@ public class SearchResultFragment extends Fragment implements OnDocumentClickLis
                             documentAdapter = new DocumentAdapter(documents, bitmaps, new OnDocumentClickListener() {
                                 @Override
                                 public void onDocumentClicked(Document document) {
+                                    renderDocumentViewModel.renderDocument(document, requireContext());
+
                                     // Ottieni il NavController
                                     NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_container_view);
 
-                                    // Crea un bundle per passare i dati del documento al nuovo fragment
-                                    Bundle bundle = new Bundle();
-                                    bundle.putParcelable("document", document);
 
                                     // Naviga al fragment dei dettagli del documento e passa il bundle come argomento
-                                    navController.navigate(R.id.detailFragment, bundle);
+                                    navController.navigate(R.id.detailFragment);
                                 }
                             }); // Assicurati di passare i dati necessari all'adapter
 
@@ -152,8 +153,5 @@ public class SearchResultFragment extends Fragment implements OnDocumentClickLis
 
         return view;
     }
-    @Override
-    public void onDocumentClicked(Document document) {
 
-    }
 }

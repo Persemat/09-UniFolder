@@ -1,14 +1,23 @@
 package com.example.unifolder;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unifolder.Ui.RenderDocumentViewModel;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,9 +26,14 @@ import androidx.navigation.Navigation;
  */
 public class DetailFragment extends Fragment {
 
-
-
     NavController navController;
+    RenderDocumentViewModel renderDocumentViewModel;
+    private Document displayedDocument;
+    private List<Bitmap> documentPages;
+    TextView titleTextView;
+    TextView courseTextView;
+    TextView tagTextView;
+    ImageView scrollDocument;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,7 +80,26 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        renderDocumentViewModel = new ViewModelProvider(this, new RenderDocumentViewModelFactory(requireContext())).get(RenderDocumentViewModel.class);
+        titleTextView = view.findViewById(R.id.doc_title);
+        courseTextView = view.findViewById(R.id.doc_course);
+        tagTextView = view.findViewById(R.id.doc_tag);
+        scrollDocument = view.findViewById(R.id.pdf_image);
 
+        renderDocumentViewModel.getDocumentMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Document>() {
+            @Override
+            public void onChanged(Document document) {
+                displayedDocument = document;
+            }
+        });
+        renderDocumentViewModel.getBitmapMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Bitmap>>() {
+            @Override
+            public void onChanged(List<Bitmap> bitmaps) {
+                documentPages = bitmaps;
+                showDocument();
+            }
+
+        });
 
         // Configura il pulsante di ritorno
         ImageButton closeButton = view.findViewById(R.id.close);
@@ -79,5 +112,11 @@ public class DetailFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void showDocument() {
+        titleTextView.setText(displayedDocument.getTitle());
+        courseTextView.setText(displayedDocument.getCourse());
+        tagTextView.setText(displayedDocument.getTag());
     }
 }

@@ -128,7 +128,7 @@ public class DocumentRepository {
             }
         }, Executors.newSingleThreadExecutor());
     }
-    public void renderDocument(Document document, Context context){
+    public void renderDocument(Document document, Context context, OnDocumentRenderedCallback onDocumentRenderedCallback){
         PdfProcessor pdfProcessor;
 
         pdfProcessor = new PdfProcessor();
@@ -143,14 +143,15 @@ public class DocumentRepository {
             List<Bitmap> pagesDocument = new ArrayList<>();
                 try {
                     pagesDocument = pagesFuture.get();
-
+                    onDocumentRenderedCallback.OnDocumentRendered(document, pagesDocument );
                 } catch (ExecutionException | InterruptedException e) {
                     Log.e(TAG, "Error extracting page", e);
                     // Aggiungi una bitmap vuota in caso di errore
                     pagesDocument.add(null);
                 }
-
         });
+
+
 
 
     }
