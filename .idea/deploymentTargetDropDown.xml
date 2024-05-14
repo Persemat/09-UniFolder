@@ -18,19 +18,10 @@
           <timeTargetWasSelectedWithDropDown value="2024-04-23T09:14:01.817697Z" />
         </State>
       </entry>
-      <entry key="testFilterSearchOkInteraction()">
+      <entry key="testCombinedSearchOkInteraction()">
         <State />
       </entry>
       <entry key="testTitleSearchOkInteraction()">
-        <State />
-      </entry>
-      <entry key="testUploadWithTitleErrorInteraction()">
-        <State />
-      </entry>
-      <entry key="titleSearchOk()">
-        <State />
-      </entry>
-      <entry key="typeSearchViewText()">
         <State />
       </entry>
     </value>

@@ -196,6 +196,8 @@ public class UploadIntegrationTest {
         // Verifichiamo che il file esista
         assertTrue(mockFile.exists());
 
+
+        // TODO ????
         Uri mockUri = Mockito.mock(Uri.class);
 
 
@@ -227,6 +229,8 @@ public class UploadIntegrationTest {
         String title = "Test Title";
         String course = "Test Course";
         String tag = "Test Tag";
+
+        //TODO: mock URi
 
 
         onView(ViewMatchers.withId(R.id.title_editText)).perform(typeText(title));

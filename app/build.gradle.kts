@@ -52,6 +52,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.test:core:1.5.0")
     annotationProcessor("androidx.room:room-compiler:2.6.1") // Processore di annotazioni per generare il codice Room
     implementation("com.google.guava:guava:31.0.1-android")
     implementation("com.google.firebase:firebase-storage:20.3.0")
@@ -73,7 +74,9 @@ dependencies {
     }
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("org.mockito:mockito-core:4.4.0")
+    testImplementation("org.mockito:mockito-core:4.4.0")
+    testImplementation("org.robolectric:robolectric:4.12")
+    androidTestImplementation("org.mockito:mockito-inline:3.11.2") // Se vuoi utilizzare le annotazioni Mockito
     implementation("commons-validator:commons-validator:1.7")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

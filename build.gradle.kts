@@ -4,3 +4,11 @@ plugins {
     id("com.google.gms.google-services") version "4.4.1" apply false
     id("org.jetbrains.kotlin.android") version "1.9.0" apply false
 }
+buildscript {
+    // Altri elementi buildscript ...
+    repositories {
+        // Altri repository ...
+        mavenCentral()
+    }
+    // Altri elementi buildscript ...
+}

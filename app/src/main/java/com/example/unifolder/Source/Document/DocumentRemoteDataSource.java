@@ -48,9 +48,19 @@ public class DocumentRemoteDataSource {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<Document> matchingDocuments = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                    /*for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d(TAG,"found doc");
                         Document doc = document.toObject(Document.class);
+                        matchingDocuments.add(doc);
+                    }*/
+                    for (int i=0; i<task.getResult().size();i++){
+                        QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(i);
+                        Log.d(TAG,"found doc");
+                        Document doc = document.toObject(Document.class);
+                        String id = task.getResult().getDocuments().get(i).getId();
+                        Log.d(TAG,"id: " + id);
+                        doc.setId(id);
                         matchingDocuments.add(doc);
                     }
                     future.set(matchingDocuments); // Imposta il risultato del futuro con i documenti corrispondenti

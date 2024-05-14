@@ -47,7 +47,6 @@ public class SearchIntegrationTest {
         // Disabilita le animazioni
 
         // Lingua it
-
     }
 
     @Before
