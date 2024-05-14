@@ -1,5 +1,7 @@
 package com.example.unifolder.Adapter;
 
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.unifolder.Document;
+import com.example.unifolder.OnDocumentClickListener;
 import com.example.unifolder.R;
 
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.documents = documents;
         this.previews = previews;
         this.listener = listener;
+        this.viewType = VIEW_TYPE_RESULTS;
     }
 
     public DocumentAdapter(List<Document> documents, List<Bitmap> previews) {
@@ -77,15 +81,16 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DocumentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Document document = documents.get(position);
         if(holder instanceof ResultsDocumentViewHolder) {
+            Bitmap bitmap = previews.get(position);
             ((ResultsDocumentViewHolder) holder).titleTextView.setText(document.getTitle());
             ((ResultsDocumentViewHolder) holder).courseTextView.setText(document.getCourse());
             ((ResultsDocumentViewHolder) holder).tagTextView.setText(document.getTag());
-            ((ResultsDocumentViewHolder) holder).previews.get(position);
-            holder.bind(document, bitmap, listener);
-            holder.bind(listener);
+            ((ResultsDocumentViewHolder) holder).firstPageImageView.setImageBitmap(previews.get(position));
+            ((ResultsDocumentViewHolder) holder).bind(document, bitmap, listener);
+            ((ResultsDocumentViewHolder) holder).bind(listener);
         } else if(holder instanceof HomeDocumentViewHolder){
             ((HomeDocumentViewHolder) holder).titleTextView.setText(document.getTitle());
             ((HomeDocumentViewHolder) holder).courseTextView.setText(document.getCourse());
