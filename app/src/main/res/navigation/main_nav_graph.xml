@@ -50,4 +50,9 @@
         android:id="@+id/loginActivity"
         android:name="com.example.unifolder.Welcome.LoginActivity"
         android:label="LoginActivity" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.unifolder.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" />
 </navigation>

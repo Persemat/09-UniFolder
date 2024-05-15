@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+
 @Entity(tableName = "documents")
 public class Document {
     @PrimaryKey @NonNull
@@ -23,6 +24,7 @@ public class Document {
         this.tag = tag;
         this.fileUrl = fileUrl;
     }
+
 
     public String getId() {
         return id;
@@ -71,4 +73,6 @@ public class Document {
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
     }
+
+
 }

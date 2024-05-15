@@ -59,6 +59,7 @@ public class DocumentLocalDataSource {
                 // Salva il documento nel database Room
                 documentDao.insertDocument(document);
                 return document;
+
             } catch (Exception e) {
                 Log.e(TAG, "Errore durante il salvataggio del documento locale:", e);
             } finally {
