@@ -43,7 +43,7 @@ public class UploadViewModel extends ViewModel {
         repository = new DocumentRepository(context);
     }
 
-    public boolean checkInputValuesAndUpload(String title, String username, String course, String tag, Uri selectedFileUri, View v) {
+    public boolean checkInputValuesAndUpload(String title, String username, String course, String tag, Uri selectedFileUri, View v, Context context) {
         if (title == null || title.isEmpty()) {
             Snackbar.make(v, R.string.title_error, Snackbar.LENGTH_SHORT).show();
             return false;
@@ -59,7 +59,7 @@ public class UploadViewModel extends ViewModel {
 
         Document document = new Document(title, username, course, tag, selectedFileUri.toString());
 
-        repository.uploadDocument(document,new SavedDocumentCallback() {
+        repository.uploadDocument(document, context, new SavedDocumentCallback() {
             @Override
             public void onDocumentSaved(Document savedDocument) {
                 Snackbar.make(v,"inserted doc with id: " + savedDocument.getId(), Snackbar.LENGTH_SHORT).show();
@@ -100,7 +100,7 @@ public class UploadViewModel extends ViewModel {
         return 0; // Ritorna 0 se non è possibile ottenere la dimensione del file
     }
 
-    private String getFilePathFromUri(ContentResolver contentResolver, Uri uri) {
+    protected String getFilePathFromUri(ContentResolver contentResolver, Uri uri) {
         String filePath = null;
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = contentResolver.query(uri, projection, null, null, null);

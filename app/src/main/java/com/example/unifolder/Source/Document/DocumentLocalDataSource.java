@@ -38,6 +38,43 @@ public class DocumentLocalDataSource {
         });
     }
 
+    public Future<Void> saveDocument(Document document, Context context, SavedDocumentCallback callback) {
+        return executorService.submit(() -> {
+            // Ottieni il riferimento al file remoto dall'URL fornito nel campo fileUrl
+            String fileUrl = document.getFileUrl();
+            InputStream inputStream = null;
+            try {
+                URL url = new URL(fileUrl);
+                URLConnection connection = url.openConnection();
+                connection.connect();
+                inputStream = connection.getInputStream();
+
+                // Salva il file localmente e ottieni il percorso del file
+                String fileName = "document_" + document.getTitle() + ".pdf";
+                String filePath = LocalStorageManager.saveFileLocally(context, inputStream, fileName);
+
+                // Aggiorna il campo fileUrl del documento con il percorso locale del file
+                document.setFileUrl(filePath);
+
+                // Salva il documento nel database Room
+                documentDao.insertDocument(document);
+
+                callback.onDocumentSaved(document);
+            } catch (Exception e) {
+                Log.e(TAG, "Errore durante il salvataggio del documento locale:", e);
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, "Errore durante la chiusura dello stream di input:", e);
+                    }
+                }
+            }
+            return null;
+        });
+    }
+
     public Future<Document> saveDocument(Document document, Context context) {
         return executorService.submit(() -> {
             // Ottieni il riferimento al file remoto dall'URL fornito nel campo fileUrl

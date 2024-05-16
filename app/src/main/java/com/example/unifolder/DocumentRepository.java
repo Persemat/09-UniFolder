@@ -87,13 +87,14 @@ public class DocumentRepository {
         }, Executors.newSingleThreadExecutor());
     }
 
-    public void uploadDocument(Document document, SavedDocumentCallback callback) {
+    public void uploadDocument(Document document, Context context, SavedDocumentCallback callback) {
         // Invia il documento al DataSource remoto per il caricamento
         remoteDataSource.uploadDocument(document, new UploadDocumentCallback() {
             @Override
             public void onDocumentUploaded(Document uploadedDocument) {
+                Log.d(TAG,"uploadedDoc: " + uploadedDocument.getId()+"; "+uploadedDocument.getFileUrl());
                 // Una volta che il documento è stato caricato con successo, ottieni l'id generato e salva il documento nel DataSource locale
-                localDataSource.saveDocument(uploadedDocument, callback);
+                localDataSource.saveDocument(uploadedDocument, context, callback);
                 // ad operazione terminata, alla callback (passata da ViewModel) viene ritornato il Document
             }
 
@@ -180,18 +181,12 @@ public class DocumentRepository {
                     pagesDocument.add(null);
                 }
         });
-
-
-
-
     }
     private CompletableFuture<Document> saveDocumentAsync(Document document, Context context){
         return CompletableFuture.supplyAsync(()->{
             try{
                 return localDataSource.saveDocument(document, context).get();
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         });

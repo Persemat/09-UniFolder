@@ -79,6 +79,8 @@
     <string name="last_opened">Last documents viewed</string>
     <string name="my_uploads">My uploads</string>
     <string name="need_login" translatable="false">Login?</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
 
 
 </resources>

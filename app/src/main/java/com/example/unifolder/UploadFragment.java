@@ -101,7 +101,7 @@ public class UploadFragment extends Fragment {
         // Inizializza l'ActivityResultLauncher
         pickPdfFileLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
             if (result != null) {
-                //TODO: Gestisci il risultato qui
+                // Gestisci il risultato qui
                 // "result" è l'URI del file selezionato
                 // Esegui qui il caricamento del file
                 selectedFileUri = result;
@@ -141,7 +141,7 @@ public class UploadFragment extends Fragment {
                 String title = titleEditText.getText().toString(),
                     course = courseEditText.getText().toString(),
                     tag = tagSpinner.getSelectedItem().toString();
-                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView());
+                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView(), requireContext());
             }
         });
 

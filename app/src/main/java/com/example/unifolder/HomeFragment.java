@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +59,8 @@ public class HomeFragment extends Fragment {
     private String selectedTag = null;
     private String selectedCourse = null;
     private RecyclerView lastOpenedRecyclerView, uploadsRecyclerView;
+    private DocumentAdapter lastOpenedAdapter;
+    private DocumentAdapter yourUploadsAdapter;
 
 
     public HomeFragment() {
@@ -123,28 +127,54 @@ public class HomeFragment extends Fragment {
         });
 
         // Recupera la lista di documenti dal tuo database o da altre fonti
-        DocumentAdapter lastOpenedAdapter = new DocumentAdapter(DocumentAdapter.VIEW_TYPE_HOME);
         lastOpenedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         homeViewModel.getLastOpened(requireContext(),this);
         homeViewModel.getLastOpenedResultsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Document>>() {
             @Override
             public void onChanged(List<Document> documents) {
-                lastOpenedAdapter.replaceAllDocuments(documents);
-                lastOpenedRecyclerView.setAdapter(lastOpenedAdapter);
-                Log.d(TAG,"lastOpened set with num. "+documents.size()+" elements");
+                homeViewModel.getLastOpenedPreviewsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Bitmap>>() {
+                    @Override
+                    public void onChanged(List<Bitmap> bitmaps) {
+                        lastOpenedAdapter = new DocumentAdapter(documents, bitmaps, new OnDocumentClickListener() {
+                            @Override
+                            public void onDocumentClicked(Document document) {
+                                // TODO
+                                //renderDocumentViewModel.renderDocument(document, requireContext());
+                                // Naviga al fragment dei dettagli del documento e passa il bundle come argomento
+                            }
+                        },DocumentAdapter.VIEW_TYPE_HOME);
+
+                        lastOpenedRecyclerView.setAdapter(lastOpenedAdapter);
+                        Log.d(TAG,"lastOpened set with num. "+documents.size()+" elements");
+                    }
+                });
+
             }
         });
 
         // Recupera la lista di documenti dal tuo database o da altre fonti
-        DocumentAdapter yourUploadsAdapter = new DocumentAdapter(DocumentAdapter.VIEW_TYPE_HOME);
         uploadsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false));
         homeViewModel.getYourUploads(requireContext(),this);
         homeViewModel.getYourUploadsResultsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Document>>() {
             @Override
             public void onChanged(List<Document> documents) {
-                yourUploadsAdapter.replaceAllDocuments(documents);
-                uploadsRecyclerView.setAdapter(yourUploadsAdapter);
-                Log.d(TAG,"yourUploads set with num. "+documents.size()+" elements");
+                homeViewModel.getYourUploadsPreviewsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Bitmap>>() {
+                    @Override
+                    public void onChanged(List<Bitmap> bitmaps) {
+                        yourUploadsAdapter = new DocumentAdapter(documents, bitmaps, new OnDocumentClickListener() {
+                            @Override
+                            public void onDocumentClicked(Document document) {
+                                // TODO
+                                //renderDocumentViewModel.renderDocument(document, requireContext());
+                                // Naviga al fragment dei dettagli del documento e passa il bundle come argomento
+                            }
+                        }, DocumentAdapter.VIEW_TYPE_HOME);
+
+                        uploadsRecyclerView.setAdapter(yourUploadsAdapter);
+                        Log.d(TAG,"yourUploads set with num. "+documents.size()+" elements");
+                    }
+                });
+
             }
         });
 
@@ -155,17 +185,17 @@ public class HomeFragment extends Fragment {
                 // Esempio: avviare la ricerca con i dati immessi dall'utente
 
                 Log.d(TAG,"query: "+query + "; tag: "+selectedTag + "; course: "+selectedCourse);
-                //TODO: pass to viewmodel
+
+                Bundle bundle = new Bundle();
+                bundle.putString("queryTerm",query);
+
                 if(selectedTag!=null || selectedCourse!=null) {
                     resultViewModel.searchDocuments(selectedCourse,selectedTag,query);
-                    navController.navigate(R.id.searchResultFragment);
                 } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("queryTerm",query);
                     resultViewModel.searchDocuments(query);
-                    navController.navigate(R.id.searchResultFragment, bundle);
                 }
 
+                navController.navigate(R.id.searchResultFragment, bundle);
 
                 return true;
             }

@@ -86,6 +86,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_email" />
 
+        <LinearLayout
+            android:id="@+id/darkModeLayout"
+            app:layout_constraintTop_toBottomOf="@id/user_username"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/darkMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="@string/dark_mode"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/themeToggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="@string/dark_mode"
+                android:textOn="@string/light_mode"
+                android:checked="false"
+                app:thumbTint="@color/darkred"
+                app:trackTint="@color/grey"
+                android:padding="16dp" />
+        </LinearLayout>
+
+
+
         <Button
             android:id="@+id/logout_button"
             android:layout_width="wrap_content"
@@ -101,7 +132,7 @@
             app:layout_constraintBottom_toTopOf="@+id/delete_account_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_email"/>
+            app:layout_constraintTop_toBottomOf="@+id/darkModeLayout"/>
 
         <Button
             android:id="@+id/delete_account_button"

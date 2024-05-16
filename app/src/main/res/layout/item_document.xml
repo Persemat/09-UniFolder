@@ -16,7 +16,7 @@
         android:padding="8dp" >
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/doc"
+            android:id="@+id/doc_preview"
             android:src="@drawable/baseline_attach_file_24"
             android:layout_width="match_parent"
             android:layout_height="130dp"

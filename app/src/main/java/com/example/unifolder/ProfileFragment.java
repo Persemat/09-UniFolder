@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,13 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,6 +39,7 @@ import com.example.unifolder.Welcome.UserViewModel;
 import com.example.unifolder.Welcome.UserViewModelFactory;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,12 +47,14 @@ import com.google.android.material.snackbar.Snackbar;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
-
+    private final static String TAG = ProfileFragment.class.getSimpleName();
     private NavController navController;
     private TextView email;
     private ImageView avatar;
     private TextView first_name, last_name, username;
     private UserViewModel userViewModel;
+    private SwitchMaterial themeToggleButton; private TextView colorMode;
+    private SharedPreferences sharedPreferences;  private SharedPreferences.Editor editor;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -111,12 +118,44 @@ public class ProfileFragment extends Fragment {
 
         Button logoutButton = view.findViewById(R.id.logout_button);
         Button deleteButton = view.findViewById(R.id.delete_account_button);
+        themeToggleButton = view.findViewById(R.id.themeToggleButton);
+        colorMode = view.findViewById(R.id.darkMode);
+
+        sharedPreferences = requireActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE);
+        boolean darkMode = sharedPreferences.getBoolean("darkMode",false);
 
         first_name = view.findViewById(R.id.user_firstname);
         last_name = view.findViewById(R.id.user_lastname);
         username = view.findViewById(R.id.user_username);
         avatar = view.findViewById(R.id.avatar_image);
         email = view.findViewById(R.id.user_email);
+
+        if (darkMode) {
+            themeToggleButton.setChecked(false);
+            colorMode.setText(requireContext().getString(R.string.dark_mode));
+        } else {
+            themeToggleButton.setChecked(true);
+            colorMode.setText(requireContext().getString(R.string.light_mode));
+        }
+        themeToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // Attiva il tema chiaro
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    colorMode.setText(requireContext().getString(R.string.light_mode));
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("darkMode", false);
+                } else {
+                    // Attiva il tema scuro
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    colorMode.setText(requireContext().getString(R.string.dark_mode));
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("darkMode", true );
+                }
+                editor.apply();
+            }
+        });
 
         userViewModel.getUserMutableLiveData(userViewModel.getLoggedUser()).observe(
                 getViewLifecycleOwner(), result -> {
@@ -130,8 +169,10 @@ public class ProfileFragment extends Fragment {
 
                             int resourceId = user.getId_avatar();
                             Context context = view.getContext();
+                            Log.d(TAG,"resource id: " + resourceId);
                             Drawable drawable = ContextCompat.getDrawable(context, resourceId);
                             avatar.setImageDrawable(drawable);
+
                         }
                     } else {
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
@@ -237,5 +278,22 @@ public class ProfileFragment extends Fragment {
 
     private String getErrorMessage(String errorType) {
         return errorType;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Salva lo stato del ToggleButton
+        outState.putBoolean("themeChecked", themeToggleButton.isChecked());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        // Ripristina lo stato del ToggleButton
+        if(savedInstanceState != null) {
+            boolean isChecked = savedInstanceState.getBoolean("themeChecked");
+            themeToggleButton.setChecked(isChecked);
+        }
     }
 }

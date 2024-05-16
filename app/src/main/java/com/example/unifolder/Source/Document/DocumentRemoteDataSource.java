@@ -199,6 +199,9 @@ public class DocumentRemoteDataSource {
 
                                         // Aggiorna il documento locale con l'ID generato da Firebase
                                         document.setId(documentId);
+                                        document.setFileUrl(remoteDocument.getFileUrl());
+                                        Log.d(TAG,"docRef path: "+document.getFileUrl());
+                                        Log.d(TAG,"remoteDoc path: "+remoteDocument.getFileUrl());
                                         uploadDocumentCallback.onDocumentUploaded(document);
                                     }
                                 });

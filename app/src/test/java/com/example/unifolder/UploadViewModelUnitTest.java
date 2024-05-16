@@ -28,6 +28,7 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @RunWith(RobolectricTestRunner.class)
 public class UploadViewModelUnitTest {
@@ -101,6 +102,7 @@ public class UploadViewModelUnitTest {
         assertEquals(fileSize, mockSize);
     }
 
+    @Test
     public void testGetFilePathFromUri_ReturnsOk() {
         String mockFilePath = "/sample/foo/fileName.pdf";
 
@@ -134,57 +136,27 @@ public class UploadViewModelUnitTest {
     }
 
     @Test
-    public void testGetDocumentCreationDate_ReturnsOk() throws FileNotFoundException {
-        String creationDate = "01/01/2000 04:20:00";
-        String mockFilePath = "/sample/foo/fileName.pdf";
-
-        // Crea un mock dell'oggetto Uri
+    public void testGetDocumentCreationDate_ReturnsOk() throws Exception {
+        // Mock Uri e oggetti correlati
         Uri uri = mock(Uri.class);
-
+        ParcelFileDescriptor parcelFileDescriptorMock = mock(ParcelFileDescriptor.class);
         // Crea un mock dell'oggetto ContentResolver
         ContentResolver contentResolver = mock(ContentResolver.class);
+        when(contentResolver.openFileDescriptor(eq(uri), eq("r"))).thenReturn(parcelFileDescriptorMock);
 
-        // Crea un mock dell'oggetto Cursor
-        Cursor cursor = mock(Cursor.class);
+        // Mock FileDescriptorWrapper invece di FileDescriptor
+        FileDescriptor fileDescriptorMock = mock(FileDescriptor.class);
+        FileDescriptorWrapper fileDescriptorWrapperMock = mock(FileDescriptorWrapper.class);
+        //when(fileDescriptorWrapperMock.getFileDescriptor()).thenReturn(fileDescriptorWrapperMock);
 
-        // Specifica il comportamento desiderato quando il metodo query() viene chiamato sull'oggetto ContentResolver
-        // In questo esempio, stiamo simulando la restituzione di un cursore non nullo e valido
-        when(contentResolver.query(uri, null, null, null, null)).thenReturn(cursor);
+        // Imposta il comportamento desiderato quando viene chiamato getFileDescriptor() su FileDescriptorWrapper
+        when(parcelFileDescriptorMock.getFileDescriptor()).thenReturn(fileDescriptorMock);
 
-        // Specifica il comportamento desiderato quando il metodo moveToFirst() viene chiamato sul cursore
-        when(cursor.moveToFirst()).thenReturn(true);
-
-        // Specifica il comportamento desiderato quando il metodo getColumnIndex() viene chiamato sul cursore
-        // In questo esempio, stiamo simulando che il nome del file sia presente nella colonna DISPLAY_NAME
-        when(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).thenReturn(0);
-
-        // Specifica il comportamento desiderato quando il metodo getString() viene chiamato sul cursore
-        // In questo esempio, stiamo simulando il recupero del nome del file dalla colonna DISPLAY_NAME
-        when(cursor.getString(0)).thenReturn(mockFilePath);
-
-
-        // Mock del metodo openFileDescriptor() del ContentResolver
-        ParcelFileDescriptor parcelFileDescriptor = ParcelFileDescriptor.adoptFd(123); // Simula un file descriptor valido
-        when(contentResolver.openFileDescriptor(eq(uri), eq("r"))).thenReturn(parcelFileDescriptor);
-
-        // Crea un mock dell'oggetto FileDescriptor
-        FileDescriptor fileDescriptor = mock(FileDescriptor.class);
-        when(parcelFileDescriptor.getFileDescriptor()).thenReturn(fileDescriptor);
-
-        // Simula il comportamento di getLastModified() del FileDescriptor
-        when(fileDescriptor.valid()).thenReturn(true);
-        when(fileDescriptor.toString()).thenReturn(mockFilePath);
-
-        // Simula il recupero della data di creazione del file
-        File file = mock(File.class);
-        when(file.lastModified()).thenReturn(946688400000L); // 01/01/2000 04:20:00
-        //whenNew(File.class).withArguments(mockFilePath).thenReturn(file);
-
-        // Esegui il metodo da testare
+        // Esegui il metodo che vuoi testare
         String result = uploadViewModel.getDocumentCreationDate(contentResolver, uri);
 
-        // Verifica che il metodo abbia restituito il risultato atteso
-        assertEquals(creationDate, result);
+        // Verifica il risultato
+        assertEquals("expectedCreationDate", result);
     }
 
     @Test
@@ -196,5 +168,17 @@ public class UploadViewModelUnitTest {
         assertEquals("0 B",zero);
         assertEquals("1,00 KB",oneKByte);
         assertEquals("1,00 MB",oneMByte);
+    }
+
+    private class FileDescriptorWrapper {
+        private final FileDescriptor fileDescriptor;
+
+        public FileDescriptorWrapper(FileDescriptor fileDescriptor) {
+            this.fileDescriptor = fileDescriptor;
+        }
+
+        public FileDescriptor getFileDescriptor() {
+            return fileDescriptor;
+        }
     }
 }

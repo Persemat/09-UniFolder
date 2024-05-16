@@ -2,6 +2,7 @@ package com.example.unifolder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
@@ -22,13 +23,20 @@ import com.example.unifolder.Util.ServiceLocator;
 import com.example.unifolder.Welcome.UserViewModel;
 import com.example.unifolder.Welcome.UserViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class HomeViewModel extends ViewModel {
     private static final String TAG = HomeViewModel.class.getSimpleName();
+    private static final String TYPE_LAST_OPENED = "LastOpened";
+    private static final String TYPE_YOUR_UPLOADS = "YourUploads";
     private DocumentRepository documentRepository;
     private final MutableLiveData<List<Document>> lastOpenedResultsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Bitmap>> lastOpenedPreviewsLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<Document>> yourUploadsResultsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Bitmap>> yourUploadsPreviewsLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> authUsernameLiveData = new MutableLiveData<>();
     private IUserRepository userRepository;
     private UserViewModel userViewModel;
@@ -42,6 +50,14 @@ public class HomeViewModel extends ViewModel {
         Log.d(TAG,"posted value");
     }
 
+    public MutableLiveData<List<Bitmap>> getLastOpenedPreviewsLiveData() {
+        return lastOpenedPreviewsLiveData;
+    }
+
+    public void setLastOpenedPreviewsLiveData(List<Bitmap> bitmaps) {
+        lastOpenedPreviewsLiveData.postValue(bitmaps);
+    }
+
     public LiveData<List<Document>> getYourUploadsResultsLiveData() {
         return yourUploadsResultsLiveData;
     }
@@ -49,6 +65,14 @@ public class HomeViewModel extends ViewModel {
     public void setYourUploadsResultsLiveData(List<Document> documentList){
         yourUploadsResultsLiveData.postValue(documentList);
         Log.d(TAG,"posted value");
+    }
+
+    public MutableLiveData<List<Bitmap>> getYourUploadsPreviewsLiveData() {
+        return yourUploadsPreviewsLiveData;
+    }
+
+    public void setYourUploadsPreviewsLiveData(List<Bitmap> bitmaps) {
+        yourUploadsPreviewsLiveData.postValue(bitmaps);
     }
 
     public LiveData<String> getAuthUsernameLiveData() {
@@ -70,7 +94,8 @@ public class HomeViewModel extends ViewModel {
                 documentRepository.getLastOpenedDocuments(s, new SearchResultCallback() {
                     @Override
                     public void OnSearchCompleted(List<Document> documents) {
-                        setLastOpenedResultsLiveData(documents);
+                        //setLastOpenedResultsLiveData(documents);
+                        extractDocumentPreviews(documents,TYPE_LAST_OPENED, context);
                     }
 
                     @Override
@@ -93,7 +118,8 @@ public class HomeViewModel extends ViewModel {
                 documentRepository.getYourUploadedDocuments(s, new SearchResultCallback() {
                     @Override
                     public void OnSearchCompleted(List<Document> documents) {
-                        setYourUploadsResultsLiveData(documents);
+                        //setYourUploadsResultsLiveData(documents);
+                        extractDocumentPreviews(documents,TYPE_YOUR_UPLOADS,context);
                     }
 
                     @Override
@@ -103,8 +129,39 @@ public class HomeViewModel extends ViewModel {
                 });
             }
         });
+    }
 
+    private void extractDocumentPreviews(List<Document> documents, String destinationType, Context context) {
+        List<Future<Bitmap>> previewFutures = new ArrayList<>();
+        PdfProcessor pdfProcessor = new PdfProcessor();
 
+        // Per ogni documento, avvia il processo di estrazione dell'anteprima
+        for (Document document : documents) {
+            Future<Bitmap> previewFuture = pdfProcessor.extractFirstPageImageFromPdf(document.getFileUrl(), context);
+            previewFutures.add(previewFuture);
+        }
+
+        // Attendi il completamento di tutti i processi di estrazione delle anteprime
+        List<Bitmap> previews = new ArrayList<>();
+        for (Future<Bitmap> future : previewFutures) {
+            try {
+                Bitmap preview = future.get();
+                previews.add(preview);
+            } catch (ExecutionException | InterruptedException e) {
+                Log.e(TAG, "Error extracting preview", e);
+                // Aggiungi una bitmap vuota in caso di errore
+                previews.add(null);
+            }
+        }
+
+        // Imposta i risultati nella LiveData
+        if(destinationType.equals(TYPE_LAST_OPENED)) {
+            lastOpenedResultsLiveData.postValue(documents);
+            lastOpenedPreviewsLiveData.postValue(previews);
+        } else if(destinationType.equals(TYPE_YOUR_UPLOADS)) {
+            yourUploadsResultsLiveData.postValue(documents);
+            yourUploadsPreviewsLiveData.postValue(previews);
+        }
 
     }
 

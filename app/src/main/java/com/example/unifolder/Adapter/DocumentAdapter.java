@@ -48,6 +48,13 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.viewType = viewType;
     }
 
+    public DocumentAdapter(List<Document> documents, List<Bitmap> previews, OnDocumentClickListener listener, int viewType) {
+        this.documents = documents;
+        this.previews = previews;
+        this.listener = listener;
+        this.viewType = viewType;
+    }
+
     public DocumentAdapter(List<Document> documents) {
         this.documents = new ArrayList<>();
     }
@@ -92,8 +99,11 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ((ResultsDocumentViewHolder) holder).bind(document, bitmap, listener);
             ((ResultsDocumentViewHolder) holder).bind(listener);
         } else if(holder instanceof HomeDocumentViewHolder){
+            Bitmap bitmap = previews.get(position);
             ((HomeDocumentViewHolder) holder).titleTextView.setText(document.getTitle());
             ((HomeDocumentViewHolder) holder).courseTextView.setText(document.getCourse());
+            ((HomeDocumentViewHolder) holder).bind(document, bitmap, listener);
+            ((HomeDocumentViewHolder) holder).bind(listener);
         }
 
     }
@@ -141,11 +151,32 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public static class HomeDocumentViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView, courseTextView;
+        ImageView firstPageImageView;
+        OnDocumentClickListener listener;
 
         public HomeDocumentViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.title_textView);
             courseTextView = itemView.findViewById(R.id.course);
+            firstPageImageView = itemView.findViewById(R.id.doc_preview);
+        }
+        public void bind(final Document document, Bitmap bitmap, final OnDocumentClickListener listener) {
+            titleTextView.setText(document.getTitle());
+            firstPageImageView.setImageBitmap(bitmap);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onDocumentClicked(document);
+                }
+            });
+
+
+        }
+        public void bind(final OnDocumentClickListener listener) {
+            this.listener = listener;
+
+            // Altri codici...
         }
     }
 }
