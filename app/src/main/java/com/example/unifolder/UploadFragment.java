@@ -153,31 +153,9 @@ public class UploadFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String title = titleEditText.getText().toString(),
-                    course = courseEditText.getText().toString(),
-                    tag = tagSpinner.getSelectedItem().toString();
-                progressBar.setVisibility(View.VISIBLE);
-                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView(), requireContext(),
-                        new SavedDocumentCallback() {
-                            @Override
-                            public void onDocumentSaved(Document savedDocument) {
-                                Log.d(TAG,"docId: " + savedDocument.getId() +
-                                        "docTitle: " + savedDocument.getTitle() +
-                                        "author: " + savedDocument.getAuthor() +
-                                        "url: " + savedDocument.getFileUrl());
-                                /*Log.d(TAG,"onDocSaved()");
-                                navController.navigate(R.id.detailFragment);
-                                Log.d(TAG,"after navigate");
-                                renderDocumentViewModel.renderDocument(savedDocument, requireContext());
-                                Log.d(TAG,"after renderDocument()");*/
-                                Snackbar.make(v,"inserted doc with id: " + savedDocument.getId(), Snackbar.LENGTH_SHORT).show();
-                                // todo: navigate to document details fragment
-                            }
-
-                            @Override
-                            public void onSaveFailed(String errorMessage) {
-                                Snackbar.make(v,"doc not saved", Snackbar.LENGTH_SHORT).show();
-                            }
-                        });
+                        course = courseEditText.getText().toString(),
+                        tag = tagSpinner.getSelectedItem().toString();
+                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView(), requireContext());
             }
         });
 
