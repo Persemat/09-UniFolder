@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SearchResultFragment" >
+    tools:context=".SearchResultFragment"
+    android:layout_marginBottom="80dp">
 
     <TextView
         android:id="@+id/search_results"
@@ -40,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_results"
-        tools:listitem="@layout/list_results" />
+        tools:listitem="@layout/list_results"/>
 
 
 
