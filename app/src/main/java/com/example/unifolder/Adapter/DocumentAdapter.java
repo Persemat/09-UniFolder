@@ -16,6 +16,7 @@ import com.example.unifolder.OnDocumentClickListener;
 import com.example.unifolder.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -53,7 +54,9 @@ public class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void replaceAllDocuments(List<Document> documents) {
+        Collections.reverse(documents);
         this.documents = documents;
+        notifyDataSetChanged();
     }
 
     @Override

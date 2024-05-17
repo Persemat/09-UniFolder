@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class DocumentRepository {
     private static final String TAG = DocumentRepository.class.getSimpleName();
@@ -167,7 +166,7 @@ public class DocumentRepository {
         CompletableFuture<Document> Future = saveDocumentAsync(document, context);
         Future.thenAccept(document1 ->  {
             // Per ogni documento, avvia il processo di estrazione dell'anteprima
-            java.util.concurrent.Future<List<Bitmap>> pagesFuture = pdfProcessor.extractAllPagesImagesFromPdf(document1.getFileUrl());
+            java.util.concurrent.Future<List<Bitmap>> pagesFuture = pdfProcessor.extractAllPagesImagesFromPdf(document1.getFileUrl(), context);
 
             // Attendi il completamento di tutti i processi di estrazione delle anteprime
             List<Bitmap> pagesDocument = new ArrayList<>();

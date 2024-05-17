@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.activity:activity:1.8.2")
     implementation ("androidx.recyclerview:recyclerview:1.3.2")
