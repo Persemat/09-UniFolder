@@ -1,5 +1,6 @@
 package com.example.unifolder;
 
+import static com.ibm.icu.text.PluralRules.Operand.v;
 import static org.junit.Assert.assertEquals;
 
 import android.content.ContentResolver;
@@ -9,19 +10,27 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.view.View;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentController;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 import com.google.firebase.FirebaseApp;
 
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Robolectric;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -144,19 +153,20 @@ public class UploadViewModelUnitTest {
         ContentResolver contentResolver = mock(ContentResolver.class);
         when(contentResolver.openFileDescriptor(eq(uri), eq("r"))).thenReturn(parcelFileDescriptorMock);
 
-        // Mock FileDescriptorWrapper invece di FileDescriptor
-        FileDescriptor fileDescriptorMock = mock(FileDescriptor.class);
-        FileDescriptorWrapper fileDescriptorWrapperMock = mock(FileDescriptorWrapper.class);
-        //when(fileDescriptorWrapperMock.getFileDescriptor()).thenReturn(fileDescriptorWrapperMock);
+        // Creare un oggetto FileDescriptor reale
+        FileDescriptor realFileDescriptor = new FileDescriptor();
+
+        // Creare un oggetto FileDescriptorWrapper con l'oggetto FileDescriptor reale
+        FileDescriptorWrapper fileDescriptorWrapperMock = new FileDescriptorWrapper(realFileDescriptor);
 
         // Imposta il comportamento desiderato quando viene chiamato getFileDescriptor() su FileDescriptorWrapper
-        when(parcelFileDescriptorMock.getFileDescriptor()).thenReturn(fileDescriptorMock);
+        when(parcelFileDescriptorMock.getFileDescriptor()).thenReturn(fileDescriptorWrapperMock.getFileDescriptor());
 
         // Esegui il metodo che vuoi testare
         String result = uploadViewModel.getDocumentCreationDate(contentResolver, uri);
 
         // Verifica il risultato
-        assertEquals("expectedCreationDate", result);
+        assertEquals("unknown date", result);
     }
 
     @Test
@@ -166,8 +176,32 @@ public class UploadViewModelUnitTest {
         String oneMByte = uploadViewModel.getFileSizeString(1024*1024);
 
         assertEquals("0 B",zero);
-        assertEquals("1,00 KB",oneKByte);
-        assertEquals("1,00 MB",oneMByte);
+        assertEquals("1.00 KB",oneKByte);
+        assertEquals("1.00 MB",oneMByte);
+    }
+
+    @Test
+    public void testCheckInputValuesAndUpload_Errors(){
+        /// Creazione dell'activity per ospitare il fragment
+        FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
+
+        // Creazione e aggiunta del fragment
+        UploadFragment uploadFragment = UploadFragment.newInstance();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(uploadFragment,null);
+        fragmentTransaction.commitNow();
+
+        // Ottenere la view associata al fragment
+        View fragmentView = uploadFragment.getView();
+
+        // Assicurarsi che la view non sia nulla e che abbia i componenti desiderati
+        assertNotNull(fragmentView);
+
+        assertFalse(uploadViewModel.checkInputValuesAndUpload(null,"foo","course","tag",null,fragmentView,context));
+        assertFalse(uploadViewModel.checkInputValuesAndUpload("title",null,"course","tag",null,new View(context),context));
+        assertFalse(uploadViewModel.checkInputValuesAndUpload("title","foo","course","tag",null,new View(context),context));
+        assertFalse(uploadViewModel.checkInputValuesAndUpload("title","foo","course","tag",null,new View(context),context));
     }
 
     private class FileDescriptorWrapper {

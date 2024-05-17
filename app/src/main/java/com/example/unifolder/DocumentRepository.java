@@ -159,14 +159,34 @@ public class DocumentRepository {
         CompletableFuture<List<Document>> future = getYourUploadedDocumentsAsync(author);
         future.thenAccept(documents -> callback.OnSearchCompleted(documents));
     }
-    public void renderDocument(Document document, Context context, OnDocumentRenderedCallback onDocumentRenderedCallback){
+
+    private CompletableFuture<Document> getDocumentByIdAsync(String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return localDataSource.getDocumentById(id).get();
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    public void renderDocument(Document document, Context context, OnDocumentRenderedCallback onDocumentRenderedCallback) throws ExecutionException, InterruptedException {
         PdfProcessor pdfProcessor;
 
         pdfProcessor = new PdfProcessor();
 
-        //TODO controllo se abbiamo gia documento in room o è da scaricare
-        CompletableFuture<Document> Future = saveDocumentAsync(document, context);
-        Future.thenAccept(document1 ->  {
+        //controllo se abbiamo gia documento in room o è da scaricare
+        CompletableFuture<Document> result = getDocumentByIdAsync(document.getId());
+
+        CompletableFuture<Document> future;
+        if(result.get() == null) {
+            Log.d(TAG,"doc not in local");
+            future = saveDocumentAsync(document, context);
+        } else {
+            Log.d(TAG,"doc already in local");
+            future = result;
+        }
+
+        future.thenAccept(document1 ->  {
             // Per ogni documento, avvia il processo di estrazione dell'anteprima
             java.util.concurrent.Future<List<Bitmap>> pagesFuture = pdfProcessor.extractAllPagesImagesFromPdf(document1.getFileUrl());
 

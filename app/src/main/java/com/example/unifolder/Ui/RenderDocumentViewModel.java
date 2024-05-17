@@ -11,6 +11,7 @@ import com.example.unifolder.DocumentRepository;
 import com.example.unifolder.OnDocumentRenderedCallback;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class RenderDocumentViewModel extends ViewModel {
     private MutableLiveData<Document> documentMutableLiveData = new MutableLiveData<>();
@@ -38,18 +39,24 @@ public class RenderDocumentViewModel extends ViewModel {
     }
 
     public void renderDocument(Document document, Context context){
-        documentRepository.renderDocument(document, context, new OnDocumentRenderedCallback() {
-            @Override
-            public void OnDocumentRendered(Document document, List<Bitmap> bitmaps) {
-                setDocumentMutableLiveData(document);
-                setBitmapMutableLiveData(bitmaps);
-            }
+        try {
+            documentRepository.renderDocument(document, context, new OnDocumentRenderedCallback() {
+                @Override
+                public void OnDocumentRendered(Document document, List<Bitmap> bitmaps) {
+                    setDocumentMutableLiveData(document);
+                    setBitmapMutableLiveData(bitmaps);
+                }
 
-            @Override
-            public void OnFailed(String ErrorMessage) {
+                @Override
+                public void OnFailed(String ErrorMessage) {
 
-            }
-        });
+                }
+            });
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
