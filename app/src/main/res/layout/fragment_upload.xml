@@ -144,7 +144,7 @@
                     <TextView
                         android:id="@+id/uploadDisclaimer_textView"
                         app:layout_constraintTop_toBottomOf="@id/uploadInput_layout"
-                        android:textColor="?android:textColorPrimary"
+                        android:textColor="?android:textColorSecondary"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="8dp"
                         android:layout_width="wrap_content"
