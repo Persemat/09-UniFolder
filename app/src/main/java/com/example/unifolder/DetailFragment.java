@@ -2,11 +2,11 @@ package com.example.unifolder;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +14,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.unifolder.Adapter.DocumentPagerAdapter;
 import com.example.unifolder.Ui.RenderDocumentViewModel;
 
 import java.util.List;
@@ -25,7 +27,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class DetailFragment extends Fragment {
-
+    private static final String TAG = DetailFragment.class.getSimpleName();
     NavController navController;
     RenderDocumentViewModel renderDocumentViewModel;
     private Document displayedDocument;
@@ -33,7 +35,7 @@ public class DetailFragment extends Fragment {
     TextView titleTextView;
     TextView courseTextView;
     TextView tagTextView;
-    ImageView scrollDocument;
+    private ViewPager2 documentViewPager;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,23 +82,27 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
+
         renderDocumentViewModel = new ViewModelProvider(this, new RenderDocumentViewModelFactory(requireContext())).get(RenderDocumentViewModel.class);
         titleTextView = view.findViewById(R.id.doc_title);
         courseTextView = view.findViewById(R.id.doc_course);
         tagTextView = view.findViewById(R.id.doc_tag);
-        scrollDocument = view.findViewById(R.id.pdf_image);
+        documentViewPager = view.findViewById(R.id.document_view_pager);
 
         renderDocumentViewModel.getDocumentMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Document>() {
             @Override
             public void onChanged(Document document) {
                 displayedDocument = document;
+                showDocument();
             }
         });
         renderDocumentViewModel.getBitmapMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Bitmap>>() {
             @Override
             public void onChanged(List<Bitmap> bitmaps) {
+                Log.d(TAG, "Observe bitmaps ");
                 documentPages = bitmaps;
-                showDocument();
+                DocumentPagerAdapter pagerAdapter = new DocumentPagerAdapter(requireContext(), documentPages);
+                documentViewPager.setAdapter(pagerAdapter);
             }
 
         });

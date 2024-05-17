@@ -69,10 +69,56 @@ public class PdfProcessor {
         });
     }
 
-    public Future<Bitmap> extractFirstPageImageFromPdf(String pdfUrl, Context context) {
-        Log.d(TAG,"url is: " + pdfUrl);
+        public Future<Bitmap> extractFirstPageImageFromPdf(String pdfUrl, Context context) {
+            Log.d(TAG,"url is: " + pdfUrl);
+            return executorService.submit(() -> {
+                Bitmap firstPageBitmap = null;
+                ParcelFileDescriptor parcelFileDescriptor = null;
+
+                try {
+                    InputStream inputStream;
+                    if (isLocalRoomReference(pdfUrl)) {
+                        // Se l'URL è un riferimento locale a Room, ottieni l'InputStream direttamente
+                        inputStream = getInputStreamFromLocalRoomReference(pdfUrl,context);
+                    } else {
+                        // Altrimenti, scarica il PDF dall'URL remoto
+                        inputStream = downloadFile(pdfUrl);
+                    }
+
+                    // Save PDF to a temporary file
+                    File pdfFile = savePdfToTemporaryFile(inputStream);
+
+                    // Open PDF for rendering
+                    parcelFileDescriptor = ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY);
+                    PdfRenderer pdfRenderer = new PdfRenderer(parcelFileDescriptor);
+
+                    // Render the first page of PDF
+                    PdfRenderer.Page page = pdfRenderer.openPage(0);
+                    firstPageBitmap = Bitmap.createBitmap(page.getWidth(), page.getHeight(), Bitmap.Config.ARGB_8888);
+                    page.render(firstPageBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+
+                    // Close the PDF renderer and the file descriptor
+                    page.close();
+                    pdfRenderer.close();
+                } catch (IOException e) {
+                    Log.e(TAG, "Error extracting first page image from PDF", e);
+                } finally {
+                    if (parcelFileDescriptor != null) {
+                        try {
+                            parcelFileDescriptor.close();
+                        } catch (IOException e) {
+                            Log.e(TAG, "Error closing ParcelFileDescriptor", e);
+                        }
+                    }
+                }
+
+                return firstPageBitmap;
+            });
+        }
+
+    public Future<List<Bitmap>> extractAllPagesImagesFromPdf(String pdfUrl, Context context) {
         return executorService.submit(() -> {
-            Bitmap firstPageBitmap = null;
+            List<Bitmap> pagesBitmaps = new ArrayList<>();
             ParcelFileDescriptor parcelFileDescriptor = null;
 
             try {
@@ -84,46 +130,6 @@ public class PdfProcessor {
                     // Altrimenti, scarica il PDF dall'URL remoto
                     inputStream = downloadFile(pdfUrl);
                 }
-
-                // Save PDF to a temporary file
-                File pdfFile = savePdfToTemporaryFile(inputStream);
-
-                // Open PDF for rendering
-                parcelFileDescriptor = ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY);
-                PdfRenderer pdfRenderer = new PdfRenderer(parcelFileDescriptor);
-
-                // Render the first page of PDF
-                PdfRenderer.Page page = pdfRenderer.openPage(0);
-                firstPageBitmap = Bitmap.createBitmap(page.getWidth(), page.getHeight(), Bitmap.Config.ARGB_8888);
-                page.render(firstPageBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-
-                // Close the PDF renderer and the file descriptor
-                page.close();
-                pdfRenderer.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Error extracting first page image from PDF", e);
-            } finally {
-                if (parcelFileDescriptor != null) {
-                    try {
-                        parcelFileDescriptor.close();
-                    } catch (IOException e) {
-                        Log.e(TAG, "Error closing ParcelFileDescriptor", e);
-                    }
-                }
-            }
-
-            return firstPageBitmap;
-        });
-    }
-
-    public Future<List<Bitmap>> extractAllPagesImagesFromPdf(String pdfUrl) {
-        return executorService.submit(() -> {
-            List<Bitmap> pagesBitmaps = new ArrayList<>();
-            ParcelFileDescriptor parcelFileDescriptor = null;
-
-            try {
-                // Download PDF from Firebase URL
-                InputStream inputStream = downloadFile(pdfUrl);
 
                 // Save PDF to a temporary file
                 File pdfFile = savePdfToTemporaryFile(inputStream);
@@ -225,6 +231,5 @@ public class PdfProcessor {
         // Restituisci il percorso estratto
         return pdfUrl.substring("room://".length());
     }
-
 }
 
