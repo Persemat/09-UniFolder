@@ -12,6 +12,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,15 +22,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.unifolder.Data.User.IUserRepository;
 import com.example.unifolder.Model.Result;
 import com.example.unifolder.Model.User;
+import com.example.unifolder.Ui.RenderDocumentViewModel;
 import com.example.unifolder.Util.ServiceLocator;
 import com.example.unifolder.Welcome.UserViewModel;
 import com.example.unifolder.Welcome.UserViewModelFactory;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -57,8 +62,10 @@ public class UploadFragment extends Fragment {
     private Button attachButton;
     private View documentDetailsLayout;
     private Uri selectedFileUri;
+    private ProgressBar progressBar;
     private Button submitButton;
     private String username;
+    private RenderDocumentViewModel renderDocumentViewModel;
 
 
     public UploadFragment() {
@@ -69,8 +76,7 @@ public class UploadFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * 
      * @return A new instance of fragment UploadFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -115,10 +121,19 @@ public class UploadFragment extends Fragment {
         documentDetailsLayout = view.findViewById(R.id.uploadedDocDetails);
             documentDetailsLayout.setVisibility(View.GONE);
         submitButton = view.findViewById(R.id.submit_button);
+        progressBar = view.findViewById(R.id.progress_bar);
+            progressBar.setVisibility(View.GONE);
 
         uploadViewModel = new ViewModelProvider(this,
                 new UploadViewModelFactory(requireContext())).get(UploadViewModel.class);
         getUsername();
+
+        renderDocumentViewModel = new ViewModelProvider(this,
+                new RenderDocumentViewModelFactory(requireContext())).get(RenderDocumentViewModel.class);
+
+        //Inizializza il NavController ottenendolo dal NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container_view);
+        NavController navController = navHostFragment.getNavController();
 
         courseEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +155,29 @@ public class UploadFragment extends Fragment {
                 String title = titleEditText.getText().toString(),
                     course = courseEditText.getText().toString(),
                     tag = tagSpinner.getSelectedItem().toString();
-                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView(), requireContext());
+                progressBar.setVisibility(View.VISIBLE);
+                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView(), requireContext(),
+                        new SavedDocumentCallback() {
+                            @Override
+                            public void onDocumentSaved(Document savedDocument) {
+                                Log.d(TAG,"docId: " + savedDocument.getId() +
+                                        "docTitle: " + savedDocument.getTitle() +
+                                        "author: " + savedDocument.getAuthor() +
+                                        "url: " + savedDocument.getFileUrl());
+                                /*Log.d(TAG,"onDocSaved()");
+                                navController.navigate(R.id.detailFragment);
+                                Log.d(TAG,"after navigate");
+                                renderDocumentViewModel.renderDocument(savedDocument, requireContext());
+                                Log.d(TAG,"after renderDocument()");*/
+                                Snackbar.make(v,"inserted doc with id: " + savedDocument.getId(), Snackbar.LENGTH_SHORT).show();
+                                // todo: navigate to document details fragment
+                            }
+
+                            @Override
+                            public void onSaveFailed(String errorMessage) {
+                                Snackbar.make(v,"doc not saved", Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 

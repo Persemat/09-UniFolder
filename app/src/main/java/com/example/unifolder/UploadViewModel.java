@@ -43,7 +43,7 @@ public class UploadViewModel extends ViewModel {
         repository = new DocumentRepository(context);
     }
 
-    public boolean checkInputValuesAndUpload(String title, String username, String course, String tag, Uri selectedFileUri, View v, Context context) {
+    public boolean checkInputValuesAndUpload(String title, String username, String course, String tag, Uri selectedFileUri, View v, Context context, SavedDocumentCallback callback) {
         if (title == null || title.isEmpty()) {
             Snackbar.make(v, R.string.title_error, Snackbar.LENGTH_SHORT).show();
             return false;
@@ -59,18 +59,7 @@ public class UploadViewModel extends ViewModel {
 
         Document document = new Document(title, username, course, tag, selectedFileUri.toString());
 
-        repository.uploadDocument(document, context, new SavedDocumentCallback() {
-            @Override
-            public void onDocumentSaved(Document savedDocument) {
-                Snackbar.make(v,"inserted doc with id: " + savedDocument.getId(), Snackbar.LENGTH_SHORT).show();
-                // todo: navigate to document details fragment
-            }
-
-            @Override
-            public void onSaveFailed(String errorMessage) {
-                Snackbar.make(v,"doc not saved", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        repository.uploadDocument(document, context, callback);
 
         return true;
     }

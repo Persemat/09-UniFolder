@@ -179,10 +179,22 @@
             android:layout_marginTop="20dp"
             app:icon="@drawable/baseline_arrow_forward_ios_24"
             app:iconTint="?android:textAppearanceButton"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/form_layout" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_bar"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:indicatorColor="@color/darkred"
+            app:trackColor="@color/darkgrey"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/submit_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
