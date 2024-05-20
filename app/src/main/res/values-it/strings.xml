@@ -38,7 +38,6 @@
     <string name="error">Qualcosa è andato storto</string>
     <string name="close">Chiudi</string>
     <string name="email_sent">Email inviata per reset password</string>
-    <string name="username">Username</string>
     <string name="search_results">Risultati della ricerca per </string>
     <string-array name="options_upload_spinner">
         <item name="Lesson notes">Appunti lezione</item>
@@ -64,4 +63,5 @@
     <string name="welcome">Buongiorno, </string>
     <string name="last_opened">Ultimi documenti aperti</string>
     <string name="my_uploads">I miei caricamenti</string>
+    <string name="doc_uploaded_successfully">Documento caricato con successo!</string>
 </resources>

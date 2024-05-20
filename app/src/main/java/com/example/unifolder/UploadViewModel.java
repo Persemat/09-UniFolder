@@ -1,8 +1,5 @@
 package com.example.unifolder;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,21 +7,10 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.util.Log;
 import android.view.View;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
-import com.example.unifolder.Data.User.IUserRepository;
-import com.example.unifolder.Data.User.UserRepository;
-import com.example.unifolder.Model.Result;
-import com.example.unifolder.Model.User;
-import com.example.unifolder.Util.ServiceLocator;
-import com.example.unifolder.Welcome.UserViewModel;
-import com.example.unifolder.Welcome.UserViewModelFactory;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
@@ -43,7 +29,7 @@ public class UploadViewModel extends ViewModel {
         repository = new DocumentRepository(context);
     }
 
-    public boolean checkInputValuesAndUpload(String title, String username, String course, String tag, Uri selectedFileUri, View v, Context context) {
+    public boolean checkInputValuesAndUpload(String title, String username, String course, String tag, Uri selectedFileUri, View v, Context context, SavedDocumentCallback callback) {
         if (title == null || title.isEmpty()) {
             Snackbar.make(v, R.string.title_error, Snackbar.LENGTH_SHORT).show();
             return false;
@@ -59,19 +45,7 @@ public class UploadViewModel extends ViewModel {
 
         Document document = new Document(title, username, course, tag, selectedFileUri.toString());
 
-        repository.uploadDocument(document, context, new SavedDocumentCallback() {
-            @Override
-            public void onDocumentSaved(Document savedDocument) {
-                Snackbar.make(v,"inserted doc with id: " + savedDocument.getId(), Snackbar.LENGTH_SHORT).show();
-                // todo: navigate to document details fragment
-
-            }
-
-            @Override
-            public void onSaveFailed(String errorMessage) {
-                Snackbar.make(v,"doc not saved", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        repository.uploadDocument(document, context, callback);
 
         return true;
     }

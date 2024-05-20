@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,7 @@ public class UploadFragment extends Fragment {
     private Button submitButton;
     private String username;
     private RenderDocumentViewModel renderDocumentViewModel;
+    private NavController navController;
 
 
     public UploadFragment() {
@@ -133,7 +136,7 @@ public class UploadFragment extends Fragment {
 
         //Inizializza il NavController ottenendolo dal NavHostFragment
         NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container_view);
-        NavController navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
 
         courseEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,11 +158,35 @@ public class UploadFragment extends Fragment {
                 String title = titleEditText.getText().toString(),
                         course = courseEditText.getText().toString(),
                         tag = tagSpinner.getSelectedItem().toString();
-                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView(), requireContext());
+                uploadViewModel.checkInputValuesAndUpload(title, username, course, tag, selectedFileUri, requireView(), requireContext(), new SavedDocumentCallback() {
+                    @Override
+                    public void onDocumentSaved(Document savedDocument) {
+                        Log.d(TAG,"inserted doc with id: " + savedDocument.getId());
+                        Snackbar.make(v, R.string.doc_uploaded_successfully, Snackbar.LENGTH_SHORT).show();
+
+                        // Ensure this runs on the main thread
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            showDocumentDetails(savedDocument);
+                        });
+                    }
+
+                    @Override
+                    public void onSaveFailed(String errorMessage) {
+                        Snackbar.make(v,"doc not saved", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
         return view;
+    }
+
+    private void showDocumentDetails(Document savedDocument) {
+        Log.d(TAG,"showDetails()");
+
+        renderDocumentViewModel.renderDocument(savedDocument, requireContext());
+
+        navController.navigate(R.id.detailFragment);
     }
 
     private void getUsername() {

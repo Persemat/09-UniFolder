@@ -2,6 +2,7 @@ package com.example.unifolder.Ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class RenderDocumentViewModel extends ViewModel {
+    private static final String TAG = RenderDocumentViewModel.class.getSimpleName();
     private MutableLiveData<Document> documentMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Bitmap>> bitmapMutableLiveData = new MutableLiveData<>();
     private DocumentRepository documentRepository;
@@ -43,6 +45,7 @@ public class RenderDocumentViewModel extends ViewModel {
             documentRepository.renderDocument(document, context, new OnDocumentRenderedCallback() {
                 @Override
                 public void OnDocumentRendered(Document document, List<Bitmap> bitmaps) {
+                    Log.d(TAG,"success render");
                     setDocumentMutableLiveData(document);
                     setBitmapMutableLiveData(bitmaps);
                 }
