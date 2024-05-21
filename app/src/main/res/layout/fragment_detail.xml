@@ -26,7 +26,6 @@
         android:layout_height="0dp"
         android:textSize="20dp"
         android:text="Corso"
-        android:textColor="@color/darkred"
         app:layout_constraintTop_toBottomOf="@id/doc_title"
         app:layout_constraintStart_toStartOf="parent"
         />
@@ -37,7 +36,6 @@
         android:layout_height="0dp"
         android:textSize="20dp"
         android:text="Tag"
-        android:textColor="@color/darkred"
         app:layout_constraintTop_toBottomOf="@id/doc_course"
         app:layout_constraintStart_toStartOf="parent"
 
