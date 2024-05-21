@@ -1,5 +1,6 @@
 package com.example.unifolder;
 
+import static com.ibm.icu.text.PluralRules.Operand.e;
 import static com.ibm.icu.text.PluralRules.Operand.v;
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +8,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -20,6 +23,7 @@ import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertFalse;
@@ -182,26 +186,41 @@ public class UploadViewModelUnitTest {
 
     @Test
     public void testCheckInputValuesAndUpload_Errors(){
+        SavedDocumentCallback emptyCallback = new SavedDocumentCallback() {
+            @Override
+            public void onDocumentSaved(Document savedDocument) { }
+            @Override
+            public void onSaveFailed(String errorMessage) { }
+        };
+        Uri mockedUri = mock(Uri.class);
+        when(mockedUri.toString()).thenReturn("mocked");
+
         /// Creazione dell'activity per ospitare il fragment
         FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
 
         // Creazione e aggiunta del fragment
-        UploadFragment uploadFragment = UploadFragment.newInstance();
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(uploadFragment,null);
-        fragmentTransaction.commitNow();
+        UploadFragment uploadFragment = new UploadFragment();
+        fragmentTransaction.add(R.id.fragment_container_view, uploadFragment, "uploadFragment");
 
-        // Ottenere la view associata al fragment
-        View fragmentView = uploadFragment.getView();
+        // Usa Handler per eseguire il commitNow() sulla UI thread
+        new Handler(Looper.getMainLooper()).post(() -> {
+            fragmentTransaction.commitNow();
 
-        // Assicurarsi che la view non sia nulla e che abbia i componenti desiderati
-        assertNotNull(fragmentView);
+            // Ottieni il riferimento alla View del Fragment
+            View fragmentView = uploadFragment.getView();
 
-//        assertFalse(uploadViewModel.checkInputValuesAndUpload(null, "foo", "course", "tag", null, fragmentView, context));
-//        assertFalse(uploadViewModel.checkInputValuesAndUpload("title", null, "course", "tag", null, new View(context), context));
-//        assertFalse(uploadViewModel.checkInputValuesAndUpload("title", "foo", "course", "tag", null, new View(context), context));
-//        assertFalse(uploadViewModel.checkInputValuesAndUpload("title", "foo", "course", "tag", null, new View(context), context));
+
+            // Assicurarsi che la view non sia nulla e che abbia i componenti desiderati
+            assertNotNull(fragmentView);
+
+            // Controllo risultato
+            assertFalse(uploadViewModel.checkInputValuesAndUpload(null, "foo", "course", "tag", mockedUri, fragmentView, context, emptyCallback));
+            assertFalse(uploadViewModel.checkInputValuesAndUpload("title", null, "course", "tag", mockedUri, new View(context), context, emptyCallback));
+            assertFalse(uploadViewModel.checkInputValuesAndUpload("title", "foo", "course", "tag", null, new View(context), context, emptyCallback));
+            //assertTrue(uploadViewModel.checkInputValuesAndUpload("title", "foo", "course", "tag", mockedUri, new View(context), context, emptyCallback));
+        });
     }
 
     private class FileDescriptorWrapper {
