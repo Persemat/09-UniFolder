@@ -38,7 +38,6 @@
     <string name="error">Qualcosa è andato storto</string>
     <string name="close">Chiudi</string>
     <string name="email_sent">Email inviata per reset password</string>
-    <string name="username">Username</string>
     <string name="search_results">Risultati della ricerca per </string>
     <string-array name="options_upload_spinner">
         <item name="Lesson notes">Appunti lezione</item>
@@ -71,4 +70,6 @@
     <string name="close_description">close fragment</string>
     <string name="desc">logo</string>
     <string name="filter">filter button</string>
+    <string name="dark_mode">Modalità scura</string>
+    <string name="light_mode">Modalità chiara</string>
 </resources>
