@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.unifolder.HomeFragment"
+        android:name="com.example.unifolder.Ui.Main.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -16,43 +16,43 @@
     </fragment>
     <fragment
         android:id="@+id/uploadFragment"
-        android:name="com.example.unifolder.UploadFragment"
+        android:name="com.example.unifolder.Ui.Main.UploadFragment"
         android:label="fragment_upload"
         tools:layout="@layout/fragment_upload" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.unifolder.ProfileFragment"
+        android:name="com.example.unifolder.Ui.Main.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.example.unifolder.MainActivity"
+        android:name="com.example.unifolder.Ui.Main.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.unifolder.Welcome.LoginFragment"
+        android:name="com.example.unifolder.Ui.Welcome.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login"/>
 
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.unifolder.Welcome.RegistrationFragment"
+        android:name="com.example.unifolder.Ui.Welcome.RegistrationFragment"
         android:label="RegistrationFragment"
         tools:layout="@layout/fragment_registration"/>
     <fragment
         android:id="@+id/searchResultFragment"
-        android:name="com.example.unifolder.SearchResultFragment"
+        android:name="com.example.unifolder.Ui.Main.SearchResultFragment"
         android:label="fragment_search_result"
         tools:layout="@layout/fragment_search_result" />
     <activity
         android:id="@+id/loginActivity"
-        android:name="com.example.unifolder.Welcome.LoginActivity"
+        android:name="com.example.unifolder.Ui.Welcome.LoginActivity"
         android:label="LoginActivity" />
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.unifolder.DetailFragment"
+        android:name="com.example.unifolder.Ui.Main.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" />
 </navigation>

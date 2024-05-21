@@ -11,8 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.unifolder.Document;
-import com.example.unifolder.OnDocumentClickListener;
+import com.example.unifolder.Model.Document;
+import com.example.unifolder.Ui.Main.OnDocumentClickListener;
 import com.example.unifolder.R;
 
 import java.util.ArrayList;

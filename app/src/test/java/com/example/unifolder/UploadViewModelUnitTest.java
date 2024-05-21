@@ -16,7 +16,6 @@ import android.provider.OpenableColumns;
 import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentController;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.test.core.app.ApplicationProvider;
@@ -30,18 +29,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
-import com.google.firebase.FirebaseApp;
+import com.example.unifolder.Model.Document;
+import com.example.unifolder.Ui.Main.SavedDocumentCallback;
+import com.example.unifolder.Ui.Main.UploadFragment;
+import com.example.unifolder.Ui.Main.UploadViewModel;
 
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Robolectric;
 
-import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 @RunWith(RobolectricTestRunner.class)
 public class UploadViewModelUnitTest {

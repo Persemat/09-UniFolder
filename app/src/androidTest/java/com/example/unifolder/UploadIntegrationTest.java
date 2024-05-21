@@ -12,15 +12,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 
-import android.app.Fragment;
-import android.content.ContentResolver;
 import android.net.Uri;
 import android.widget.TextView;
 
@@ -29,12 +26,9 @@ import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.idling.CountingIdlingResource;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.unifolder.Welcome.LoginActivity;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.snackbar.SnackbarContentLayout;
+import com.example.unifolder.Ui.Welcome.LoginActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -44,8 +38,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import java.io.File;
-import java.util.List;
-import java.util.Locale;
 
 @RunWith(AndroidJUnit4.class)
 public class UploadIntegrationTest {

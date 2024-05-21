@@ -27,7 +27,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.unifolder.Welcome.LoginActivity;
+import com.example.unifolder.Ui.Welcome.LoginActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

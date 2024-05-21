@@ -3,14 +3,14 @@ package com.example.unifolder.Util;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.unifolder.Source.Document.DocumentLocalDataSource;
-import com.example.unifolder.Source.Document.DocumentRemoteDataSource;
-import com.example.unifolder.Data.User.IUserRepository;
-import com.example.unifolder.Data.User.UserRepository;
-import com.example.unifolder.Source.User.BaseUserAuthenticationRemoteDataSource;
-import com.example.unifolder.Source.User.BaseUserDataRemoteDataSource;
-import com.example.unifolder.Source.User.UserAuthenticationRemoteDataSource;
-import com.example.unifolder.Source.User.UserDataRemoteDataSource;
+import com.example.unifolder.Data.Source.Document.DocumentLocalDataSource;
+import com.example.unifolder.Data.Source.Document.DocumentRemoteDataSource;
+import com.example.unifolder.Data.Repository.User.IUserRepository;
+import com.example.unifolder.Data.Repository.User.UserRepository;
+import com.example.unifolder.Data.Source.User.BaseUserAuthenticationRemoteDataSource;
+import com.example.unifolder.Data.Source.User.BaseUserDataRemoteDataSource;
+import com.example.unifolder.Data.Source.User.UserAuthenticationRemoteDataSource;
+import com.example.unifolder.Data.Source.User.UserDataRemoteDataSource;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;

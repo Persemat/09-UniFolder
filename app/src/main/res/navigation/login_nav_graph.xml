@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.unifolder.Welcome.RegistrationFragment"
+        android:name="com.example.unifolder.Ui.Welcome.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration"
         >
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.unifolder.Welcome.LoginFragment"
+        android:name="com.example.unifolder.Ui.Welcome.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login"
         >
@@ -32,7 +32,7 @@
     </fragment>
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.example.unifolder.MainActivity"
+        android:name="com.example.unifolder.Ui.Main.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
 
