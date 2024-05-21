@@ -81,6 +81,13 @@
     <string name="need_login" translatable="false">Login?</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="light_mode">Light Mode</string>
+    <string name="Titolo">titolo</string>
+    <string name="Corso">corso</string>
+    <string name="Tag">tag</string>
+    <string name="description">visualizzazione documento</string>
+    <string name="close_description">close fragment</string>
+    <string name="desc">logo</string>
+    <string name="filter">filter button</string>
 
 
 </resources>

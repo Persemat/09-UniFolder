@@ -64,4 +64,11 @@
     <string name="welcome">Buongiorno, </string>
     <string name="last_opened">Ultimi documenti aperti</string>
     <string name="my_uploads">I miei caricamenti</string>
+    <string name="Titolo">titolo</string>
+    <string name="Corso">corso</string>
+    <string name="Tag">tag</string>
+    <string name="description">visualizzazione documento</string>
+    <string name="close_description">close fragment</string>
+    <string name="desc">logo</string>
+    <string name="filter">filter button</string>
 </resources>
