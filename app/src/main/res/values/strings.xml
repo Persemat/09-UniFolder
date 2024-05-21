@@ -79,9 +79,15 @@
     <string name="last_opened">Last documents viewed</string>
     <string name="my_uploads">My uploads</string>
     <string name="need_login" translatable="false">Login?</string>
-    <string name="dark_mode" translatable="false">Dark Mode</string>
-    <string name="light_mode" translatable="false">Light Mode</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="Titolo">titolo</string>
+    <string name="Corso">corso</string>
+    <string name="Tag">tag</string>
+    <string name="description">visualizzazione documento</string>
+    <string name="close_description">close fragment</string>
+    <string name="desc">logo</string>
+    <string name="filter">filter button</string>
     <string name="doc_uploaded_successfully">Document has been uploaded successfully!</string>
-
 
 </resources>

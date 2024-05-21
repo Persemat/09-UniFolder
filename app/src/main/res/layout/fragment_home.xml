@@ -30,6 +30,8 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+
+
             <Button
                 android:id="@+id/login_button"
                 style="@style/Widget.Material3.Button.TextButton"
@@ -42,6 +44,18 @@
                 android:layout_gravity="center_vertical" />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/logo"
+            android:contentDescription="@string/desc"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/logo_unifolder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.956"
+            app:layout_constraintStart_toStartOf="@id/linear_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"/>
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -84,7 +98,7 @@
                     style="@style/Widget.Material3.Button.Icon"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:contentDescription="TODO"
+                    android:contentDescription="@string/filter"
                     app:tint="@color/darkred" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

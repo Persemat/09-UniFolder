@@ -15,8 +15,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -28,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.unifolder.Adapter.DocumentAdapter;
+import com.example.unifolder.Ui.RenderDocumentViewModel;
 import com.example.unifolder.Ui.ResultViewModel;
 
 import java.util.List;
@@ -61,6 +60,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView lastOpenedRecyclerView, uploadsRecyclerView;
     private DocumentAdapter lastOpenedAdapter;
     private DocumentAdapter yourUploadsAdapter;
+    private RenderDocumentViewModel renderDocumentViewModel;
 
 
     public HomeFragment() {
@@ -117,6 +117,7 @@ public class HomeFragment extends Fragment {
 
         // Setup welcome layout
         homeViewModel.welcomeUser(requireActivity(),this,welcomeTextView,loginRedirectButton);
+        renderDocumentViewModel = new ViewModelProvider(this, new RenderDocumentViewModelFactory(requireContext())).get(RenderDocumentViewModel.class);
 
         // Login redirect button initialization
         loginRedirectButton.setOnClickListener(new View.OnClickListener() {
@@ -138,9 +139,11 @@ public class HomeFragment extends Fragment {
                         lastOpenedAdapter = new DocumentAdapter(documents, bitmaps, new OnDocumentClickListener() {
                             @Override
                             public void onDocumentClicked(Document document) {
-                                // TODO
-                                //renderDocumentViewModel.renderDocument(document, requireContext());
+                                renderDocumentViewModel.renderDocument(document, requireContext());
+                                // Ottieni il NavController
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_container_view);
                                 // Naviga al fragment dei dettagli del documento e passa il bundle come argomento
+                                navController.navigate(R.id.detailFragment);
                             }
                         },DocumentAdapter.VIEW_TYPE_HOME);
 
@@ -164,9 +167,11 @@ public class HomeFragment extends Fragment {
                         yourUploadsAdapter = new DocumentAdapter(documents, bitmaps, new OnDocumentClickListener() {
                             @Override
                             public void onDocumentClicked(Document document) {
-                                // TODO
-                                //renderDocumentViewModel.renderDocument(document, requireContext());
+                                renderDocumentViewModel.renderDocument(document, requireContext());
+                                // Ottieni il NavController
+                                NavController navController = Navigation.findNavController(requireActivity(), R.id.fragment_container_view);
                                 // Naviga al fragment dei dettagli del documento e passa il bundle come argomento
+                                navController.navigate(R.id.detailFragment);
                             }
                         }, DocumentAdapter.VIEW_TYPE_HOME);
 
