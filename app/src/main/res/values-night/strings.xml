@@ -3,4 +3,11 @@
     <string name="username">Username</string>
     <string name="search_results">Risultati della ricerca...</string>
     <string name="back_button">button for return to the previous page</string>
+    <string name="Titolo">titolo</string>
+    <string name="Corso">corso</string>
+    <string name="Tag">tag</string>
+    <string name="description">visualizzazione documento</string>
+    <string name="close_description">close fragment</string>
+    <string name="desc">logo</string>
+    <string name="filter">filter button</string>
 </resources>
