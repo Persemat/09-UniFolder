@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -47,6 +48,7 @@ public class SearchResultFragment extends Fragment{
 
     // TODO: Rename and change types of parameters
     private String queryTerm;
+    private CardView errorLayout;
 
     public SearchResultFragment() {
         // Required empty public constructor
@@ -86,6 +88,8 @@ public class SearchResultFragment extends Fragment{
 
         titleTextView = view.findViewById(R.id.search_results);
         recyclerView = view.findViewById(R.id.recycler_view);
+        errorLayout = view.findViewById(R.id.errorNoResult_layout);
+        
         renderDocumentViewModel = new ViewModelProvider(this, new RenderDocumentViewModelFactory(requireContext())).get(RenderDocumentViewModel.class);
 
         if(queryTerm != null && !queryTerm.isEmpty()) {
@@ -103,6 +107,11 @@ public class SearchResultFragment extends Fragment{
         resultViewModel.getSearchResultsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Document>>() {
             @Override
             public void onChanged(List<Document> documents) {
+                if(documents.isEmpty()) {
+                    errorLayout.setVisibility(View.VISIBLE);
+                } else {
+                    errorLayout.setVisibility(View.GONE);
+                }
                 resultViewModel.getDocumentPreviewsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Bitmap>>() {
                     @Override
                     public void onChanged(List<Bitmap> bitmaps) {

@@ -73,4 +73,5 @@
     <string name="dark_mode">Modalità scura</string>
     <string name="light_mode">Modalità chiara</string>
     <string name="doc_uploaded_successfully">Documento caricato con successo!</string>
+    <string name="no_results_found">Non è stato trovato alcun risultato per la tua ricerca. Prova a modificare i parametri e riprova.</string>
 </resources>

@@ -91,6 +91,23 @@ public class SearchIntegrationTest {
     }
 
     @Test
+    public void testTitleSearchNoResultInteraction() throws InterruptedException {
+        String titleWithMatch = "NoMatchingTitles?xyz";
+
+        Thread.sleep(100);
+        onView(withId(R.id.search_view)).perform(click());
+        Thread.sleep(100);
+        onView(instanceOf(SearchView.SearchAutoComplete.class)).perform(typeText(titleWithMatch),
+                pressKey(KeyEvent.KEYCODE_ENTER));
+
+        Thread.sleep(1000);
+
+
+        // Verifica che un elemento specifico sia visualizzato dopo l'azione di caricamento
+        onView(allOf(withId(R.id.errorNoResult_layout), isDisplayed()));
+    }
+
+    @Test
     public void testFilterSearchOkInteraction() throws InterruptedException {
         String tagChoice = "Altro", macroareaChoice = "Scienze", courseChoice = "INFORMATICA";
         int tagChoicePosition = 3; // position for "Altro"
