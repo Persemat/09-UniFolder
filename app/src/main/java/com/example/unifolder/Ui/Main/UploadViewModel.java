@@ -1,4 +1,4 @@
-package com.example.unifolder;
+package com.example.unifolder.Ui.Main;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModel;
 
+import com.example.unifolder.Data.Repository.Document.DocumentRepository;
+import com.example.unifolder.Model.Document;
+import com.example.unifolder.R;
 import com.example.unifolder.Util.CourseUtil;
 import com.google.android.material.snackbar.Snackbar;
 

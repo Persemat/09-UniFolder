@@ -1,11 +1,12 @@
-package com.example.unifolder;
+package com.example.unifolder.Data.Database.Document;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import java.util.Collection;
+import com.example.unifolder.Model.Document;
+
 import java.util.List;
 
 @Dao

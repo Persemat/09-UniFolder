@@ -1,4 +1,4 @@
-package com.example.unifolder;
+package com.example.unifolder.Ui.Main;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,13 +16,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.unifolder.Data.User.IUserRepository;
+import com.example.unifolder.Data.Repository.Document.DocumentRepository;
+import com.example.unifolder.Data.Repository.User.IUserRepository;
+import com.example.unifolder.Model.Document;
 import com.example.unifolder.Model.Result;
 import com.example.unifolder.Model.User;
+import com.example.unifolder.Ui.Welcome.UserViewModel;
+import com.example.unifolder.Ui.Welcome.UserViewModelFactory;
 import com.example.unifolder.Util.CourseUtil;
+import com.example.unifolder.Util.PdfProcessor;
 import com.example.unifolder.Util.ServiceLocator;
-import com.example.unifolder.Welcome.UserViewModel;
-import com.example.unifolder.Welcome.UserViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;

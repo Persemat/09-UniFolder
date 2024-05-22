@@ -1,8 +1,11 @@
 package com.example.unifolder;
 
-import static com.ibm.icu.text.PluralRules.Operand.e;
-import static com.ibm.icu.text.PluralRules.Operand.v;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -20,23 +23,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.test.core.app.ApplicationProvider;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
-
 import com.example.unifolder.Model.Document;
 import com.example.unifolder.Ui.Main.SavedDocumentCallback;
 import com.example.unifolder.Ui.Main.UploadFragment;
 import com.example.unifolder.Ui.Main.UploadViewModel;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
