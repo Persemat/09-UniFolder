@@ -130,7 +130,7 @@ public class ProfileFragment extends Fragment {
         avatar = view.findViewById(R.id.avatar_image);
         email = view.findViewById(R.id.user_email);
 
-        if (darkMode) {
+        if (!darkMode) {
             themeToggleButton.setChecked(false);
             colorMode.setText(requireContext().getString(R.string.dark_mode));
         } else {

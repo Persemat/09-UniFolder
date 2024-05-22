@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.Collection;
 import java.util.List;
 
 @Dao
@@ -20,4 +21,10 @@ public interface DocumentDao {
 
     @Query("SELECT * FROM documents WHERE author != :author")
     List<Document> getLastOpenedDocuments(String author);
+
+    @Query("SELECT * FROM documents")
+    List<Document> getAll();
+
+    @Query("DELETE FROM documents")
+    int deleteAll();
 }

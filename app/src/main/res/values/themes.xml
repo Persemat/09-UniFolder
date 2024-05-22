@@ -12,11 +12,12 @@
     <style name="Theme.UniFolder" parent="Base.Theme.UniFolder" >
         <item name="android:statusBarColor">@color/darkred</item>
 
-        <!--
-        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface</item>
-        <item name="colorPrimary">@color/darkgrey</item>
+
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorAccent">@color/grey</item>
         <item name="colorOnPrimary">@color/darkred</item>
-        -->
+
     </style>
 
 

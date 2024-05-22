@@ -169,7 +169,7 @@ public class SearchIntegrationTest {
         onView(instanceOf(SearchView.SearchAutoComplete.class)).perform(typeText(titleWithMatch),
                 pressKey(KeyEvent.KEYCODE_ENTER));
 
-        Thread.sleep(1000);
+        Thread.sleep(3000);
 
 
         // Verifica che un elemento specifico sia visualizzato dopo l'azione di caricamento
