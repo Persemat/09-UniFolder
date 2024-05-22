@@ -25,8 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/darkred"
         android:text="@string/choose_course"
         android:textSize="20sp"
+        android:textColor="@color/white"
+        app:iconTint="@color/white"
+        app:iconPadding="8dp"
         app:icon="@drawable/school_course" />
 
     <Button
@@ -34,10 +38,13 @@
         style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_marginTop="300dp"
         android:layout_gravity="center"
-        android:textSize="20sp"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/darkred"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
+        app:iconTint="@color/white"
         app:icon="@drawable/filter_alt"
-        android:text="Filtra" />
+        android:text="@string/filter_action" />
 
 </LinearLayout>

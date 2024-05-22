@@ -11,7 +11,6 @@
         android:id="@+id/topAppBar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -19,7 +18,7 @@
             android:id="@+id/arrow_back"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/grey"
             android:src="@drawable/baseline_arrow_back_24"
             android:contentDescription="@string/back_button" />
 

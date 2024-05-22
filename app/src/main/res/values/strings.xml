@@ -90,5 +90,6 @@
     <string name="filter">filter button</string>
     <string name="doc_uploaded_successfully">Document has been uploaded successfully!</string>
     <string name="no_results_found">No search results were found for your parameters. Please try to modify your search.</string>
+    <string name="filter_action">Filter</string>
 
 </resources>

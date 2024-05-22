@@ -8,6 +8,9 @@
       <entry key="testCombinedSearchOkInteraction()">
         <State />
       </entry>
+      <entry key="testSearchResultAndDetailOkInteraction()">
+        <State />
+      </entry>
       <entry key="testTitleSearchNoResultInteraction()">
         <State />
       </entry>
