@@ -122,4 +122,15 @@ public class DocumentLocalDataSource {
     public Future<List<Document>> getLastOpenedDocuments(String author) {
         return executorService.submit(() -> documentDao.getLastOpenedDocuments(author));
     }
+
+    public void deleteAll() {
+        DocumentDatabase.databaseWriteExecutor.execute(() -> {
+            int instanceCounter = documentDao.getAll().size();
+            int deleted = documentDao.deleteAll();
+
+            if(instanceCounter == deleted) {
+                // todo: callback?
+            }
+        });
+    }
 }

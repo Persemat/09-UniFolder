@@ -5,8 +5,7 @@
     tools:context=".Ui.Main.UploadFragment"
     android:id="@+id/scrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="80dp" >
+    android:layout_height="match_parent" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -98,6 +97,7 @@
                 android:text="@string/select_file" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/file_cardView"
                 style="@style/Widget.Material3.CardView.Elevated"
                 android:layout_marginTop="4dp"
                 app:cardCornerRadius="8dp"
@@ -181,7 +181,8 @@
             app:iconTint="?android:textAppearanceButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/form_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/progress_bar"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress_bar"
@@ -191,10 +192,10 @@
             app:indicatorColor="@color/darkred"
             app:trackColor="@color/darkgrey"
             android:indeterminate="true"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/submit_button" />
+            app:layout_constraintTop_toBottomOf="@id/form_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

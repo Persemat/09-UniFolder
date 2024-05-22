@@ -6,6 +6,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.pressKey;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -91,6 +92,23 @@ public class SearchIntegrationTest {
     }
 
     @Test
+    public void testTitleSearchNoResultInteraction() throws InterruptedException {
+        String titleWithMatch = "NoMatchingTitles?xyz";
+
+        Thread.sleep(100);
+        onView(withId(R.id.search_view)).perform(click());
+        Thread.sleep(100);
+        onView(instanceOf(SearchView.SearchAutoComplete.class)).perform(typeText(titleWithMatch),
+                pressKey(KeyEvent.KEYCODE_ENTER));
+
+        Thread.sleep(1000);
+
+
+        // Verifica che un elemento specifico sia visualizzato dopo l'azione di caricamento
+        onView(allOf(withId(R.id.errorNoResult_layout), isDisplayed()));
+    }
+
+    @Test
     public void testFilterSearchOkInteraction() throws InterruptedException {
         String tagChoice = "Altro", macroareaChoice = "Scienze", courseChoice = "INFORMATICA";
         int tagChoicePosition = 3; // position for "Altro"
@@ -152,7 +170,7 @@ public class SearchIntegrationTest {
         onView(instanceOf(SearchView.SearchAutoComplete.class)).perform(typeText(titleWithMatch),
                 pressKey(KeyEvent.KEYCODE_ENTER));
 
-        Thread.sleep(1000);
+        Thread.sleep(3000);
 
 
         // Verifica che un elemento specifico sia visualizzato dopo l'azione di caricamento
@@ -162,6 +180,30 @@ public class SearchIntegrationTest {
                 .check(matches(atPosition(0,hasDescendant(withText(containsString(courseChoice))))));
         onView(allOf(withId(R.id.recycler_view), isDisplayed()))
                 .check(matches(atPosition(0,hasDescendant(withText(containsString(tagChoice))))));
+    }
+
+    @Test
+    public void testSearchResultAndDetailOkInteraction() throws InterruptedException{
+        String titleWithMatch = "Sicurezza";
+        String tagChoice = "Appunti lezione";
+        String courseChoice = "INFORMATICA";
+
+        testCombinedSearchOkInteraction();
+        /*onView(withId(R.id.recycler_view).matches(atPosition(0,hasDescendant(withText(containsString(titleWithMatch)))))).perform(click());
+         */
+        // Fai clic sul primo elemento nella RecyclerView
+        onView(allOf(withId(R.id.recycler_view), isDisplayed()))
+                .perform(actionOnItemAtPosition(0, click()));
+
+        Thread.sleep(3000); // Attendi che il nuovo fragment venga visualizzato
+
+        // Verifica che i dettagli del documento siano corretti
+        onView(withId(R.id.doc_title)).check(matches(withText(containsString(titleWithMatch))));
+        onView(withId(R.id.doc_course)).check(matches(withText(containsString(courseChoice))));
+        onView(withId(R.id.doc_tag)).check(matches(withText(containsString(tagChoice))));
+
+        // Verifica che l'immagine del documento sia visualizzata
+        onView(withId(R.id.pdf_image)).check(matches(isDisplayed()));
     }
 
     public static Matcher<View> atPosition(final int position, @NonNull final Matcher<View> itemMatcher) {

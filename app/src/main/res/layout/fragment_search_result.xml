@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Ui.Main.SearchResultFragment"
-    android:layout_marginBottom="80dp">
+    tools:context=".SearchResultFragment" >
 
     <TextView
         android:id="@+id/search_results"
@@ -32,6 +31,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="?android:textColorPrimary" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/errorNoResult_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_results"
+        android:layout_marginHorizontal="16dp"
+        android:visibility="gone"
+        app:cardCornerRadius="4dp"
+        android:backgroundTint="@color/grey">
+
+        <TextView
+            android:drawablePadding="4dp"
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_results_found"
+            android:textColor="@color/black"
+            app:drawableStartCompat="@drawable/error" />
+
+    </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -40,7 +63,7 @@
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_results"
+        app:layout_constraintTop_toBottomOf="@id/errorNoResult_layout"
         tools:listitem="@layout/list_results"/>
 
 

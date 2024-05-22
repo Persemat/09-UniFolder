@@ -1,23 +1,26 @@
-package com.example.unifolder.Data.Repository.User;
+package com.example.unifolder.Data.User;
 
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.unifolder.Model.Result;
 import com.example.unifolder.Model.User;
-import com.example.unifolder.Data.Source.User.BaseUserAuthenticationRemoteDataSource;
-import com.example.unifolder.Data.Source.User.BaseUserDataRemoteDataSource;
+import com.example.unifolder.Source.Document.DocumentLocalDataSource;
+import com.example.unifolder.Source.User.BaseUserAuthenticationRemoteDataSource;
+import com.example.unifolder.Source.User.BaseUserDataRemoteDataSource;
 
 public class UserRepository implements IUserRepository,UserResponseCallback{
 
     private final BaseUserAuthenticationRemoteDataSource userRemoteDataSource;
     private final BaseUserDataRemoteDataSource userDataRemoteDataSource;
-    private final MutableLiveData<Result> userMutableLiveData;
+    private final DocumentLocalDataSource localDataSource;
     private final MutableLiveData<Result> userFavoritesMutableLiveData;
+    private final MutableLiveData<Result> userMutableLiveData;
 
-    public UserRepository(BaseUserAuthenticationRemoteDataSource userRemoteDataSource, BaseUserDataRemoteDataSource userDataRemoteDataSource){
+    public UserRepository(BaseUserAuthenticationRemoteDataSource userRemoteDataSource, BaseUserDataRemoteDataSource userDataRemoteDataSource, DocumentLocalDataSource localDataSource){
         this.userRemoteDataSource = userRemoteDataSource;
         this.userDataRemoteDataSource = userDataRemoteDataSource;
+        this.localDataSource = localDataSource;
         this.userMutableLiveData = new MutableLiveData<>();
         this.userFavoritesMutableLiveData = new MutableLiveData<>();
         this.userRemoteDataSource.setUserResponseCallback(this);
@@ -102,12 +105,17 @@ public class UserRepository implements IUserRepository,UserResponseCallback{
 
     @Override
     public void onSuccessLogout() {
+        localDataSource.deleteAll();
+        /*
         Result.UserResponseSuccess result = new Result.UserResponseSuccess(null);
         userMutableLiveData.postValue(result);
+
+         */
     }
 
     @Override
     public void onSuccessDeleteUser(User user) {
+        localDataSource.deleteAll();
         userDataRemoteDataSource.deleteUserRealtime(user);
     }
 
