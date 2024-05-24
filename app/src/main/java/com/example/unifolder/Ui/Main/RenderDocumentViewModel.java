@@ -23,6 +23,10 @@ public class RenderDocumentViewModel extends ViewModel {
         documentRepository = new DocumentRepository(context);
     }
 
+    public RenderDocumentViewModel(DocumentRepository documentRepository) {
+        this.documentRepository = documentRepository;
+    }
+
     public MutableLiveData<Document> getDocumentMutableLiveData() {
         return documentMutableLiveData;
     }

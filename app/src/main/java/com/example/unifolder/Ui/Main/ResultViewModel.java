@@ -35,6 +35,11 @@ public class ResultViewModel extends ViewModel {
         pdfProcessor = new PdfProcessor();
     }
 
+    public ResultViewModel(DocumentRepository documentRepository) {
+        this.documentRepository = documentRepository;
+        pdfProcessor = new PdfProcessor();
+    }
+
     public LiveData<List<Document>> getSearchResultsLiveData() {
         return searchResultsLiveData;
     }

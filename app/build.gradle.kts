@@ -53,6 +53,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.test:core:1.5.0")
+    testImplementation("junit:junit:4.12")
     annotationProcessor("androidx.room:room-compiler:2.6.1") // Processore di annotazioni per generare il codice Room
     implementation("com.google.guava:guava:31.0.1-android")
     implementation("com.google.firebase:firebase-storage:20.3.0")
@@ -79,6 +80,7 @@ dependencies {
     testImplementation("org.powermock:powermock-api-mockito2:2.0.9")
     testImplementation("org.powermock:powermock-module-junit4:2.0.9")
     testImplementation("org.robolectric:robolectric:4.12")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("org.mockito:mockito-inline:3.11.2") // Se vuoi utilizzare le annotazioni Mockito
     implementation("commons-validator:commons-validator:1.7")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.00"))
