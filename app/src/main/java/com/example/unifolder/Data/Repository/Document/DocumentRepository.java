@@ -29,6 +29,7 @@ public class DocumentRepository {
     private static final String TAG = DocumentRepository.class.getSimpleName();
     private final DocumentLocalDataSource localDataSource;
     private final DocumentRemoteDataSource remoteDataSource;
+    private PdfProcessor pdfProcessor;
 
 
     public DocumentRepository(Context context) {
@@ -175,9 +176,8 @@ public class DocumentRepository {
         });
     }
     public void renderDocument(Document document, Context context, OnDocumentRenderedCallback onDocumentRenderedCallback) throws ExecutionException, InterruptedException {
-        PdfProcessor pdfProcessor;
-
-        pdfProcessor = new PdfProcessor();
+        if(pdfProcessor == null)
+            pdfProcessor = new PdfProcessor();
 
         //controllo se abbiamo gia documento in room o è da scaricare
         CompletableFuture<Document> result = getDocumentByIdAsync(document.getId());
