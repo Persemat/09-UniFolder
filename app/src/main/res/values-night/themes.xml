@@ -8,6 +8,11 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Utilizza il colore di sfondo personalizzato -->
+        <item name="android:background">@color/grey</item>
+        <item name="cornerRadius">2dp</item>
+    </style>
 
     <style name="Theme.UniFolder" parent="Base.Theme.UniFolder" >
         <item name="android:statusBarColor">@color/darkred</item>

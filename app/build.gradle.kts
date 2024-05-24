@@ -76,6 +76,8 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("androidx.test:runner:1.5.2")
     testImplementation("org.mockito:mockito-core:4.4.0")
+    testImplementation("org.powermock:powermock-api-mockito2:2.0.9")
+    testImplementation("org.powermock:powermock-module-junit4:2.0.9")
     testImplementation("org.robolectric:robolectric:4.12")
     androidTestImplementation("org.mockito:mockito-inline:3.11.2") // Se vuoi utilizzare le annotazioni Mockito
     implementation("commons-validator:commons-validator:1.7")

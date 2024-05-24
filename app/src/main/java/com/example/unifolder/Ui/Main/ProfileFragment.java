@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment {
         avatar = view.findViewById(R.id.avatar_image);
         email = view.findViewById(R.id.user_email);
 
-        if (!darkMode) {
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             themeToggleButton.setChecked(false);
             colorMode.setText(requireContext().getString(R.string.dark_mode));
         } else {
@@ -195,7 +195,7 @@ public class ProfileFragment extends Fragment {
         });
 
         //GESTIONE PUSANTE CANCELLAZIONE ACCOUNT
-        deleteButton.setOnClickListener(v ->{new MaterialAlertDialogBuilder(requireContext())
+        deleteButton.setOnClickListener(v ->{new MaterialAlertDialogBuilder(requireContext(),R.style.CustomDialogTheme)
                 .setTitle(R.string.delete_account_question)
                 .setMessage(R.string.delete_account_message)
                 .setPositiveButton(R.string.confirm, (dialog, which) -> {
