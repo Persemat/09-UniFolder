@@ -3,6 +3,7 @@ package com.example.unifolder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -179,6 +180,41 @@ public class UploadViewModelUnitTest {
     }
 
     @Test
+    public void testCheckInputValuesAndUpload_Ok() {
+        SavedDocumentCallback emptyCallback = new SavedDocumentCallback() {
+            @Override
+            public void onDocumentSaved(Document savedDocument) { }
+            @Override
+            public void onSaveFailed(String errorMessage) { }
+        };
+        Uri mockedUri = mock(Uri.class);
+        when(mockedUri.toString()).thenReturn("mocked");
+
+        /// Creazione dell'activity per ospitare il fragment
+        FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).create().start().resume().get();
+
+        // Creazione e aggiunta del fragment
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        UploadFragment uploadFragment = new UploadFragment();
+        fragmentTransaction.add(R.id.fragment_container_view, uploadFragment, "uploadFragment");
+
+        // Usa Handler per eseguire il commitNow() sulla UI thread
+        new Handler(Looper.getMainLooper()).post(() -> {
+            fragmentTransaction.commitNow();
+
+            // Ottieni il riferimento alla View del Fragment
+            View fragmentView = uploadFragment.getView();
+
+
+            // Assicurarsi che la view non sia nulla e che abbia i componenti desiderati
+            assertNotNull(fragmentView);
+
+            assertTrue(uploadViewModel.checkInputValuesAndUpload("title", "foo", "course", "tag", mockedUri, new View(context), context, emptyCallback));
+        });
+    }
+
+    @Test
     public void testCheckInputValuesAndUpload_Errors(){
         SavedDocumentCallback emptyCallback = new SavedDocumentCallback() {
             @Override
@@ -213,7 +249,6 @@ public class UploadViewModelUnitTest {
             assertFalse(uploadViewModel.checkInputValuesAndUpload(null, "foo", "course", "tag", mockedUri, fragmentView, context, emptyCallback));
             assertFalse(uploadViewModel.checkInputValuesAndUpload("title", null, "course", "tag", mockedUri, new View(context), context, emptyCallback));
             assertFalse(uploadViewModel.checkInputValuesAndUpload("title", "foo", "course", "tag", null, new View(context), context, emptyCallback));
-            //assertTrue(uploadViewModel.checkInputValuesAndUpload("title", "foo", "course", "tag", mockedUri, new View(context), context, emptyCallback));
         });
     }
 

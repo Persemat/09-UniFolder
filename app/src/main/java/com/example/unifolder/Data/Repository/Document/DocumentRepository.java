@@ -31,7 +31,10 @@ public class DocumentRepository {
     private final DocumentRemoteDataSource remoteDataSource;
     private PdfProcessor pdfProcessor;
 
-
+    public DocumentRepository() {
+        localDataSource = null;
+        remoteDataSource = null;
+    }
     public DocumentRepository(Context context) {
         this.localDataSource = ServiceLocator.getInstance().getLocalDataSource(context);
         this.remoteDataSource = ServiceLocator.getInstance().getRemoteDataSource();
@@ -166,7 +169,7 @@ public class DocumentRepository {
         future.thenAccept(documents -> callback.OnSearchCompleted(documents));
     }
 
-    private CompletableFuture<Document> getDocumentByIdAsync(String id) {
+    public CompletableFuture<Document> getDocumentByIdAsync(String id) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return localDataSource.getDocumentById(id).get();
