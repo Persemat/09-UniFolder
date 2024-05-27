@@ -14,10 +14,18 @@ public class AvatarAdapter extends BaseAdapter {
 
     // Array di immagini o dati che desideri visualizzare nella GridView
     private int[] profileImages = {
+            R.drawable.baseline_account_circle_24,
             R.drawable.informatico,
             R.drawable.informatica,
             R.drawable.studioso,
-            R.drawable.studiosa
+            R.drawable.studiosa,
+            R.drawable.scienziato,
+            R.drawable.scienziata,
+            R.drawable.infermiere,
+            R.drawable.avvocato,
+            R.drawable.ptdonna,
+            R.drawable.ptuomo,
+            R.drawable.manager
     };
 
     public AvatarAdapter(Context context) {

@@ -12,6 +12,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/avatar_image"
+            android:src="@drawable/baseline_account_circle_24"
             android:layout_width="150dp"
             android:layout_height="150dp"
             app:layout_constraintEnd_toEndOf="parent"
