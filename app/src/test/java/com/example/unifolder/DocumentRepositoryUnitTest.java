@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -29,7 +30,10 @@ import com.google.firebase.FirebaseApp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
@@ -42,10 +46,11 @@ import java.util.concurrent.ExecutionException;
 public class DocumentRepositoryUnitTest {
     @Mock
     private DocumentRemoteDataSource mockRemoteDataSource;
-
     @Mock
     private DocumentLocalDataSource mockLocalDataSource;
-
+    @Spy
+    @InjectMocks
+    private DocumentRepository mockDocumentRepository;
     private DocumentRepository documentRepository;
     private Context context;
 
@@ -55,6 +60,7 @@ public class DocumentRepositoryUnitTest {
         context = ApplicationProvider.getApplicationContext();
         mockRemoteDataSource = mock(DocumentRemoteDataSource.class);
         mockLocalDataSource = mock(DocumentLocalDataSource.class);
+        mockDocumentRepository = Mockito.spy(DocumentRepository.class);
         documentRepository = new DocumentRepository(mockLocalDataSource, mockRemoteDataSource);
     }
 
@@ -171,31 +177,21 @@ public class DocumentRepositoryUnitTest {
     @Test
     public void testRenderDocument() throws InterruptedException, ExecutionException {
         // Given
-        Document mockDocument = new Document(/* document details */);
+        Document mockDocument = new Document("Document 1","Author 1","Course 1","Tag 1","path/docName1.pdf");
         Context mockContext = mock(Context.class);
         OnDocumentRenderedCallback mockCallback = mock(OnDocumentRenderedCallback.class);
         CompletableFuture<Document> mockFuture = CompletableFuture.completedFuture(mockDocument);
-        List<Bitmap> mockBitmaps = new ArrayList<>();
-        mockBitmaps.add(mock(Bitmap.class));
 
-        //todo
-        /*
         // Stubbing il metodo getDocumentByIdAsync per restituire un CompletableFuture completato con il documento mockato
-        when(documentRepository.getDocumentByIdAsync(mockDocument.getId())).thenReturn(mockFuture);
-
-        // Stubbing il metodo extractAllPagesImagesFromPdf per restituire un CompletableFuture completato con le bitmap mockate
-        when(any(PdfProcessor.class).extractAllPagesImagesFromPdf(anyString(), any(Context.class)))
-                .thenReturn(CompletableFuture.completedFuture(mockBitmaps));
+        doReturn(mockFuture).when(mockDocumentRepository).getDocumentByIdAsync(mockDocument.getId());
 
         // When
-        documentRepository.renderDocument(mockDocument, mockContext, mockCallback);
+        mockDocumentRepository.renderDocument(mockDocument, mockContext, mockCallback);
 
         // Then
         // Verifica che il metodo getDocumentByIdAsync sia stato chiamato correttamente
-        verify(documentRepository, times(1)).getDocumentByIdAsync(mockDocument.getId());
-        // Verifica che il metodo extractAllPagesImagesFromPdf sia stato chiamato correttamente con l'URL del documento e il contesto mockato
-        verify(mockPdfProcessor, times(1)).extractAllPagesImagesFromPdf(eq(mockDocument.getFileUrl()), eq(mockContext));
+        verify(mockDocumentRepository, times(1)).getDocumentByIdAsync(mockDocument.getId());
         // Verifica che la callback sia stata chiamata con il documento mockato e le bitmap mockate
-        verify(mockCallback, times(1)).OnDocumentRendered(mockDocument, mockBitmaps);*/
+        verify(mockCallback, times(1)).OnDocumentRendered(any(Document.class), any(List.class));
     }
 }
