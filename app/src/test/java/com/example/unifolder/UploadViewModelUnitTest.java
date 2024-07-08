@@ -50,7 +50,7 @@ public class UploadViewModelUnitTest {
     }
 
     @Test
-    public void testGetDocumentNameFromUri_ReturnsOk() {
+    public void testGetDocumentNameFromUri_Ok() {
         String mockFileName = "fooName.pdf";
 
         // Crea un mock dell'oggetto Uri
@@ -84,7 +84,7 @@ public class UploadViewModelUnitTest {
     }
 
     @Test
-    public void testGetDocumentSize_ReturnsOk() throws FileNotFoundException {
+    public void testGetDocumentSize_Ok() throws FileNotFoundException {
         long mockSize = 100L;
 
         // Mock dell'oggetto Uri
@@ -111,7 +111,7 @@ public class UploadViewModelUnitTest {
     }
 
     @Test
-    public void testGetFilePathFromUri_ReturnsOk() {
+    public void testGetFilePathFromUri_Ok() {
         String mockFilePath = "/sample/foo/fileName.pdf";
 
         // Crea un mock dell'oggetto Uri
@@ -144,7 +144,7 @@ public class UploadViewModelUnitTest {
     }
 
     @Test
-    public void testGetDocumentCreationDate_ReturnsOk() throws Exception {
+    public void testGetDocumentCreationDate_Ok() throws Exception {
         // Mock Uri e oggetti correlati
         Uri uri = mock(Uri.class);
         ParcelFileDescriptor parcelFileDescriptorMock = mock(ParcelFileDescriptor.class);
@@ -169,7 +169,7 @@ public class UploadViewModelUnitTest {
     }
 
     @Test
-    public void testGetFileSizeString_ReturnsOk() {
+    public void testGetFileSizeString_Ok() {
         String zero = uploadViewModel.getFileSizeString(0);
         String oneKByte = uploadViewModel.getFileSizeString(1024);
         String oneMByte = uploadViewModel.getFileSizeString(1024*1024);

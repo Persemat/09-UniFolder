@@ -18,7 +18,6 @@ import com.example.unifolder.Data.Repository.Document.DocumentRepository;
 import com.example.unifolder.Model.Document;
 import com.example.unifolder.Ui.Main.OnDocumentRenderedCallback;
 import com.example.unifolder.Ui.Main.RenderDocumentViewModel;
-import com.example.unifolder.Ui.Main.ResultViewModel;
 
 import org.junit.After;
 import org.junit.Before;
@@ -75,7 +74,7 @@ public class RenderDocumentViewModelUnitTest {
     }
 
     @Test
-    public void testRenderDocument() throws InterruptedException, ExecutionException {
+    public void testRenderDocument_Ok() throws InterruptedException, ExecutionException {
         // Given
         Document document = new Document("Document 1","Author 1","Course 1","Tag 1","path/docName1.pdf");
         Context mockContext = mock(Context.class);

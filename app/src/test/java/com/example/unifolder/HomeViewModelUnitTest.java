@@ -25,7 +25,7 @@ public class HomeViewModelUnitTest {
     }
 
     @Test
-    public void testFindIndex_ReturnsOk() {
+    public void testFindIndex_Ok() {
         String[] opts = {"opt1", "opt2"};
 
         assertEquals(homeViewModel.findIndex(opts,opts[0]), 0);
